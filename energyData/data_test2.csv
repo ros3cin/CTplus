@@ -1,0 +1,6 @@
+java/util/Hashtable,Ljava/util/Hashtable>,setRequiredFound,m_requiredFound,get,707,Lorg/apache/xalan/processor/XSLTElementDef>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,setRequiredFound,m_requiredFound,remove,708,Lorg/apache/xalan/processor/XSLTElementDef>,3,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,2,true,1º) 1;ON;6; 2º) 11;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,2,true,1º) 1;ON;6; 2º) 12;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,3,true,1º) 1;ON;6; 2º) 13;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,4,true,1º) 1;ON;6; 2º) 10;ON;null; ,false

@@ -1,0 +1,12 @@
+java/util/Hashtable,Ljava/util/Hashtable>,setRequiredFound,m_requiredFound,get,707,Lorg/apache/xalan/processor/XSLTElementDef>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,setRequiredFound,m_requiredFound,remove,708,Lorg/apache/xalan/processor/XSLTElementDef>,3,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,1,true,1º) 1;ON;6; 2º) 11;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,2,true,1º) 1;ON;6; 2º) 12;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,3,true,1º) 1;ON;6; 2º) 13;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,4,true,1º) 1;ON;6; 2º) 10;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,253,Lorg/apache/xalan/templates/AVT>,1,true,1º) 3;ON;null; 2º) 7;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,311,Lorg/apache/xalan/templates/AVT>,1,true,1º) 3;ON;null; 2º) 7;ON;null; 3º) 7;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMES,qnames,addElement,1095,Lorg/apache/xalan/processor/XSLTAttributeDef>,2,true,1º) 3;ON;null; 2º) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1134,Lorg/apache/xalan/processor/XSLTAttributeDef>,2,true,1º) 3;ON;null; 2º) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,766,Lorg/apache/xml/utils/DOMHelper>,2,true,1º) 1;ON;6; 2º) 7;ON;null; 3º) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,addElement,744,Lorg/apache/xml/utils/DOMHelper>,1,true,1º) 1;ON;6; 2º) 7;null;null; 3º) 7;ON;null; 4º) 9;ON;null; ,false

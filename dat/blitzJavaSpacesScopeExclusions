@@ -1,0 +1,7 @@
+org\/springframework\/.*
+org\/slf4j\/.*
+javassist\/.*
+ognl\/.*
+org\/apache\/commons\/.*
+org\/xsocket\/.*
+org\/apache\/mina\/.* 

@@ -1,0 +1,17 @@
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/resources.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/rt.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/jsse.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/jce.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/charsets.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/base-core-icaro.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/base-opt-icaro.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/dnsns.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/dns_sd.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/localedata.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/pcsc-wrapper-2.0.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/QTJava.zip
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/smartnetTerminal.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/sunjce_provider.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/sunmscapi.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre7/lib/ext/sunpkcs11.jar
+Application,Java,jarFile,C:/projectsToAnalyzer/testeloop.zip

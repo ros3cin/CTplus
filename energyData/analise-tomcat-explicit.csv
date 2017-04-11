@@ -1,0 +1,384 @@
+java/util/Hashtable,Ljava/util/Hashtable>,getHandler,handlersMap,get,125,Lorg/apache/jk/core/WorkerEnv>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,addHandler,handlersMap,put,102,Lorg/apache/jk/core/WorkerEnv>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,findMethods,objectMethods,get,834,Lorg/apache/tomcat/util/IntrospectionUtils>,20,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,findMethods,objectMethods,put,839,Lorg/apache/tomcat/util/IntrospectionUtils>,20,false,,false
+java/util/Properties,Ljava/util/Properties>,guessInstall,,put,157,Lorg/apache/tomcat/util/IntrospectionUtils>,6,false,,false
+java/util/Properties,Ljava/util/Properties>,guessInstall,,put,184,Lorg/apache/tomcat/util/IntrospectionUtils>,6,false,,false
+java/util/Properties,Ljava/util/Properties>,guessInstall,,put,186,Lorg/apache/tomcat/util/IntrospectionUtils>,6,false,,false
+java/util/Properties,Ljava/util/Properties>,guessInstall,,put,203,Lorg/apache/tomcat/util/IntrospectionUtils>,6,false,,false
+java/util/Properties,Ljava/util/Properties>,guessInstall,,put,205,Lorg/apache/tomcat/util/IntrospectionUtils>,6,false,,false
+java/util/Properties,Ljava/util/Properties>,guessInstall,,put,216,Lorg/apache/tomcat/util/IntrospectionUtils>,6,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,replaceProperties,staticProp,get,519,Lorg/apache/tomcat/util/IntrospectionUtils>,2,true,1) 2;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,replaceProperties,staticProp,get,519,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,addToClassPath,cpV,addElement,576,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addToolsJar,v,addElement,603,Lorg/apache/tomcat/util/IntrospectionUtils>,2,false,,false
+java/util/Vector,Ljava/util/Vector>,addJarsFromClassPath,jars,contains,674,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,addJarsFromClassPath,jars,addElement,675,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,getClassPath,v,size,685,Lorg/apache/tomcat/util/IntrospectionUtils>,2,false,,false
+java/util/Vector,Ljava/util/Vector>,getClassPath,v,elementAt,687,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getClassPath,v,size,686,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getClassPath,jarsV,addElement,704,Lorg/apache/tomcat/util/IntrospectionUtils>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,addToClassPath,cpV,addElement,576,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addJarsFromClassPath,jars,contains,674,Lorg/apache/tomcat/util/IntrospectionUtils>,2,true,1) 2;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,addJarsFromClassPath,jars,addElement,675,Lorg/apache/tomcat/util/IntrospectionUtils>,2,true,1) 2;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,getClassPath,v,elementAt,687,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getClassPath,v,size,686,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,findBooleanSetters,v,addElement,821,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,findBooleanSetters,v,size,824,Lorg/apache/tomcat/util/IntrospectionUtils>,2,false,,false
+java/util/Vector,Ljava/util/Vector>,findBooleanSetters,v,elementAt,826,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 2;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,processArgs,aliases,get,749,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 2;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,processArgs,aliases,get,750,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 2;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,findMethods,objectMethods,get,834,Lorg/apache/tomcat/util/IntrospectionUtils>,3,true,1) 2;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,findMethods,objectMethods,put,839,Lorg/apache/tomcat/util/IntrospectionUtils>,3,true,1) 2;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,processArgs,aliases,get,749,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,processArgs,aliases,get,750,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,findMethods,objectMethods,get,834,Lorg/apache/tomcat/util/IntrospectionUtils>,3,true,1) 1;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,findMethods,objectMethods,put,839,Lorg/apache/tomcat/util/IntrospectionUtils>,3,true,1) 1;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,clear,objectMethods,clear,788,Lorg/apache/tomcat/util/IntrospectionUtils>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,findVoidSetters,v,addElement,800,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,findVoidSetters,v,size,803,Lorg/apache/tomcat/util/IntrospectionUtils>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,findVoidSetters,v,elementAt,805,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,findBooleanSetters,v,addElement,821,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,findBooleanSetters,v,elementAt,826,Lorg/apache/tomcat/util/IntrospectionUtils>,1,true,1) 1;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,bind,clBindings,put,164,Lorg/apache/naming/resources/DirContextURLStreamHandler>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,unbind,clBindings,remove,175,Lorg/apache/naming/resources/DirContextURLStreamHandler>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,bindThread,threadBindings,put,183,Lorg/apache/naming/resources/DirContextURLStreamHandler>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,unbindThread,threadBindings,remove,191,Lorg/apache/naming/resources/DirContextURLStreamHandler>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,bind,clBindings,put,234,Lorg/apache/naming/resources/DirContextURLStreamHandler>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,unbind,clBindings,remove,242,Lorg/apache/naming/resources/DirContextURLStreamHandler>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,setAttribute,attributes,put,81,Lorg/apache/coyote/http11/Http11NioProtocol>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getManager,managers,get,211,Lorg/apache/naming/StringManager>,98,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getManager,managers,put,214,Lorg/apache/naming/StringManager>,98,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,keys,76,Lorg/apache/naming/NamingContext>,100,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,1,true,1) 1;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,1,true,1) 1;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 2;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 2;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,4,true,1) 4;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,4,true,1) 4;ON;0; ,false
+java/util/HashMap,Ljava/util/HashMap>,lookup,bindings,get,767,Lorg/apache/naming/NamingContext>,103,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 6;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 6;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 8;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 8;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 10;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 10;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 12;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 12;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 14;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 14;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 16;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 16;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 18;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 18;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 20;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 20;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 22;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 22;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 24;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 24;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 26;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 26;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 28;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,5,true,1) 28;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,5,true,1) 30;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,isWritable,readOnlyContexts,containsKey,124,Lorg/apache/naming/ContextAccessController>,20,false,,false
+java/util/HashMap,Ljava/util/HashMap>,bind,bindings,get,839,Lorg/apache/naming/NamingContext>,9,false,,false
+java/util/HashMap,Ljava/util/HashMap>,bind,bindings,put,882,Lorg/apache/naming/NamingContext>,9,false,,false
+java/util/HashMap,Ljava/util/HashMap>,unbind,bindings,get,251,Lorg/apache/naming/NamingContext>,4,false,,false
+java/util/HashMap,Ljava/util/HashMap>,unbind,bindings,remove,266,Lorg/apache/naming/NamingContext>,4,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 5;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 5;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 7;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 7;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 9;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 9;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 11;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 11;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 13;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 13;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 15;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 15;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 17;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 17;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 19;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 19;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 21;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 21;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 23;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 23;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 25;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 25;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 27;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 27;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 29;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 29;ON;0; ,false
+java/util/HashMap,Ljava/util/HashMap>,list,bindings,values,339,Lorg/apache/naming/NamingContext>,2,false,,false
+java/util/Collection,Ljava/util/Collection>,list,,iterator,339,Lorg/apache/naming/NamingContext>,2,false,,false
+java/util/HashMap,Ljava/util/HashMap>,list,bindings,get,342,Lorg/apache/naming/NamingContext>,2,false,,false
+java/util/HashMap,Ljava/util/HashMap>,listBindings,bindings,values,391,Lorg/apache/naming/NamingContext>,2,false,,false
+java/util/Collection,Ljava/util/Collection>,listBindings,,iterator,391,Lorg/apache/naming/NamingContext>,2,false,,false
+java/util/HashMap,Ljava/util/HashMap>,listBindings,bindings,get,394,Lorg/apache/naming/NamingContext>,2,false,,false
+java/util/HashMap,Ljava/util/HashMap>,destroySubcontext,bindings,get,460,Lorg/apache/naming/NamingContext>,2,false,,false
+java/util/HashMap,Ljava/util/HashMap>,destroySubcontext,bindings,remove,477,Lorg/apache/naming/NamingContext>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,79,Lorg/apache/naming/NamingContext>,2,true,1) 3;ON;0; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,2,true,1) 3;ON;0; ,false
+java/util/HashMap,Ljava/util/HashMap>,getNameParser,bindings,get,596,Lorg/apache/naming/NamingContext>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,addToEnvironment,env,put,671,Lorg/apache/naming/NamingContext>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,removeFromEnvironment,env,remove,684,Lorg/apache/naming/NamingContext>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,close,env,clear,716,Lorg/apache/naming/NamingContext>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,resourcesStart,env,put,4034,Lorg/apache/catalina/core/StandardContext>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,resourcesStart,env,put,4035,Lorg/apache/catalina/core/StandardContext>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,87,Lorg/apache/naming/resources/ProxyDirContext>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,<init>,env,get,88,Lorg/apache/naming/resources/ProxyDirContext>,2,false,,false
+java/util/HashMap,Ljava/util/HashMap>,getRegistry,perLoaderRegistries,get,155,Lorg/apache/tomcat/util/modeler/Registry>,3,false,,false
+java/util/HashMap,Ljava/util/HashMap>,getRegistry,perLoaderRegistries,put,160,Lorg/apache/tomcat/util/modeler/Registry>,3,false,,false
+java/util/HashMap,Ljava/util/HashMap>,findManagedBean,descriptors,get,405,Lorg/apache/tomcat/util/modeler/Registry>,12,false,,false
+java/util/HashMap,Ljava/util/HashMap>,findManagedBean,descriptorsByClass,get,407,Lorg/apache/tomcat/util/modeler/Registry>,12,false,,false
+java/util/HashMap,Ljava/util/HashMap>,findDescriptor,searchedPaths,get,904,Lorg/apache/tomcat/util/modeler/Registry>,3,true,1) 5;O1;0; ,false
+java/util/HashMap,Ljava/util/HashMap>,loadDescriptors,searchedPaths,get,824,Lorg/apache/tomcat/util/modeler/Registry>,3,true,1) 5;O1;0; ,false
+java/util/HashMap,Ljava/util/HashMap>,loadDescriptors,searchedPaths,put,840,Lorg/apache/tomcat/util/modeler/Registry>,3,true,1) 5;O1;0; ,false
+java/util/List,Ljava/util/List>,loadDescriptors,mbeans,iterator,868,Lorg/apache/tomcat/util/modeler/Registry>,6,true,1) 5;O1;0; ,false
+java/util/HashMap,Ljava/util/HashMap>,addManagedBean,descriptors,put,388,Lorg/apache/tomcat/util/modeler/Registry>,6,true,1) 5;O1;0; 2) 7;ON;0; ,false
+java/util/HashMap,Ljava/util/HashMap>,addManagedBean,descriptorsByClass,put,390,Lorg/apache/tomcat/util/modeler/Registry>,6,true,1) 5;O1;0; 2) 7;ON;0; ,false
+java/util/List,Ljava/util/List>,loadDescriptors,mbeans,iterator,868,Lorg/apache/tomcat/util/modeler/Registry>,6,false,,false
+java/util/HashMap,Ljava/util/HashMap>,addManagedBean,descriptors,put,388,Lorg/apache/tomcat/util/modeler/Registry>,6,true,1) 5;ON;0; ,false
+java/util/HashMap,Ljava/util/HashMap>,addManagedBean,descriptorsByClass,put,390,Lorg/apache/tomcat/util/modeler/Registry>,6,true,1) 5;ON;0; ,false
+java/util/HashMap,Ljava/util/HashMap>,addManagedBean,descriptors,put,388,Lorg/apache/tomcat/util/modeler/Registry>,3,false,,false
+java/util/HashMap,Ljava/util/HashMap>,addManagedBean,descriptorsByClass,put,390,Lorg/apache/tomcat/util/modeler/Registry>,3,false,,false
+java/util/ArrayList,Ljava/util/ArrayList>,getMBeanServer,,size,590,Lorg/apache/tomcat/util/modeler/Registry>,9,false,,false
+java/util/ArrayList,Ljava/util/ArrayList>,getMBeanServer,,get,591,Lorg/apache/tomcat/util/modeler/Registry>,9,false,,false
+java/util/ArrayList,Ljava/util/ArrayList>,createStartDigester,attrs,add,271,Lorg/apache/catalina/startup/Catalina>,2,false,,false
+java/util/HashMap,Ljava/util/HashMap>,createStartDigester,fakeAttributes,put,272,Lorg/apache/catalina/startup/Catalina>,2,false,,false
+java/util/HashMap,Ljava/util/HashMap>,<init>,excludes,put,40,Lorg/apache/catalina/startup/SetAllPropertiesRule>,1,true,1) 3;ON;null; ,false
+java/util/Properties,Ljava/util/Properties>,getParser,properties,put,699,Lorg/apache/tomcat/util/digester/Digester>,2,false,,false
+java/util/Properties,Ljava/util/Properties>,getParser,properties,put,701,Lorg/apache/tomcat/util/digester/Digester>,2,false,,false
+java/util/Properties,Ljava/util/Properties>,getParser,properties,put,702,Lorg/apache/tomcat/util/digester/Digester>,2,false,,false
+java/util/Properties,Ljava/util/Properties>,newSAXParser,properties,get,129,Lorg/apache/tomcat/util/digester/XercesParser>,2,false,,false
+java/util/Properties,Ljava/util/Properties>,configureOldXerces,properties,get,160,Lorg/apache/tomcat/util/digester/XercesParser>,2,false,,false
+java/util/Properties,Ljava/util/Properties>,configureOldXerces,properties,get,161,Lorg/apache/tomcat/util/digester/XercesParser>,2,false,,false
+java/util/Properties,Ljava/util/Properties>,newSAXParser,properties,get,70,Lorg/apache/tomcat/util/digester/GenericParser>,2,false,,false
+java/util/Properties,Ljava/util/Properties>,newSAXParser,properties,get,72,Lorg/apache/tomcat/util/digester/GenericParser>,2,false,,false
+java/util/Properties,Ljava/util/Properties>,newSAXParser,properties,get,73,Lorg/apache/tomcat/util/digester/GenericParser>,2,false,,false
+java/util/HashMap,Ljava/util/HashMap>,<init>,excludes,put,40,Lorg/apache/catalina/startup/SetAllPropertiesRule>,1,true,1) 4;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getManager,managers,get,159,Lorg/apache/tomcat/util/res/StringManager>,3,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getManager,managers,put,162,Lorg/apache/tomcat/util/res/StringManager>,3,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getManager,managers,get,188,Lorg/apache/tomcat/util/res/StringManager>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getManager,managers,put,191,Lorg/apache/tomcat/util/res/StringManager>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,addThread,threads,put,271,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,elementAt,273,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 2;ON;null; 2) 4;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,size,272,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 2;ON;null; 2) 4;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getThreads,threads,keys,291,Lorg/apache/tomcat/util/threads/ThreadPool>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,addThread,threads,put,271,Lorg/apache/tomcat/util/threads/ThreadPool>,2,false,,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,elementAt,273,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,size,272,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 1;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,removeThread,threads,remove,279,Lorg/apache/tomcat/util/threads/ThreadPool>,3,false,,false
+java/util/Vector,Ljava/util/Vector>,removeThread,listeners,elementAt,281,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,removeThread,listeners,size,280,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThreadPoolListener,listeners,addElement,287,Lorg/apache/tomcat/util/threads/ThreadPool>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,addThread,threads,put,271,Lorg/apache/tomcat/util/threads/ThreadPool>,2,true,1) 2;null;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,elementAt,273,Lorg/apache/tomcat/util/threads/ThreadPool>,2,true,1) 2;null;null; 2) 3;ON;null; 3) 5;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,size,272,Lorg/apache/tomcat/util/threads/ThreadPool>,2,true,1) 2;null;null; 2) 3;ON;null; 3) 5;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addThread,threads,put,271,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 1;null;null; 2) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,elementAt,273,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 1;null;null; 2) 2;ON;null; 3) 4;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,size,272,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 1;null;null; 2) 2;ON;null; 3) 4;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addThread,threads,put,271,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,elementAt,273,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 1;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,size,272,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 1;ON;null; 2) 3;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,threadStatusString,threads,keySet,787,Lorg/apache/tomcat/util/threads/ThreadPool>,1,false,,false
+java/util/Set,Ljava/util/Set>,threadStatusString,,iterator,787,Lorg/apache/tomcat/util/threads/ThreadPool>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getThreadStatus,threads,size,809,Lorg/apache/tomcat/util/threads/ThreadPool>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getThreadStatus,threads,keySet,810,Lorg/apache/tomcat/util/threads/ThreadPool>,1,false,,false
+java/util/Set,Ljava/util/Set>,getThreadStatus,,iterator,810,Lorg/apache/tomcat/util/threads/ThreadPool>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getThreadParam,threads,size,825,Lorg/apache/tomcat/util/threads/ThreadPool>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getThreadParam,threads,keySet,826,Lorg/apache/tomcat/util/threads/ThreadPool>,1,false,,false
+java/util/Set,Ljava/util/Set>,getThreadParam,,iterator,826,Lorg/apache/tomcat/util/threads/ThreadPool>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,elementAt,273,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addThread,listeners,size,272,Lorg/apache/tomcat/util/threads/ThreadPool>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,removeThread,listeners,elementAt,281,Lorg/apache/tomcat/util/threads/ThreadPool>,2,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,removeThread,listeners,size,280,Lorg/apache/tomcat/util/threads/ThreadPool>,2,true,1) 2;ON;null; ,false
+java/util/WeakHashMap,Ljava/util/WeakHashMap>,<init>,ALL_CONNECTION_MANAGERS,put,259,Lorg/apache/commons/httpclient/MultiThreadedHttpConnectionManager>,2,false,,false
+java/util/HashMap,Ljava/util/HashMap>,setParameter,parameters,put,149,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,2,false,,false
+java/util/List,Ljava/util/List>,run,pages,get,141,Lorg/dacapo/tomcat/Client>,2,true,1) 1;ON;null; 2) 1;ON;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,getParameter,parameters,get,128,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,6,true,1) 1;ON;null; 2) 1;ON;null; ,false
+java/util/Map,Ljava/util/Map>,getProtocol,PROTOCOLS,get,114,Lorg/apache/commons/httpclient/protocol/Protocol>,4,true,1) 1;ON;null; 2) 1;ON;null; ,false
+java/util/Map,Ljava/util/Map>,registerProtocol,PROTOCOLS,put,81,Lorg/apache/commons/httpclient/protocol/Protocol>,8,true,1) 1;ON;null; 2) 1;ON;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,clone,parameters,clone,249,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,2,true,1) 1;ON;null; 2) 1;ON;null; ,false
+java/util/Collection,Ljava/util/Collection>,executeMethod,defaults,iterator,133,Lorg/apache/commons/httpclient/HttpMethodDirector>,2,true,1) 1;ON;null; 2) 1;ON;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,getParameter,parameters,get,128,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,38,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,getAuthScheme,SCHEMES,get,165,Lorg/apache/commons/httpclient/auth/AuthPolicy>,8,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,matchCredentials,map,get,373,Lorg/apache/commons/httpclient/HttpState>,8,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,matchCredentials,map,keySet,379,Lorg/apache/commons/httpclient/HttpState>,8,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/Set,Ljava/util/Set>,matchCredentials,,iterator,379,Lorg/apache/commons/httpclient/HttpState>,8,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,matchCredentials,map,get,389,Lorg/apache/commons/httpclient/HttpState>,8,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/Map,Ljava/util/Map>,getProtocol,PROTOCOLS,get,114,Lorg/apache/commons/httpclient/protocol/Protocol>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/Map,Ljava/util/Map>,registerProtocol,PROTOCOLS,put,81,Lorg/apache/commons/httpclient/protocol/Protocol>,8,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/Map,Ljava/util/Map>,getProtocol,PROTOCOLS,get,114,Lorg/apache/commons/httpclient/protocol/Protocol>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/Map,Ljava/util/Map>,registerProtocol,PROTOCOLS,put,81,Lorg/apache/commons/httpclient/protocol/Protocol>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,getParameter,parameters,get,128,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,66,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,getAuthScheme,SCHEMES,get,165,Lorg/apache/commons/httpclient/auth/AuthPolicy>,6,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,matchCredentials,map,get,373,Lorg/apache/commons/httpclient/HttpState>,6,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,matchCredentials,map,keySet,379,Lorg/apache/commons/httpclient/HttpState>,6,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/Set,Ljava/util/Set>,matchCredentials,,iterator,379,Lorg/apache/commons/httpclient/HttpState>,6,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,matchCredentials,map,get,389,Lorg/apache/commons/httpclient/HttpState>,6,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/List,Ljava/util/List>,getHeaders,headers,iterator,142,Lorg/apache/commons/httpclient/HeaderGroup>,22,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getHeaders,headersFound,add,145,Lorg/apache/commons/httpclient/HeaderGroup>,8,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 17;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getHeaders,headersFound,size,149,Lorg/apache/commons/httpclient/HeaderGroup>,22,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getHeaders,headersFound,toArray,149,Lorg/apache/commons/httpclient/HeaderGroup>,22,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/List,Ljava/util/List>,removeHeader,headers,remove,81,Lorg/apache/commons/httpclient/HeaderGroup>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 16;ON;null; ,false
+java/util/List,Ljava/util/List>,addHeader,headers,add,72,Lorg/apache/commons/httpclient/HeaderGroup>,10,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getHeaders,headersFound,add,145,Lorg/apache/commons/httpclient/HeaderGroup>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 15;ON;0; ,false
+java/util/List,Ljava/util/List>,removeHeader,headers,remove,81,Lorg/apache/commons/httpclient/HeaderGroup>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 14;ON;null; ,false
+java/util/Map,Ljava/util/Map>,getCookieSpec,SPECS,get,208,Lorg/apache/commons/httpclient/cookie/CookiePolicy>,8,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/List,Ljava/util/List>,registerAttribHandler,attribHandlerList,contains,117,Lorg/apache/commons/httpclient/cookie/RFC2965Spec>,36,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/List,Ljava/util/List>,registerAttribHandler,attribHandlerList,add,118,Lorg/apache/commons/httpclient/cookie/RFC2965Spec>,36,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/Map,Ljava/util/Map>,registerAttribHandler,attribHandlerMap,put,120,Lorg/apache/commons/httpclient/cookie/RFC2965Spec>,36,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getCookies,cookies,size,174,Lorg/apache/commons/httpclient/HttpState>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getCookies,cookies,toArray,174,Lorg/apache/commons/httpclient/HttpState>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/List,Ljava/util/List>,addHeader,headers,add,72,Lorg/apache/commons/httpclient/HeaderGroup>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 14;ON;null; ,false
+java/util/List,Ljava/util/List>,getAllHeaders,headers,size,197,Lorg/apache/commons/httpclient/HeaderGroup>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/List,Ljava/util/List>,getAllHeaders,headers,toArray,197,Lorg/apache/commons/httpclient/HeaderGroup>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getHeaders,headersFound,add,145,Lorg/apache/commons/httpclient/HeaderGroup>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 14;ON;0; ,false
+java/util/HashMap,Ljava/util/HashMap>,getParameter,parameters,get,128,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 12;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,setParameter,parameters,put,149,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/List,Ljava/util/List>,clear,headers,clear,62,Lorg/apache/commons/httpclient/HeaderGroup>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,parseHeaders,headers,add,195,Lorg/apache/commons/httpclient/HttpParser>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 13;null;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,parseHeaders,headers,add,212,Lorg/apache/commons/httpclient/HttpParser>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,parseHeaders,headers,size,215,Lorg/apache/commons/httpclient/HttpParser>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,parseHeaders,headers,toArray,215,Lorg/apache/commons/httpclient/HttpParser>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/List,Ljava/util/List>,addHeader,headers,add,72,Lorg/apache/commons/httpclient/HeaderGroup>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 13;ON;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getHeaders,headersFound,add,145,Lorg/apache/commons/httpclient/HeaderGroup>,8,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 13;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,addCookie,cookies,iterator,129,Lorg/apache/commons/httpclient/HttpState>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 13;ON;null; 6) 13;ON;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,addCookie,cookies,add,137,Lorg/apache/commons/httpclient/HttpState>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 13;ON;null; 6) 13;ON;null; ,false
+java/util/List,Ljava/util/List>,removeHeader,headers,remove,81,Lorg/apache/commons/httpclient/HeaderGroup>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 12;ON;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,getParameter,parameters,get,128,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,14,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,getParameter,parameters,get,128,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; 6) 12;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,setParameter,parameters,put,149,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/List,Ljava/util/List>,clear,headers,clear,62,Lorg/apache/commons/httpclient/HeaderGroup>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,parseHeaders,headers,add,195,Lorg/apache/commons/httpclient/HttpParser>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; 6) 13;null;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,parseHeaders,headers,add,212,Lorg/apache/commons/httpclient/HttpParser>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,parseHeaders,headers,size,215,Lorg/apache/commons/httpclient/HttpParser>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,parseHeaders,headers,toArray,215,Lorg/apache/commons/httpclient/HttpParser>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/List,Ljava/util/List>,addHeader,headers,add,72,Lorg/apache/commons/httpclient/HeaderGroup>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; 6) 13;ON;null; ,false
+java/util/Map,Ljava/util/Map>,getCookieSpec,SPECS,get,208,Lorg/apache/commons/httpclient/cookie/CookiePolicy>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/List,Ljava/util/List>,registerAttribHandler,attribHandlerList,contains,117,Lorg/apache/commons/httpclient/cookie/RFC2965Spec>,18,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/List,Ljava/util/List>,registerAttribHandler,attribHandlerList,add,118,Lorg/apache/commons/httpclient/cookie/RFC2965Spec>,18,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/Map,Ljava/util/Map>,registerAttribHandler,attribHandlerMap,put,120,Lorg/apache/commons/httpclient/cookie/RFC2965Spec>,18,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/List,Ljava/util/List>,getHeaders,headers,iterator,142,Lorg/apache/commons/httpclient/HeaderGroup>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getHeaders,headersFound,add,145,Lorg/apache/commons/httpclient/HeaderGroup>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; 6) 13;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getHeaders,headersFound,size,149,Lorg/apache/commons/httpclient/HeaderGroup>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getHeaders,headersFound,toArray,149,Lorg/apache/commons/httpclient/HeaderGroup>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,addCookie,cookies,iterator,129,Lorg/apache/commons/httpclient/HttpState>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; 6) 13;ON;null; 7) 13;ON;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,addCookie,cookies,add,137,Lorg/apache/commons/httpclient/HttpState>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;null;null; 6) 13;ON;null; 7) 13;ON;null; ,false
+java/util/List,Ljava/util/List>,getFirstHeader,headers,iterator,161,Lorg/apache/commons/httpclient/HeaderGroup>,10,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/List,Ljava/util/ArrayList>,parse,params,add,230,Lorg/apache/commons/httpclient/util/ParameterParser>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 16;ON;null; 6) 18;O1;0; ,false
+java/util/List,Ljava/util/List>,<init>,params,size,136,Lorg/apache/commons/httpclient/HeaderElement>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 16;ON;null; ,false
+java/util/List,Ljava/util/List>,<init>,params,remove,137,Lorg/apache/commons/httpclient/HeaderElement>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 16;ON;null; ,false
+java/util/List,Ljava/util/List>,<init>,params,size,140,Lorg/apache/commons/httpclient/HeaderElement>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 16;ON;null; ,false
+java/util/List,Ljava/util/List>,<init>,params,size,142,Lorg/apache/commons/httpclient/HeaderElement>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 16;ON;null; ,false
+java/util/List,Ljava/util/List>,<init>,params,toArray,142,Lorg/apache/commons/httpclient/HeaderElement>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 16;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,parseElements,elements,add,218,Lorg/apache/commons/httpclient/HeaderElement>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 16;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,parseElements,elements,size,223,Lorg/apache/commons/httpclient/HeaderElement>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/List,Ljava/util/ArrayList>,parseElements,elements,toArray,223,Lorg/apache/commons/httpclient/HeaderElement>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/Map,Ljava/util/HashMap>,parseChallenges,challengemap,put,132,Lorg/apache/commons/httpclient/auth/AuthChallengeParser>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 11;ON;null; ,false
+java/util/Map,Ljava/util/Map>,processWWWAuthChallenge,challenges,isEmpty,688,Lorg/apache/commons/httpclient/HttpMethodDirector>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/Collection,Ljava/util/Collection>,selectAuthScheme,authPrefs,isEmpty,86,Lorg/apache/commons/httpclient/auth/AuthChallengeProcessor>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getDefaultAuthPrefs,SCHEME_LIST,clone,187,Lorg/apache/commons/httpclient/auth/AuthPolicy>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/Collection,Ljava/lang/Object>,selectAuthScheme,authPrefs,iterator,95,Lorg/apache/commons/httpclient/auth/AuthChallengeProcessor>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/Map,Ljava/util/Map>,selectAuthScheme,challenges,get,98,Lorg/apache/commons/httpclient/auth/AuthChallengeProcessor>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; 5) 12;ON;0; ,false
+java/util/Map,Ljava/util/Map>,processChallenge,challenges,get,157,Lorg/apache/commons/httpclient/auth/AuthChallengeProcessor>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,setCredentials,credMap,put,360,Lorg/apache/commons/httpclient/HttpState>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/Map,Ljava/util/Map>,processProxyAuthChallenge,proxyChallenges,isEmpty,752,Lorg/apache/commons/httpclient/HttpMethodDirector>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,setProxyCredentials,proxyCred,put,489,Lorg/apache/commons/httpclient/HttpState>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 8;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,getParameter,parameters,get,128,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 7;INFINITE;null; ,false
+java/util/Set,Ljava/util/Set>,processRedirectResponse,redirectLocations,add,627,Lorg/apache/commons/httpclient/HttpMethodDirector>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/Set,Ljava/util/Set>,processRedirectResponse,redirectLocations,contains,637,Lorg/apache/commons/httpclient/HttpMethodDirector>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/Map,Ljava/util/HashMap>,parseChallenges,challengemap,put,132,Lorg/apache/commons/httpclient/auth/AuthChallengeParser>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 9;ON;null; ,false
+java/util/Map,Ljava/util/Map>,processWWWAuthChallenge,challenges,isEmpty,688,Lorg/apache/commons/httpclient/HttpMethodDirector>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/Collection,Ljava/util/Collection>,selectAuthScheme,authPrefs,isEmpty,86,Lorg/apache/commons/httpclient/auth/AuthChallengeProcessor>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,getDefaultAuthPrefs,SCHEME_LIST,clone,187,Lorg/apache/commons/httpclient/auth/AuthPolicy>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/Collection,Ljava/lang/Object>,selectAuthScheme,authPrefs,iterator,95,Lorg/apache/commons/httpclient/auth/AuthChallengeProcessor>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/Map,Ljava/util/Map>,selectAuthScheme,challenges,get,98,Lorg/apache/commons/httpclient/auth/AuthChallengeProcessor>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; 4) 10;ON;0; ,false
+java/util/Map,Ljava/util/Map>,processChallenge,challenges,get,157,Lorg/apache/commons/httpclient/auth/AuthChallengeProcessor>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,setCredentials,credMap,put,360,Lorg/apache/commons/httpclient/HttpState>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/Map,Ljava/util/Map>,processProxyAuthChallenge,proxyChallenges,isEmpty,752,Lorg/apache/commons/httpclient/HttpMethodDirector>,2,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,setProxyCredentials,proxyCred,put,489,Lorg/apache/commons/httpclient/HttpState>,4,true,1) 1;ON;null; 2) 1;ON;null; 3) 6;INFINITE;null; ,false
+java/util/List,Ljava/util/List>,run,pages,size,140,Lorg/dacapo/tomcat/Client>,2,true,1) 1;ON;null; 2) 1;ON;null; ,false
+java/util/LinkedList,Ljava/util/LinkedList>,shutdown,freeConnections,iterator,725,Lorg/apache/commons/httpclient/MultiThreadedHttpConnectionManager$ConnectionPool>,6,false,,false
+java/util/Map,Ljava/util/Map>,shutdownCheckedOutConnections,REFERENCE_TO_CONNECTION_SOURCE,keySet,195,Lorg/apache/commons/httpclient/MultiThreadedHttpConnectionManager>,6,false,,false
+java/util/Set,Ljava/util/Set>,shutdownCheckedOutConnections,,iterator,195,Lorg/apache/commons/httpclient/MultiThreadedHttpConnectionManager>,6,false,,false
+java/util/Map,Ljava/util/Map>,shutdownCheckedOutConnections,REFERENCE_TO_CONNECTION_SOURCE,get,199,Lorg/apache/commons/httpclient/MultiThreadedHttpConnectionManager>,6,true,1) 6;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,shutdownCheckedOutConnections,connectionsToClose,add,204,Lorg/apache/commons/httpclient/MultiThreadedHttpConnectionManager>,6,true,1) 6;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,shutdownCheckedOutConnections,connectionsToClose,iterator,212,Lorg/apache/commons/httpclient/MultiThreadedHttpConnectionManager>,6,false,,false
+java/util/LinkedList,Ljava/util/LinkedList>,shutdown,waitingThreads,iterator,736,Lorg/apache/commons/httpclient/MultiThreadedHttpConnectionManager$ConnectionPool>,6,false,,false
+java/util/Map,Ljava/util/Map>,shutdown,mapHosts,clear,745,Lorg/apache/commons/httpclient/MultiThreadedHttpConnectionManager$ConnectionPool>,6,false,,false
+java/util/Map,Ljava/util/Map>,removeAll,connectionToAdded,clear,94,Lorg/apache/commons/httpclient/util/IdleConnectionHandler>,6,false,,false
+java/util/Properties,Ljava/util/Properties>,getProperty,properties,getProperty,62,Lorg/apache/catalina/startup/CatalinaProperties>,72,true,1) 1;ON;6; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryLocations,add,149,Lorg/apache/catalina/startup/Bootstrap>,24,true,1) 1;ON;6; 2) 7;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryTypes,add,150,Lorg/apache/catalina/startup/Bootstrap>,24,true,1) 1;ON;6; 2) 7;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryLocations,add,159,Lorg/apache/catalina/startup/Bootstrap>,24,true,1) 1;ON;6; 2) 7;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryTypes,add,160,Lorg/apache/catalina/startup/Bootstrap>,24,true,1) 1;ON;6; 2) 7;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryLocations,add,162,Lorg/apache/catalina/startup/Bootstrap>,24,true,1) 1;ON;6; 2) 7;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryTypes,add,163,Lorg/apache/catalina/startup/Bootstrap>,24,true,1) 1;ON;6; 2) 7;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryLocations,add,165,Lorg/apache/catalina/startup/Bootstrap>,24,true,1) 1;ON;6; 2) 7;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryTypes,add,166,Lorg/apache/catalina/startup/Bootstrap>,24,true,1) 1;ON;6; 2) 7;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryLocations,toArray,170,Lorg/apache/catalina/startup/Bootstrap>,72,true,1) 1;ON;6; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryTypes,toArray,171,Lorg/apache/catalina/startup/Bootstrap>,72,true,1) 1;ON;6; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,list,add,197,Lorg/apache/catalina/startup/ClassLoaderFactory>,24,true,1) 1;ON;6; 2) 8;ON;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,list,add,207,Lorg/apache/catalina/startup/ClassLoaderFactory>,24,true,1) 1;ON;6; 2) 8;ON;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,list,add,216,Lorg/apache/catalina/startup/ClassLoaderFactory>,24,true,1) 1;ON;6; 2) 8;ON;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,list,add,238,Lorg/apache/catalina/startup/ClassLoaderFactory>,24,true,1) 1;ON;6; 2) 8;ON;null; 3) 8;ON;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,list,size,245,Lorg/apache/catalina/startup/ClassLoaderFactory>,72,true,1) 1;ON;6; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,list,toArray,245,Lorg/apache/catalina/startup/ClassLoaderFactory>,72,true,1) 1;ON;6; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,,size,178,Lorg/apache/catalina/startup/Bootstrap>,72,true,1) 1;ON;6; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,,get,180,Lorg/apache/catalina/startup/Bootstrap>,72,true,1) 1;ON;6; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryLocations,add,149,Lorg/apache/catalina/startup/Bootstrap>,48,true,1) 1;ON;6; 2) 8;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryTypes,add,150,Lorg/apache/catalina/startup/Bootstrap>,48,true,1) 1;ON;6; 2) 8;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryLocations,add,159,Lorg/apache/catalina/startup/Bootstrap>,48,true,1) 1;ON;6; 2) 8;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryTypes,add,160,Lorg/apache/catalina/startup/Bootstrap>,48,true,1) 1;ON;6; 2) 8;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryLocations,add,162,Lorg/apache/catalina/startup/Bootstrap>,48,true,1) 1;ON;6; 2) 8;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryTypes,add,163,Lorg/apache/catalina/startup/Bootstrap>,48,true,1) 1;ON;6; 2) 8;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryLocations,add,165,Lorg/apache/catalina/startup/Bootstrap>,48,true,1) 1;ON;6; 2) 8;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,repositoryTypes,add,166,Lorg/apache/catalina/startup/Bootstrap>,48,true,1) 1;ON;6; 2) 8;ON;0; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,list,add,197,Lorg/apache/catalina/startup/ClassLoaderFactory>,48,true,1) 1;ON;6; 2) 9;ON;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,list,add,207,Lorg/apache/catalina/startup/ClassLoaderFactory>,48,true,1) 1;ON;6; 2) 9;ON;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,list,add,216,Lorg/apache/catalina/startup/ClassLoaderFactory>,48,true,1) 1;ON;6; 2) 9;ON;null; ,false
+java/util/ArrayList,Ljava/util/ArrayList>,createClassLoader,list,add,238,Lorg/apache/catalina/startup/ClassLoaderFactory>,48,true,1) 1;ON;6; 2) 9;ON;null; 3) 9;ON;null; ,false
+java/util/WeakHashMap,Ljava/util/WeakHashMap>,<init>,ALL_CONNECTION_MANAGERS,put,259,Lorg/apache/commons/httpclient/MultiThreadedHttpConnectionManager>,8,true,1) 1;ON;6; ,false
+java/util/HashMap,Ljava/util/HashMap>,setParameter,parameters,put,149,Lorg/apache/commons/httpclient/params/DefaultHttpParams>,8,true,1) 1;ON;6; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,checkSecurityToken,securityTokens,get,87,Lorg/apache/naming/ContextAccessController>,17,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,bindContext,contextNameBindings,put,103,Lorg/apache/naming/ContextBindings>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,unbindContext,contextNameBindings,remove,125,Lorg/apache/naming/ContextBindings>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getContext,contextNameBindings,get,135,Lorg/apache/naming/ContextBindings>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,bindThread,contextNameBindings,get,159,Lorg/apache/naming/ContextBindings>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,bindThread,threadBindings,put,163,Lorg/apache/naming/ContextBindings>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,bindThread,threadNameBindings,put,164,Lorg/apache/naming/ContextBindings>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,unbindThread,threadBindings,remove,187,Lorg/apache/naming/ContextBindings>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,unbindThread,threadNameBindings,remove,188,Lorg/apache/naming/ContextBindings>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getThread,threadBindings,get,199,Lorg/apache/naming/ContextBindings>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getThreadName,threadNameBindings,get,212,Lorg/apache/naming/ContextBindings>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,isThreadBound,threadBindings,containsKey,224,Lorg/apache/naming/ContextBindings>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,bindClassLoader,contextNameBindings,get,262,Lorg/apache/naming/ContextBindings>,3,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,bindClassLoader,clBindings,put,266,Lorg/apache/naming/ContextBindings>,3,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,bindClassLoader,clNameBindings,put,267,Lorg/apache/naming/ContextBindings>,3,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,unbindClassLoader,clNameBindings,get,303,Lorg/apache/naming/ContextBindings>,3,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,unbindClassLoader,clBindings,remove,307,Lorg/apache/naming/ContextBindings>,3,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,unbindClassLoader,clNameBindings,remove,308,Lorg/apache/naming/ContextBindings>,3,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getClassLoader,clBindings,get,321,Lorg/apache/naming/ContextBindings>,1,true,1) 1;null;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getClassLoaderName,clNameBindings,get,339,Lorg/apache/naming/ContextBindings>,1,true,1) 1;null;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,isClassLoaderBound,clBindings,containsKey,355,Lorg/apache/naming/ContextBindings>,1,true,1) 1;null;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getManager,managers,get,245,Lorg/apache/catalina/util/StringManager>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getManager,managers,put,249,Lorg/apache/catalina/util/StringManager>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,setSecurityToken,securityTokens,containsKey,58,Lorg/apache/naming/ContextAccessController>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,setSecurityToken,securityTokens,put,59,Lorg/apache/naming/ContextAccessController>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,unsetSecurityToken,securityTokens,remove,72,Lorg/apache/naming/ContextAccessController>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,setWritable,readOnlyContexts,remove,104,Lorg/apache/naming/ContextAccessController>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,setReadOnly,readOnlyContexts,put,114,Lorg/apache/naming/ContextAccessController>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getCharset,LOCALE_TO_CHARSET_MAP,get,3956,Lorg/apache/commons/httpclient/URI$LocaleToCharsetMap>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getCharset,LOCALE_TO_CHARSET_MAP,get,3962,Lorg/apache/commons/httpclient/URI$LocaleToCharsetMap>,1,false,,false
+java/util/HashMap,Ljava/util/HashMap>,lookup,notFoundCache,get,301,Lorg/apache/naming/resources/ResourceCache>,13,false,,false
+java/util/HashMap,Ljava/util/HashMap>,allocate,notFoundCache,size,215,Lorg/apache/naming/resources/ResourceCache>,7,false,,false
+java/util/HashMap,Ljava/util/HashMap>,allocate,notFoundCache,clear,217,Lorg/apache/naming/resources/ResourceCache>,7,false,,false
+java/util/HashMap,Ljava/util/HashMap>,load,notFoundCache,get,320,Lorg/apache/naming/resources/ResourceCache>,7,false,,false
+java/util/HashMap,Ljava/util/HashMap>,load,notFoundCache,put,321,Lorg/apache/naming/resources/ResourceCache>,7,false,,false
+java/util/HashMap,Ljava/util/HashMap>,unload,notFoundCache,remove,332,Lorg/apache/naming/resources/ResourceCache>,29,false,,false

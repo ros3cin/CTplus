@@ -1,0 +1,4 @@
+Primordial,Java,stdlib,none
+Primordial,Java,jarFile,primordial.jar.model
+Application,Java,classFile,hello/Hello.class
+Application,Java,sourceFile,C:/Users/BenitoAvell/workspace-wala jss/com.ibm.wala.core.testdata/src/hello/Hello.java

@@ -1,0 +1,377 @@
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,35,false,,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,35,false,,false
+java/util/Stack,Ljava/util/Stack>,getStylesheet,m_stylesheets,size,1176,Lorg/apache/xalan/processor/StylesheetHandler>,45,false,,false
+java/util/Stack,Ljava/util/Stack>,getStylesheet,m_stylesheets,peek,1177,Lorg/apache/xalan/processor/StylesheetHandler>,45,false,,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,1176,true,1) 3;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,1176,true,1) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,253,Lorg/apache/xalan/templates/AVT>,120,true,1) 3;ON;null; 2) 7;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,311,Lorg/apache/xalan/templates/AVT>,120,true,1) 3;ON;null; 2) 7;ON;null; 3) 7;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,120,true,1) 3;ON;null; 2) 7;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,120,true,1) 3;ON;null; 2) 7;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,416,Lorg/apache/xalan/templates/AVT>,240,true,1) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMES,qnames,addElement,1095,Lorg/apache/xalan/processor/XSLTAttributeDef>,12,true,1) 3;ON;null; 2) 6;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getNamespaceSupport,m_nsSupportStack,peek,1572,Lorg/apache/xalan/processor/StylesheetHandler>,24,true,1) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1134,Lorg/apache/xalan/processor/XSLTAttributeDef>,12,true,1) 3;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1136,Lorg/apache/xalan/processor/XSLTAttributeDef>,12,true,1) 3;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processSIMPLEPATTERNLIST,patterns,addElement,1175,Lorg/apache/xalan/processor/XSLTAttributeDef>,12,true,1) 3;ON;null; 2) 6;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getNamespaceSupport,m_nsSupportStack,peek,1572,Lorg/apache/xalan/processor/StylesheetHandler>,24,true,1) 3;ON;null; 2) 6;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,processedDefs,add,349,Lorg/apache/xalan/processor/XSLTElementProcessor>,12,true,1) 3;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,errorDefs,add,351,Lorg/apache/xalan/processor/XSLTElementProcessor>,12,true,1) 3;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,processedDefs,contains,365,Lorg/apache/xalan/processor/XSLTElementProcessor>,12,true,1) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,253,Lorg/apache/xalan/templates/AVT>,120,true,1) 3;ON;null; 2) 8;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,311,Lorg/apache/xalan/templates/AVT>,120,true,1) 3;ON;null; 2) 8;ON;null; 3) 8;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,120,true,1) 3;ON;null; 2) 8;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,120,true,1) 3;ON;null; 2) 8;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMES,qnames,addElement,1095,Lorg/apache/xalan/processor/XSLTAttributeDef>,12,true,1) 3;ON;null; 2) 7;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1134,Lorg/apache/xalan/processor/XSLTAttributeDef>,12,true,1) 3;ON;null; 2) 7;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1136,Lorg/apache/xalan/processor/XSLTAttributeDef>,12,true,1) 3;ON;null; 2) 7;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processSIMPLEPATTERNLIST,patterns,addElement,1175,Lorg/apache/xalan/processor/XSLTAttributeDef>,12,true,1) 3;ON;null; 2) 7;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getNamespaceSupport,m_nsSupportStack,peek,1572,Lorg/apache/xalan/processor/StylesheetHandler>,24,true,1) 3;ON;null; 2) 7;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,processedDefs,contains,373,Lorg/apache/xalan/processor/XSLTElementProcessor>,12,true,1) 3;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,errorDefs,contains,373,Lorg/apache/xalan/processor/XSLTElementProcessor>,12,true,1) 3;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,setDecimalFormat,m_DecimalFormatDeclarations,push,568,Lorg/apache/xalan/templates/Stylesheet>,1,false,,false
+java/util/Stack,Ljava/util/Stack>,getElemTemplateElement,m_elems,peek,1318,Lorg/apache/xalan/processor/StylesheetHandler>,13,false,,false
+java/util/Stack,Ljava/util/Stack>,popProcessor,m_processors,pop,1281,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Stack,Ljava/util/Stack>,getCurrentProcessor,m_processors,peek,1262,Lorg/apache/xalan/processor/StylesheetHandler>,4,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,setRequiredFound,m_requiredFound,get,707,Lorg/apache/xalan/processor/XSLTElementDef>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,setRequiredFound,m_requiredFound,remove,708,Lorg/apache/xalan/processor/XSLTElementDef>,2,false,,false
+java/util/Stack,Ljava/util/Stack>,pushProcessor,m_processors,push,1272,Lorg/apache/xalan/processor/StylesheetHandler>,2,false,,false
+java/util/Stack,Ljava/util/Stack>,getNamespaceSupport,m_nsSupportStack,peek,1572,Lorg/apache/xalan/processor/StylesheetHandler>,12,false,,false
+java/util/List,Ljava/util/List>,setPrefixes,m_declaredPrefixes,add,873,Lorg/apache/xalan/templates/ElemTemplateElement>,5,true,1) 3;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,pushStylesheet,m_stylesheets,size,1221,Lorg/apache/xalan/processor/StylesheetHandler>,2,false,,false
+java/util/Stack,Ljava/util/Stack>,pushStylesheet,m_stylesheets,push,1224,Lorg/apache/xalan/processor/StylesheetHandler>,2,false,,false
+java/util/List,Ljava/util/List>,declaredXSLNS,declaredPrefixes,size,359,Lorg/apache/xalan/processor/ProcessorLRE>,1,false,,false
+java/util/List,Ljava/util/List>,declaredXSLNS,declaredPrefixes,get,363,Lorg/apache/xalan/processor/ProcessorLRE>,1,true,1) 2;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,pushElemTemplateElement,m_elems,push,1353,Lorg/apache/xalan/processor/StylesheetHandler>,8,false,,false
+java/util/Vector,Ljava/util/Vector>,setTemplate,m_templates,addElement,1064,Lorg/apache/xalan/templates/Stylesheet>,1,false,,false
+java/util/List,Ljava/util/List>,setPrefixes,m_declaredPrefixes,add,873,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 2;ON;0; ,false
+java/util/Properties,Ljava/util/Properties>,<init>,props,get,276,Lorg/apache/xalan/CopyOfXSLTBenchOld>,1,true,1) 1;ON;6; ,false
+java/util/Properties,Ljava/util/Properties>,<init>,props,put,287,Lorg/apache/xalan/CopyOfXSLTBenchOld>,1,true,1) 1;ON;6; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,13,true,1) 1;ON;6; 2) 11;ON;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,addAvailableElement,m_availElems,put,908,Lorg/apache/xalan/processor/XSLTSchema>,184,true,1) 1;ON;6; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,33,true,1) 1;ON;6; 2) 12;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,6,true,1) 1;ON;6; 2) 13;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,34,true,1) 1;ON;6; 2) 10;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,init,m_processors,push,133,Lorg/apache/xalan/processor/StylesheetHandler>,2,true,1) 1;ON;6; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,copyTables,prefixTable,clone,731,Lorg/apache/xml/utils/Context2>,2,true,1) 1;ON;6; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,copyTables,uriTable,clone,732,Lorg/apache/xml/utils/Context2>,2,true,1) 1;ON;6; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,declarePrefix,prefixTable,put,554,Lorg/apache/xml/utils/Context2>,2,true,1) 1;ON;6; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,declarePrefix,uriTable,put,555,Lorg/apache/xml/utils/Context2>,2,true,1) 1;ON;6; ,false
+java/util/Vector,Ljava/util/Vector>,declarePrefix,declarations,addElement,557,Lorg/apache/xml/utils/Context2>,2,true,1) 1;ON;6; ,false
+java/util/Stack,Ljava/util/Stack>,pushNewNamespaceSupport,m_nsSupportStack,push,1552,Lorg/apache/xalan/processor/StylesheetHandler>,2,true,1) 1;ON;6; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,get,624,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,734,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; 3) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,addElement,744,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; 3) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,addElement,745,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; 3) 9;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,get,752,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; 3) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,size,758,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,766,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; 3) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,771,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; 3) 9;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,771,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; 3) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,776,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; 3) 9;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,776,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; 3) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,removeAllElements,782,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,793,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,795,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,799,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,804,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 1;ON;6; 2) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,get,624,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,734,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; 4) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,addElement,744,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; 4) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,addElement,745,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; 4) 9;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,get,752,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; 4) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,size,758,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,766,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; 4) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,771,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; 4) 9;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,771,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; 4) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,776,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; 4) 9;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,776,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; 4) 9;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,removeAllElements,782,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,793,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,795,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,799,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,804,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 1;ON;6; 2) 7;null;null; 3) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,7,true,1) 1;ON;6; 2) 9;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,build,m_requiredFound,put,289,Lorg/apache/xalan/processor/XSLTElementDef>,1,true,1) 1;ON;6; 2) 8;ON;null; ,false
+java/util/LinkedList,Ljava/util/LinkedList>,push,_queue,add,87,Lorg/apache/xalan/CopyOfXSLTBenchOld$WorkQueue>,18,true,1) 1;ON;6; 2) 2;ON;null; ,false
+java/util/LinkedList,Ljava/util/LinkedList>,size,_queue,size,92,Lorg/apache/xalan/CopyOfXSLTBenchOld$WorkQueue>,1,true,1) 1;ON;6; ,false
+java/util/Stack,Ljava/util/Stack>,getBaseIdentifier,m_baseIdentifiers,isEmpty,1420,Lorg/apache/xalan/processor/StylesheetHandler>,4,false,,false
+java/util/Stack,Ljava/util/Stack>,getBaseIdentifier,m_baseIdentifiers,peek,1421,Lorg/apache/xalan/processor/StylesheetHandler>,4,false,,false
+java/util/Stack,Ljava/util/Stack>,stackContains,stack,size,229,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Stack,Ljava/util/Stack>,stackContains,stack,elementAt,234,Lorg/apache/xalan/processor/StylesheetHandler>,1,true,1) 3;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,pushImportURL,m_importStack,push,1483,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Stack,Ljava/util/Stack>,pushImportSource,m_importSourceStack,push,1493,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,copyTables,prefixTable,clone,731,Lorg/apache/xml/utils/Context2>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,copyTables,uriTable,clone,732,Lorg/apache/xml/utils/Context2>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,declarePrefix,prefixTable,put,554,Lorg/apache/xml/utils/Context2>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,declarePrefix,uriTable,put,555,Lorg/apache/xml/utils/Context2>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,declarePrefix,declarations,addElement,557,Lorg/apache/xml/utils/Context2>,1,false,,false
+java/util/Stack,Ljava/util/Stack>,pushNewNamespaceSupport,m_nsSupportStack,push,1552,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Stack,Ljava/util/Stack>,peekSourceFromURIResolver,m_importSourceStack,peek,1526,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Stack,Ljava/util/Stack>,peekImportURL,m_importStack,peek,1521,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Stack,Ljava/util/Stack>,pushBaseIndentifier,m_baseIdentifiers,push,1397,Lorg/apache/xalan/processor/StylesheetHandler>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,get,624,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,734,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,addElement,744,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,addElement,745,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; 2) 6;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,get,752,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,size,758,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,766,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,771,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; 2) 6;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,771,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,776,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; 2) 6;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,776,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,removeAllElements,782,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,793,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,795,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,799,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,804,Lorg/apache/xml/utils/DOMHelper>,2,true,1) 4;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,get,624,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,734,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; 3) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,addElement,744,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; 3) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,addElement,745,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; 3) 6;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,get,752,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; 3) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,size,758,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,766,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; 3) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,771,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; 3) 6;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,771,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; 3) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,elementAt,776,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; 3) 6;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,776,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; 3) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceOfNode,m_candidateNoAncestorXMLNS,removeAllElements,782,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,793,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,795,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,799,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceOfNode,m_NSInfos,put,804,Lorg/apache/xml/utils/DOMHelper>,1,true,1) 4;ON;null; 2) 4;null;null; ,false
+java/util/Stack,Ljava/util/Stack>,popBaseIndentifier,m_baseIdentifiers,pop,1406,Lorg/apache/xalan/processor/StylesheetHandler>,3,false,,false
+java/util/Stack,Ljava/util/Stack>,popImportURL,m_importStack,pop,1516,Lorg/apache/xalan/processor/StylesheetHandler>,2,false,,false
+java/util/Stack,Ljava/util/Stack>,popImportSource,m_importSourceStack,pop,1535,Lorg/apache/xalan/processor/StylesheetHandler>,2,false,,false
+java/util/Stack,Ljava/util/Stack>,popNamespaceSupport,m_nsSupportStack,pop,1561,Lorg/apache/xalan/processor/StylesheetHandler>,2,false,,false
+java/util/Vector,Ljava/util/Vector>,setNamespaceAlias,m_prefix_aliases,addElement,1116,Lorg/apache/xalan/templates/Stylesheet>,1,false,,false
+java/util/List,Ljava/util/List>,setPrefixes,m_declaredPrefixes,add,873,Lorg/apache/xalan/templates/ElemTemplateElement>,2,true,1) 4;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,196,true,1) 4;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,196,true,1) 4;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,253,Lorg/apache/xalan/templates/AVT>,20,true,1) 4;ON;null; 2) 8;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,311,Lorg/apache/xalan/templates/AVT>,20,true,1) 4;ON;null; 2) 8;ON;null; 3) 8;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,20,true,1) 4;ON;null; 2) 8;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,20,true,1) 4;ON;null; 2) 8;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,416,Lorg/apache/xalan/templates/AVT>,40,true,1) 4;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMES,qnames,addElement,1095,Lorg/apache/xalan/processor/XSLTAttributeDef>,2,true,1) 4;ON;null; 2) 7;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getNamespaceSupport,m_nsSupportStack,peek,1572,Lorg/apache/xalan/processor/StylesheetHandler>,4,true,1) 4;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1134,Lorg/apache/xalan/processor/XSLTAttributeDef>,2,true,1) 4;ON;null; 2) 7;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1136,Lorg/apache/xalan/processor/XSLTAttributeDef>,2,true,1) 4;ON;null; 2) 7;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processSIMPLEPATTERNLIST,patterns,addElement,1175,Lorg/apache/xalan/processor/XSLTAttributeDef>,2,true,1) 4;ON;null; 2) 7;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getNamespaceSupport,m_nsSupportStack,peek,1572,Lorg/apache/xalan/processor/StylesheetHandler>,4,true,1) 4;ON;null; 2) 7;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,processedDefs,add,349,Lorg/apache/xalan/processor/XSLTElementProcessor>,2,true,1) 4;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,errorDefs,add,351,Lorg/apache/xalan/processor/XSLTElementProcessor>,2,true,1) 4;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,processedDefs,contains,365,Lorg/apache/xalan/processor/XSLTElementProcessor>,2,true,1) 4;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,253,Lorg/apache/xalan/templates/AVT>,20,true,1) 4;ON;null; 2) 9;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,311,Lorg/apache/xalan/templates/AVT>,20,true,1) 4;ON;null; 2) 9;ON;null; 3) 9;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,20,true,1) 4;ON;null; 2) 9;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,20,true,1) 4;ON;null; 2) 9;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMES,qnames,addElement,1095,Lorg/apache/xalan/processor/XSLTAttributeDef>,2,true,1) 4;ON;null; 2) 8;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1134,Lorg/apache/xalan/processor/XSLTAttributeDef>,2,true,1) 4;ON;null; 2) 8;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1136,Lorg/apache/xalan/processor/XSLTAttributeDef>,2,true,1) 4;ON;null; 2) 8;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processSIMPLEPATTERNLIST,patterns,addElement,1175,Lorg/apache/xalan/processor/XSLTAttributeDef>,2,true,1) 4;ON;null; 2) 8;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getNamespaceSupport,m_nsSupportStack,peek,1572,Lorg/apache/xalan/processor/StylesheetHandler>,4,true,1) 4;ON;null; 2) 8;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,processedDefs,contains,373,Lorg/apache/xalan/processor/XSLTElementProcessor>,2,true,1) 4;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,errorDefs,contains,373,Lorg/apache/xalan/processor/XSLTElementProcessor>,2,true,1) 4;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,1,true,1) 1;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,setImport,m_imports,addElement,463,Lorg/apache/xalan/templates/Stylesheet>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,setInclude,m_includes,addElement,515,Lorg/apache/xalan/templates/Stylesheet>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,startElement,xpaths,elementAt,70,Lorg/apache/xalan/processor/ProcessorStripSpace>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,setStripSpaces,m_whitespaceStrippingElements,addElement,654,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,startElement,xpaths,size,68,Lorg/apache/xalan/processor/ProcessorStripSpace>,1,true,1) 1;ON;null; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,load,381,Lorg/apache/xml/serializer/OutputPropertiesFactory>,8,false,,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,clone,442,Lorg/apache/xml/serializer/OutputPropertiesFactory>,8,false,,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,,keys,442,Lorg/apache/xml/serializer/OutputPropertiesFactory>,8,false,,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,get,459,Lorg/apache/xml/serializer/OutputPropertiesFactory>,8,true,1) 5;ON;0; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,remove,478,Lorg/apache/xml/serializer/OutputPropertiesFactory>,8,true,1) 5;ON;0; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,put,479,Lorg/apache/xml/serializer/OutputPropertiesFactory>,8,true,1) 5;ON;0; ,false
+java/util/Properties,Ljava/util/Properties>,getDefaultMethodProperties,m_text_properties,getProperty,292,Lorg/apache/xml/serializer/OutputPropertiesFactory>,2,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,convertJava2MimeEncoding,_encodingTableKeyJava,get,273,Lorg/apache/xml/serializer/Encodings>,4,false,,false
+java/util/Properties,Ljava/util/Properties>,getDefaultMethodProperties,m_text_properties,put,295,Lorg/apache/xml/serializer/OutputPropertiesFactory>,2,false,,false
+java/util/Properties,Ljava/util/Properties>,startElement,,get,200,Lorg/apache/xalan/processor/ProcessorOutputElem>,1,false,,false
+java/util/Properties,Ljava/util/Properties>,startElement,,put,208,Lorg/apache/xalan/processor/ProcessorOutputElem>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,setOutput,m_output,addElement,763,Lorg/apache/xalan/templates/Stylesheet>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,getImportCount,m_imports,size,494,Lorg/apache/xalan/templates/Stylesheet>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,getImport,m_imports,elementAt,483,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getIncludeCount,m_includes,size,545,Lorg/apache/xalan/templates/Stylesheet>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,getInclude,m_includes,elementAt,534,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,addImports,importList,addElement,429,Lorg/apache/xalan/templates/StylesheetRoot>,1,false,,true
+java/util/Vector,Ljava/util/Vector>,recompose,importList,size,259,Lorg/apache/xalan/templates/StylesheetRoot>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,recompose,importList,size,261,Lorg/apache/xalan/templates/StylesheetRoot>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,recompose,importList,elementAt,263,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getIncludeCount,m_includes,size,545,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getInclude,m_includes,elementAt,534,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recomposeIncludes,m_includesComposed,addElement,285,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; ,true
+java/util/Vector,Ljava/util/Vector>,getImportCount,m_imports,size,494,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getImport,m_imports,elementAt,483,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;O1;0; ,false
+java/util/Vector,Ljava/util/Vector>,getIncludeCountComposed,m_includesComposed,size,322,Lorg/apache/xalan/templates/StylesheetComposed>,3,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getIncludeComposed,m_includesComposed,elementAt,311,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;O1;0; ,false
+java/util/Vector,Ljava/util/Vector>,getImportCount,m_imports,size,494,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;O1;0; ,false
+java/util/Vector,Ljava/util/Vector>,getIncludeComposed,m_includesComposed,elementAt,311,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;O1;0; 3) 3;O1;0; ,false
+java/util/Vector,Ljava/util/Vector>,getImport,m_imports,elementAt,483,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;O1;0; 3) 3;O1;0; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,importList,size,261,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getIncludeComposed,m_includesComposed,elementAt,311,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getOutputCount,m_output,size,794,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getOutput,m_output,elementAt,782,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,addElement,96,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getAttributeSetCount,m_attributeSets,size,899,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getAttributeSet,m_attributeSets,elementAt,888,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,addElement,104,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getDecimalFormatCount,m_DecimalFormatDeclarations,size,630,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getDecimalFormat,m_DecimalFormatDeclarations,elementAt,618,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,addElement,112,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getKeyCount,m_keyDeclarations,size,845,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getKey,m_keyDeclarations,elementAt,834,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,addElement,120,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceAliasCount,m_prefix_aliases,size,1147,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getNamespaceAlias,m_prefix_aliases,elementAt,1136,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,addElement,128,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getTemplateCount,m_templates,size,1095,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getTemplate,m_templates,elementAt,1084,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,addElement,136,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getVariableOrParamCount,m_topLevelVariables,size,1005,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getVariableOrParam,m_topLevelVariables,elementAt,994,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,addElement,144,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getStripSpaceCount,m_whitespaceStrippingElements,size,685,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getStripSpace,m_whitespaceStrippingElements,elementAt,673,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,addElement,152,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getPreserveSpaceCount,m_whitespacePreservingElements,size,740,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getPreserveSpace,m_whitespacePreservingElements,elementAt,728,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,addElement,158,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 3;ON;null; 3) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,size,283,Lorg/apache/xalan/templates/StylesheetRoot>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,QuickSort2,v,elementAt,1148,Lorg/apache/xalan/templates/StylesheetRoot>,1,false,,true
+java/util/Vector,Ljava/util/Vector>,QuickSort2,v,elementAt,1155,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 3;ON;null; 2) 3;ON;null; ,true
+java/util/Vector,Ljava/util/Vector>,QuickSort2,v,elementAt,1162,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 3;ON;null; 2) 3;ON;null; ,true
+java/util/Vector,Ljava/util/Vector>,QuickSort2,v,elementAt,1169,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 3;ON;null; ,true
+java/util/Vector,Ljava/util/Vector>,QuickSort2,v,elementAt,1170,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 3;ON;null; ,true
+java/util/Vector,Ljava/util/Vector>,QuickSort2,v,setElementAt,1170,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 3;ON;null; ,true
+java/util/Vector,Ljava/util/Vector>,QuickSort2,v,setElementAt,1171,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 3;ON;null; ,true
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,size,302,Lorg/apache/xalan/templates/StylesheetRoot>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,recompose,recomposableElements,elementAt,303,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 2;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_variables,size,1250,Lorg/apache/xalan/templates/StylesheetRoot$ComposeState>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_variables,elementAt,1253,Lorg/apache/xalan/templates/StylesheetRoot$ComposeState>,1,true,1) 4;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_variableNames,addElement,1254,Lorg/apache/xalan/templates/StylesheetRoot$ComposeState>,1,true,1) 4;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,compose,m_patternTable,elements,184,Lorg/apache/xalan/templates/TemplateList>,1,false,,false
+java/util/Hashtable,Ljava/util/Hashtable>,putHead,m_patternTable,put,852,Lorg/apache/xalan/templates/TemplateList>,2,true,1) 3;ON;0; 2) 3;ON;null; ,false
+java/util/List,Ljava/util/List>,resolvePrefixTables,m_declaredPrefixes,size,1044,Lorg/apache/xalan/templates/ElemTemplateElement>,1,false,,false
+java/util/List,Ljava/util/List>,resolvePrefixTables,m_declaredPrefixes,get,1048,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 5;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceAliasComposed,m_namespaceAliasComposed,get,700,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 5;ON;null; ,false
+java/util/List,Ljava/util/List>,resolvePrefixTables,m_prefixTable,add,1074,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 5;ON;null; ,false
+java/util/List,Ljava/util/List>,resolvePrefixTables,prefixes,size,1097,Lorg/apache/xalan/templates/ElemTemplateElement>,1,false,,false
+java/util/List,Ljava/util/List>,resolvePrefixTables,prefixes,get,1101,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 5;ON;null; ,false
+java/util/List,Ljava/util/List>,addOrReplaceDecls,m_prefixTable,size,1132,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 5;ON;null; ,false
+java/util/List,Ljava/util/List>,addOrReplaceDecls,m_prefixTable,get,1136,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 5;ON;null; 2) 6;ON;0; ,false
+java/util/List,Ljava/util/List>,addOrReplaceDecls,m_prefixTable,add,1143,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 5;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getCurrentStackFrameSize,m_variableNames,size,1318,Lorg/apache/xalan/templates/StylesheetRoot$ComposeState>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,setCurrentStackFrameSize,m_variableNames,setSize,1326,Lorg/apache/xalan/templates/StylesheetRoot$ComposeState>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,getIncludeComposed,m_includesComposed,elementAt,311,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 2;ON;null; 2) 2;ON;null; ,false
+java/util/List,Ljava/util/List>,resolvePrefixTables,m_declaredPrefixes,size,1044,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 2;ON;null; 2) 2;ON;null; ,false
+java/util/List,Ljava/util/List>,resolvePrefixTables,m_declaredPrefixes,get,1048,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 2;ON;null; 2) 2;ON;null; 3) 5;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getNamespaceAliasComposed,m_namespaceAliasComposed,get,700,Lorg/apache/xalan/templates/StylesheetRoot>,1,true,1) 2;ON;null; 2) 2;ON;null; 3) 5;ON;null; ,false
+java/util/List,Ljava/util/List>,resolvePrefixTables,m_prefixTable,add,1074,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 2;ON;null; 2) 2;ON;null; 3) 5;ON;null; ,false
+java/util/List,Ljava/util/List>,resolvePrefixTables,prefixes,size,1097,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 2;ON;null; 2) 2;ON;null; ,false
+java/util/List,Ljava/util/List>,resolvePrefixTables,prefixes,get,1101,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 2;ON;null; 2) 2;ON;null; 3) 5;ON;null; ,false
+java/util/List,Ljava/util/List>,addOrReplaceDecls,m_prefixTable,size,1132,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 2;ON;null; 2) 2;ON;null; 3) 5;ON;null; ,false
+java/util/List,Ljava/util/List>,addOrReplaceDecls,m_prefixTable,get,1136,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 2;ON;null; 2) 2;ON;null; 3) 5;ON;null; 4) 6;ON;0; ,false
+java/util/List,Ljava/util/List>,addOrReplaceDecls,m_prefixTable,add,1143,Lorg/apache/xalan/templates/ElemTemplateElement>,1,true,1) 2;ON;null; 2) 2;ON;null; 3) 5;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getCurrentStackFrameSize,m_variableNames,size,1318,Lorg/apache/xalan/templates/StylesheetRoot$ComposeState>,1,true,1) 2;ON;null; 2) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,setCurrentStackFrameSize,m_variableNames,setSize,1326,Lorg/apache/xalan/templates/StylesheetRoot$ComposeState>,1,true,1) 2;ON;null; 2) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,registerUnregisteredNamespaces,m_unregisteredExtensions,get,131,Lorg/apache/xalan/extensions/ExtensionNamespacesManager>,1,true,1) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,registerUnregisteredNamespaces,m_extensions,add,134,Lorg/apache/xalan/extensions/ExtensionNamespacesManager>,1,true,1) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,registerUnregisteredNamespaces,m_unregisteredExtensions,size,129,Lorg/apache/xalan/extensions/ExtensionNamespacesManager>,1,true,1) 3;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,startPrefixMapping,m_prefixMappings,addElement,523,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,startPrefixMapping,m_prefixMappings,addElement,524,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,startElement,m_prefixMappings,size,578,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,startElement,m_prefixMappings,elementAt,582,Lorg/apache/xalan/processor/StylesheetHandler>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,startElement,m_prefixMappings,elementAt,583,Lorg/apache/xalan/processor/StylesheetHandler>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,startElement,m_prefixMappings,removeAllElements,587,Lorg/apache/xalan/processor/StylesheetHandler>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,setAttributeSet,m_attributeSets,addElement,868,Lorg/apache/xalan/templates/Stylesheet>,1,false,,false
+java/util/Vector,Ljava/util/Vector>,startElement,xpaths,elementAt,71,Lorg/apache/xalan/processor/ProcessorPreserveSpace>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,setPreserveSpaces,m_whitespacePreservingElements,addElement,709,Lorg/apache/xalan/templates/Stylesheet>,1,true,1) 1;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,startElement,xpaths,size,69,Lorg/apache/xalan/processor/ProcessorPreserveSpace>,1,true,1) 1;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,99,true,1) 2;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,99,true,1) 2;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,processedDefs,add,123,Lorg/apache/xalan/processor/ProcessorKey>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,253,Lorg/apache/xalan/templates/AVT>,10,true,1) 2;ON;null; 2) 6;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,311,Lorg/apache/xalan/templates/AVT>,10,true,1) 2;ON;null; 2) 6;ON;null; 3) 6;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,10,true,1) 2;ON;null; 2) 6;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,10,true,1) 2;ON;null; 2) 6;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,416,Lorg/apache/xalan/templates/AVT>,20,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMES,qnames,addElement,1095,Lorg/apache/xalan/processor/XSLTAttributeDef>,1,true,1) 2;ON;null; 2) 5;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getNamespaceSupport,m_nsSupportStack,peek,1572,Lorg/apache/xalan/processor/StylesheetHandler>,2,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1134,Lorg/apache/xalan/processor/XSLTAttributeDef>,1,true,1) 2;ON;null; 2) 5;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1136,Lorg/apache/xalan/processor/XSLTAttributeDef>,1,true,1) 2;ON;null; 2) 5;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processSIMPLEPATTERNLIST,patterns,addElement,1175,Lorg/apache/xalan/processor/XSLTAttributeDef>,1,true,1) 2;ON;null; 2) 5;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getNamespaceSupport,m_nsSupportStack,peek,1572,Lorg/apache/xalan/processor/StylesheetHandler>,2,true,1) 2;ON;null; 2) 5;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,processedDefs,contains,140,Lorg/apache/xalan/processor/ProcessorKey>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,253,Lorg/apache/xalan/templates/AVT>,10,true,1) 2;ON;null; 2) 7;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,m_parts,addElement,311,Lorg/apache/xalan/templates/AVT>,10,true,1) 2;ON;null; 2) 7;ON;null; 3) 7;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,isEmpty,1448,Lorg/apache/xalan/processor/StylesheetHandler>,10,true,1) 2;ON;null; 2) 7;ON;0; ,false
+java/util/Stack,Ljava/util/Stack>,getLocator,m_stylesheetLocatorStack,peek,1459,Lorg/apache/xalan/processor/StylesheetHandler>,10,true,1) 2;ON;null; 2) 7;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMES,qnames,addElement,1095,Lorg/apache/xalan/processor/XSLTAttributeDef>,1,true,1) 2;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1134,Lorg/apache/xalan/processor/XSLTAttributeDef>,1,true,1) 2;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processQNAMESRNU,qnames,addElement,1136,Lorg/apache/xalan/processor/XSLTAttributeDef>,1,true,1) 2;ON;null; 2) 6;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,processSIMPLEPATTERNLIST,patterns,addElement,1175,Lorg/apache/xalan/processor/XSLTAttributeDef>,1,true,1) 2;ON;null; 2) 6;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getNamespaceSupport,m_nsSupportStack,peek,1572,Lorg/apache/xalan/processor/StylesheetHandler>,2,true,1) 2;ON;null; 2) 6;ON;null; ,false
+java/util/List,Ljava/util/ArrayList>,setPropertiesFromAttributes,processedDefs,contains,148,Lorg/apache/xalan/processor/ProcessorKey>,1,true,1) 2;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,setKey,m_keyDeclarations,addElement,815,Lorg/apache/xalan/templates/Stylesheet>,1,false,,false
+java/util/LinkedList,Ljava/util/LinkedList>,pop,_queue,isEmpty,97,Lorg/apache/xalan/CopyOfXSLTBenchOld$WorkQueue>,1,true,1) 1;INFINITE;null; 2) 2;ON;0; ,false
+java/util/LinkedList,Ljava/util/LinkedList>,pop,_queue,removeFirst,105,Lorg/apache/xalan/CopyOfXSLTBenchOld$WorkQueue>,1,true,1) 1;INFINITE;null; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,load,381,Lorg/apache/xml/serializer/OutputPropertiesFactory>,8,true,1) 1;INFINITE;null; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,clone,442,Lorg/apache/xml/serializer/OutputPropertiesFactory>,8,true,1) 1;INFINITE;null; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,,keys,442,Lorg/apache/xml/serializer/OutputPropertiesFactory>,8,true,1) 1;INFINITE;null; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,get,459,Lorg/apache/xml/serializer/OutputPropertiesFactory>,4,true,1) 1;INFINITE;null; 2) 6;ON;0; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,remove,478,Lorg/apache/xml/serializer/OutputPropertiesFactory>,4,true,1) 1;INFINITE;null; 2) 6;ON;0; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,put,479,Lorg/apache/xml/serializer/OutputPropertiesFactory>,4,true,1) 1;INFINITE;null; 2) 6;ON;0; ,false
+java/util/Properties,Ljava/util/Properties>,getDefaultMethodProperties,m_text_properties,getProperty,292,Lorg/apache/xml/serializer/OutputPropertiesFactory>,2,true,1) 1;INFINITE;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,convertJava2MimeEncoding,_encodingTableKeyJava,get,273,Lorg/apache/xml/serializer/Encodings>,4,true,1) 1;INFINITE;null; ,false
+java/util/Properties,Ljava/util/Properties>,getDefaultMethodProperties,m_text_properties,put,295,Lorg/apache/xml/serializer/OutputPropertiesFactory>,2,true,1) 1;INFINITE;null; ,false
+java/util/Stack,Ljava/util/Stack>,<init>,m_elemStack,push,84,Lorg/apache/xml/utils/DOMBuilder>,1,true,1) 1;INFINITE;null; ,false
+java/util/Properties,Ljava/util/Properties>,getProperty,m_properties,getProperty,172,Lorg/apache/xalan/templates/OutputProperties>,5,true,1) 1;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,setProp,m_OutputPropsDefault,put,1663,Lorg/apache/xml/serializer/SerializerBase>,2,true,1) 1;INFINITE;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addCDATAElement,m_CdataElems,get,1435,Lorg/apache/xml/serializer/SerializerBase>,2,true,1) 1;INFINITE;null; 2) 11;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addCDATAElement,m_CdataElems,put,1438,Lorg/apache/xml/serializer/SerializerBase>,2,true,1) 1;INFINITE;null; 2) 11;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addCDATAElement,h,put,1440,Lorg/apache/xml/serializer/SerializerBase>,2,true,1) 1;INFINITE;null; 2) 11;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addCDATAElement,m_CdataElems,get,1435,Lorg/apache/xml/serializer/SerializerBase>,2,true,1) 1;INFINITE;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addCDATAElement,m_CdataElems,put,1438,Lorg/apache/xml/serializer/SerializerBase>,2,true,1) 1;INFINITE;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addCDATAElement,h,put,1440,Lorg/apache/xml/serializer/SerializerBase>,2,true,1) 1;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,setProp,m_OutputProps,get,1667,Lorg/apache/xml/serializer/SerializerBase>,2,true,1) 1;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,setProp,m_OutputProps,put,1673,Lorg/apache/xml/serializer/SerializerBase>,2,true,1) 1;INFINITE;null; ,false
+java/util/HashMap,Ljava/util/HashMap>,setProp,m_OutputProps,put,1676,Lorg/apache/xml/serializer/SerializerBase>,2,true,1) 1;INFINITE;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,createPrefixStack,m_namespaces,put,470,Lorg/apache/xml/serializer/NamespaceMappings>,4,true,1) 1;INFINITE;null; ,false
+java/util/Properties,Ljava/util/Properties>,getSerializer,format,getProperty,96,Lorg/apache/xml/serializer/SerializerFactory>,1,true,1) 1;INFINITE;null; ,false
+java/util/Properties,Ljava/util/Properties>,getSerializer,format,getProperty,106,Lorg/apache/xml/serializer/SerializerFactory>,1,true,1) 1;INFINITE;null; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,get,459,Lorg/apache/xml/serializer/OutputPropertiesFactory>,4,true,1) 1;INFINITE;null; 2) 8;ON;0; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,remove,478,Lorg/apache/xml/serializer/OutputPropertiesFactory>,4,true,1) 1;INFINITE;null; 2) 8;ON;0; ,false
+java/util/Properties,Ljava/util/Properties>,loadPropertiesFile,props,put,479,Lorg/apache/xml/serializer/OutputPropertiesFactory>,4,true,1) 1;INFINITE;null; 2) 8;ON;0; ,false
+java/util/Properties,Ljava/util/Properties>,getSerializer,methodDefaults,getProperty,115,Lorg/apache/xml/serializer/SerializerFactory>,1,true,1) 1;INFINITE;null; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,extensions,get,65,Lorg/apache/xalan/extensions/ExtensionsTable>,1,true,1) 1;INFINITE;null; 2) 7;ON;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,addExtensionNamespace,m_extensionFunctionNamespaces,put,96,Lorg/apache/xalan/extensions/ExtensionsTable>,1,true,1) 1;INFINITE;null; 2) 7;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,<init>,extensions,size,62,Lorg/apache/xalan/extensions/ExtensionsTable>,1,true,1) 1;INFINITE;null; ,false
+java/util/Vector,Ljava/util/Vector>,pushGlobalVars,vars,size,1805,Lorg/apache/xalan/transformer/TransformerImpl>,1,true,1) 1;INFINITE;null; ,false
+java/util/Vector,Ljava/util/Vector>,pushGlobalVars,vars,elementAt,1810,Lorg/apache/xalan/transformer/TransformerImpl>,1,true,1) 1;INFINITE;null; 2) 6;O1;0; ,false
+java/util/Vector,Ljava/util/Vector>,getIncludeCountComposed,m_includesComposed,size,322,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 1;INFINITE;null; 2) 5;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,getIncludeComposed,m_includesComposed,elementAt,311,Lorg/apache/xalan/templates/StylesheetComposed>,1,true,1) 1;INFINITE;null; 2) 5;ON;null; 3) 5;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,getMode,m_modes,isEmpty,3193,Lorg/apache/xalan/transformer/TransformerImpl>,3,true,1) 1;INFINITE;null; ,false
+java/util/Stack,Ljava/util/Stack>,getMode,m_modes,peek,3193,Lorg/apache/xalan/transformer/TransformerImpl>,3,true,1) 1;INFINITE;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getHead,m_patternTable,get,440,Lorg/apache/xalan/templates/TemplateList>,2,true,1) 1;INFINITE;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getHead,m_patternTable,get,449,Lorg/apache/xalan/templates/TemplateList>,2,true,1) 1;INFINITE;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getHead,m_patternTable,get,453,Lorg/apache/xalan/templates/TemplateList>,2,true,1) 1;INFINITE;null; ,false
+java/util/Hashtable,Ljava/util/Hashtable>,getHead,m_patternTable,get,465,Lorg/apache/xalan/templates/TemplateList>,2,true,1) 1;INFINITE;null; ,false
+java/util/Stack,Ljava/util/Stack>,pushPairCurrentMatched,m_currentMatchTemplates,push,2727,Lorg/apache/xalan/transformer/TransformerImpl>,1,true,1) 1;INFINITE;null; ,false
+java/util/Vector,Ljava/util/Vector>,fireTraceEvent,m_traceListeners,size,200,Lorg/apache/xalan/trace/TraceManager>,1,true,1) 1;INFINITE;null; ,false
+java/util/Vector,Ljava/util/Vector>,fireTraceEvent,m_traceListeners,elementAt,204,Lorg/apache/xalan/trace/TraceManager>,1,true,1) 1;INFINITE;null; 2) 8;ON;null; ,false
+java/util/Vector,Ljava/util/Vector>,fireTraceEndEvent,m_traceListeners,size,175,Lorg/apache/xalan/trace/TraceManager>,1,true,1) 1;INFINITE;null; ,false
+java/util/Vector,Ljava/util/Vector>,fireTraceEndEvent,m_traceListeners,elementAt,179,Lorg/apache/xalan/trace/TraceManager>,1,true,1) 1;INFINITE;null; 2) 8;ON;null; ,false
+java/util/Stack,Ljava/util/Stack>,popCurrentMatched,m_currentMatchTemplates,pop,2736,Lorg/apache/xalan/transformer/TransformerImpl>,2,true,1) 1;INFINITE;null; ,false
+java/util/Vector,Ljava/util/Vector>,resetUserParameters,m_userParams,size,1699,Lorg/apache/xalan/transformer/TransformerImpl>,8,true,1) 1;INFINITE;null; ,false
+java/util/Vector,Ljava/util/Vector>,resetUserParameters,m_userParams,elementAt,1702,Lorg/apache/xalan/transformer/TransformerImpl>,3,true,1) 1;INFINITE;null; 2) 7;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,setParameter,vars,size,1547,Lorg/apache/xalan/transformer/TransformerImpl>,3,true,1) 1;INFINITE;null; 2) 7;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,setParameter,vars,elementAt,1550,Lorg/apache/xalan/transformer/TransformerImpl>,3,true,1) 1;INFINITE;null; 2) 7;ON;0; 3) 8;O1;0; ,false
+java/util/Stack,Ljava/util/Stack>,reset,m_currentMatchTemplates,removeAllElements,512,Lorg/apache/xalan/transformer/TransformerImpl>,8,true,1) 1;INFINITE;null; ,false
+java/util/Vector,Ljava/util/Vector>,resetUserParameters,m_userParams,elementAt,1702,Lorg/apache/xalan/transformer/TransformerImpl>,5,true,1) 1;INFINITE;null; 2) 6;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,setParameter,vars,size,1547,Lorg/apache/xalan/transformer/TransformerImpl>,5,true,1) 1;INFINITE;null; 2) 6;ON;0; ,false
+java/util/Vector,Ljava/util/Vector>,setParameter,vars,elementAt,1550,Lorg/apache/xalan/transformer/TransformerImpl>,5,true,1) 1;INFINITE;null; 2) 6;ON;0; 3) 7;O1;0; ,false
