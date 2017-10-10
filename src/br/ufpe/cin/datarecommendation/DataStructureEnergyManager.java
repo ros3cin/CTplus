@@ -53,7 +53,16 @@ public class DataStructureEnergyManager {
 						|| collectionMethod.getNome().equals("addElement") 
 						|| collectionMethod.getNome().equals("remove") 
 						|| collectionMethod.getNome().equals("get")
-						|| collectionMethod.getNome().equals("elementAt")){
+						|| collectionMethod.getNome().equals("elementAt")
+						
+						|| collectionMethod.getNome().equals("add(value)")
+						|| collectionMethod.getNome().equals("add(starting-index;value)")
+						|| collectionMethod.getNome().equals("add(middle-index;value)")
+						|| collectionMethod.getNome().equals("add(ending-index;value)")
+						
+						|| collectionMethod.getNome().equals("remove(starting-index)")
+						|| collectionMethod.getNome().equals("remove(middle-index)")
+						|| collectionMethod.getNome().equals("remove(ending-index)")){
 				
 					setConsumptions(collectionMethod, consumptions,profileManager.getListTypes(),collectionMethod.getNome());
 					MethodEnergy method = new MethodEnergy(collectionMethod,consumptions);
@@ -83,9 +92,11 @@ public class DataStructureEnergyManager {
 	}
 	
 	private boolean isList(CollectionMethod collectionMethod) {
+		String methodStr = collectionMethod.getConcreteType().toLowerCase();
 		return collectionMethod.getConcreteType().toLowerCase().contains("vector")
 				|| collectionMethod.getConcreteType().toLowerCase().equals("ljava/util/list") 
-				|| collectionMethod.getConcreteType().toLowerCase().contains("copyonwritearraylist");
+				|| collectionMethod.getConcreteType().toLowerCase().contains("copyonwritearraylist")
+				|| (methodStr.contains("list")&&!methodStr.contains("map")&&!methodStr.contains("set"));
 	}
 	
 	private boolean isSet(CollectionMethod collectionMethod) {

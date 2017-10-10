@@ -51,6 +51,7 @@ public class ReadFile {
 		
 		FileReader fr = new FileReader(filePath);
 	    BufferedReader br = new BufferedReader(fr);
+	    br.readLine();//advancing header
 	    String stringRead = br.readLine();
 		
 	    while( stringRead != null )

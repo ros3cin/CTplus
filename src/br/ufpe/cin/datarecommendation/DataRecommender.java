@@ -77,13 +77,14 @@ public class DataRecommender {
 	public static void main(String[] args) {
 		try {			
 			
-			energyFilePath = "energyData/energyProfileCIN.csv";
+			energyFilePath = "C:/Users/RENATO/Documents/energy-profile.csv";
+			dataAnalysisFilePath = "C:/Users/RENATO/Documents/analise.csv";
+			
 			//energyFilePath = "energyData/energy-profile-note.csv";
 			if(args.length>0){
 				energyFilePath = args[0];
 			}			
 			
-			dataAnalysisFilePath = "energyData/analise-xalan-vector-explict.csv";
 			//dataAnalysisFilePath = "energyData/analise-tomcat-explicit.csv";
 			
 			ArrayList<CollectionMethod> collectionMethodFromFile = ReadFile.getCollectionMethodFromFile(dataAnalysisFilePath);

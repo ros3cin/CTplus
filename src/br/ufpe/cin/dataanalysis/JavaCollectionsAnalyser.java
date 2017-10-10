@@ -96,7 +96,7 @@ public class JavaCollectionsAnalyser {
 	private static String MAPS = "Map,AbstractMap, Attributes, AuthProvider, ConcurrentHashMap, ConcurrentSkipListMap, EnumMap, HashMap, Hashtable, IdentityHashMap, LinkedHashMap, PrinterStateReasons, Properties, Provider, RenderingHints, SimpleBindings, TabularDataSupport, TreeMap, UIDefaults, WeakHashMap";
 	private static String SETS = "Set,AbstractSet, ConcurrentSkipListSet, CopyOnWriteArraySet, EnumSet, HashSet, JobStateReasons, LinkedHashSet, TreeSet";
 
-	private static String CAMINHO_CSV = "D:/projectsToAnalyzer/resultsWala/";
+	private static String CAMINHO_CSV = "C:/Users/RENATO/Documents/";
 	
 	private static String MAIN = "XSLTBenchOld";
 	
@@ -135,7 +135,8 @@ public class JavaCollectionsAnalyser {
 	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException {
 
-		
+		final String ESCOPO = "dat/meuteste.txt";
+		final String EXCLUSOES = "dat/meuteste-exclusions.txt";
 
 		
 		File projeto = new File("hello.txt");
@@ -151,12 +152,12 @@ public class JavaCollectionsAnalyser {
 			//scopeFile = new File("dat/Project_to_analyse");
 			//scopeFile = new File("dat/TesteLoop_jar");
 			//scopeFile = new File("dat/bm-xalan");
-			scopeFile = new File("dat/bm-tomcat");
+			scopeFile = new File(ESCOPO);
 
 			File scopeExclusion;
 			//scopeExclusion = new File("dat/AllLibraryExclusion.txt");
 		    //scopeExclusion = new File("dat/bm-xalanExclusions.txt");
-			scopeExclusion = new File("dat/bm-tomcatExclusions.txt");
+			scopeExclusion = new File(EXCLUSOES);
 
 			// AnalysisScope scope = getSplashScope();
 			AnalysisScope scope = AnalysisScopeReader.readJavaScope(scopeFile.getAbsolutePath(), scopeExclusion,
@@ -168,6 +169,9 @@ public class JavaCollectionsAnalyser {
 			cha = ClassHierarchy.make(scope);
 
 			System.err.println("Done");
+			
+			percorrerMetodos(cha);
+			
 
 			// Main Entrypoints
 //			CallGraph cg = construirCallGraph(scope, cha);
@@ -306,6 +310,49 @@ public class JavaCollectionsAnalyser {
 		gerarArquivoCsv(criarNomeArquivo(projeto.getName()));
 		// }
 
+	}
+	
+	private static void percorrerMetodos(IClassHierarchy cha) {
+		try {
+			for (IClass c : cha) {
+
+				ReferenceCleanser.registerClassHierarchy(cha);
+
+				if (isApplicationClass(c)) {
+
+					for (IMethod method : c.getDeclaredMethods()) {
+						
+						ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
+						searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL);
+
+					}
+				}
+			}
+			
+			//Search for the methods inside the method run of thread class or runnable
+			while (!threadsRunnableClasses.isEmpty()){
+				ArrayList<IClass> classesTemp = new ArrayList<IClass>();
+				classesTemp.addAll(threadsRunnableClasses);
+				
+				for (int i = 0; i < classesTemp.size(); i++) {
+					IClass c = classesTemp.get(i);
+					IMethod methodRun = callMethods("Run", c.getDeclaredMethods());
+					if(methodRun!=null){
+						ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
+						searchMethodsLoopInside(methodRun, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL);
+					}
+					threadsRunnableClasses.remove(0);
+				}
+				
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		exibirHora();
+		gerarArquivoCsv(criarNomeArquivo(""));
+		
 	}
 
 	private static void exibirHora() {
@@ -588,7 +635,7 @@ public class JavaCollectionsAnalyser {
 								// method.getLocalVariableName(bcIndex,0);
 
 								CollectionMethod metodo = criarMetodo(callSite.getDeclaredTarget(), ir.getMethod(), concreteType, isIntoLoop, outerLoop,
-										invokeLineNumber);
+										invokeLineNumber,ir,invokeIR);
 
 								if (metodo != null) {
 
@@ -653,7 +700,7 @@ public class JavaCollectionsAnalyser {
 
 		} catch (NullPointerException e) {
 
-			System.out.println("NULL - " + method.getName());
+			e.printStackTrace();
 		}
 
 	}
@@ -838,6 +885,75 @@ public class JavaCollectionsAnalyser {
 			// criei este else caso esteja analizando uma pasta com .class
 			return CAMINHO_CSV + "analise.csv";
 		}
+	}
+	
+	
+	private static CollectionMethod criarMetodo(MethodReference methodReference, IMethod metodoPai, String concreteType, boolean isIntoLoop,
+			LoopBlockInfo loop, int invokeLineNumber, IR ir, SSAInvokeInstruction invks) {
+
+		String nome = methodReference.getName().toString();
+		String pacote[] = methodReference.toString().split(",");
+		
+		nome = treatListMethod(methodReference, metodoPai, ir, invks, nome);
+
+		if (nome.equals("<init>")) {
+			return null;
+		}
+
+		CollectionMethod metodo = new CollectionMethod();
+		metodo.setNome(nome);
+		metodo.setClasse(metodoPai.getDeclaringClass().toString().split(",")[1]);
+		metodo.setCallMethodName(metodoPai.getName().toString());
+		metodo.setPacote(pacote[1].substring(2));
+		metodo.setOcorrencias(1);
+		metodo.setIntoLoop(isIntoLoop);
+		metodo.setConcreteType(concreteType);
+		metodo.setInvokeLineNumber(invokeLineNumber);
+		if (loop != null && loop.getLoopConditionalBlock() != null) {
+			metodo.setConditionalBlock(loop.getLoopConditionalBlock().toString());
+			metodo.setConditionalBlockN(loop.getconditionalBranchInterationNumber());
+		}
+		// if (isIntoLoop && loop != null) {
+		// if (loop.getConditionalInstruntion() != null) {
+		// System.out.println(loop.getConditionalInstruntion());
+		// }
+		// metodo.setInsideForeach(loop.isForeachLoop());
+		// }
+
+		return metodo;
+
+	}
+
+	private static String treatListMethod(MethodReference methodReference, IMethod metodoPai, IR ir,
+			SSAInvokeInstruction invks, String nome) {
+		TypeInference ti = TypeInference.make(ir, true);
+		if(methodReference.toString().contains("List")){
+			if(nome.equals("add")){
+				if(methodReference.getNumberOfParameters()==1)
+					nome="\"add(value)\"";
+				else {
+					boolean isStartingIndex=ir.getSymbolTable().isConstant(invks.getUse(1))&& ir.getSymbolTable().getValue(invks.getUse(1)).toString().equals("#0");
+					
+					if(isStartingIndex) {
+						nome="add(starting-index;value)";
+					} else
+						nome="add(middle-index;value)";
+				}
+			}
+			else if (nome.equals("remove")){
+				if(ti.getType(invks.getUse(1)).toString().equals("int")){
+					boolean isStartingIndex=ir.getSymbolTable().isConstant(invks.getUse(1))&& ir.getSymbolTable().getValue(invks.getUse(1)).toString().equals("#0");
+					if(isStartingIndex) {
+						nome="remove(starting-index;value)";
+					} else
+						nome="remove(middle-index;value)";
+				} else {
+					nome = "remove(value)";
+				}
+				
+			}
+		}
+		return nome;
 	}
 
 	private static CollectionMethod criarMetodo(MethodReference methodReference, IMethod metodoPai, String concreteType, boolean isIntoLoop,

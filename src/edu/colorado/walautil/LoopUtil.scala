@@ -13,7 +13,7 @@ import com.ibm.wala.util.intset.IntPair
 import com.ibm.wala.ssa.ISSABasicBlock
 
 object LoopUtil {
-  val DEBUG = true
+  val DEBUG = false
 
   // TODO: we can cache a lot more here (loop bodies e.t.c) if performance is a problem;
   // there's certainly a lot of redundant computation right now

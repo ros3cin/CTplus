@@ -1,0 +1,10 @@
+Primordial,Java,jarFile,C:/Program Files/Java/jre1.8.0_131/lib/resources.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre1.8.0_131/lib/rt.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre1.8.0_131/lib/jsse.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre1.8.0_131/lib/jce.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre1.8.0_131/lib/charsets.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre1.8.0_131/lib/ext/dnsns.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre1.8.0_131/lib/ext/localedata.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre1.8.0_131/lib/ext/sunjce_provider.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jre1.8.0_131/lib/ext/sunmscapi.jar
+Application,Java,jarFile,C:/Users/RENATO/Documents/target1.jar

@@ -74,7 +74,7 @@ public class LoopBlockInfo {
 			SSAInstruction conditionalInstruntion = loopConditionalBlock.getLastInstruction();
 
 			conditionalInstruntion.toString(symbolTable);
-			System.out.println(conditionalInstruntion.toString(symbolTable));
+			//System.out.println(conditionalInstruntion.toString(symbolTable));
 
 			String val2Use = symbolTable.getValueString(conditionalInstruntion.getUse(1));
 			String[] val2UseSplit = val2Use.split("#");
