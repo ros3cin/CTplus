@@ -135,8 +135,8 @@ public class JavaCollectionsAnalyser {
 	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException {
 
-		final String ESCOPO = "dat/meuteste.txt";
-		final String EXCLUSOES = "dat/meuteste-exclusions.txt";
+		final String ESCOPO = "dat/bm-tomcat";
+		final String EXCLUSOES = "dat/bm-tomcatExclusions.txt";
 
 		
 		File projeto = new File("hello.txt");
@@ -147,172 +147,61 @@ public class JavaCollectionsAnalyser {
 		listaMetodos = new ArrayList<CollectionMethod>();
 		threadsRunnableClasses = new ArrayList<IClass>();
 
-		try {
-			File scopeFile;
-			//scopeFile = new File("dat/Project_to_analyse");
-			//scopeFile = new File("dat/TesteLoop_jar");
-			//scopeFile = new File("dat/bm-xalan");
-			scopeFile = new File(ESCOPO);
+		File scopeFile;
+		//scopeFile = new File("dat/Project_to_analyse");
+		//scopeFile = new File("dat/TesteLoop_jar");
+		//scopeFile = new File("dat/bm-xalan");
+		scopeFile = new File(ESCOPO);
 
-			File scopeExclusion;
-			//scopeExclusion = new File("dat/AllLibraryExclusion.txt");
-		    //scopeExclusion = new File("dat/bm-xalanExclusions.txt");
-			scopeExclusion = new File(EXCLUSOES);
+		File scopeExclusion;
+		//scopeExclusion = new File("dat/AllLibraryExclusion.txt");
+	    //scopeExclusion = new File("dat/bm-xalanExclusions.txt");
+		scopeExclusion = new File(EXCLUSOES);
 
-			// AnalysisScope scope = getSplashScope();
-			AnalysisScope scope = AnalysisScopeReader.readJavaScope(scopeFile.getAbsolutePath(), scopeExclusion,
-					JavaCollectionsAnalyser.class.getClassLoader());
-
-
-			// build a class hierarchy
-			System.err.print("Build class hierarchy...");
-			cha = ClassHierarchy.make(scope);
-
-			System.err.println("Done");
-			
-			percorrerMetodos(cha);
-			
-
-			// Main Entrypoints
-//			CallGraph cg = construirCallGraph(scope, cha);
-//
-//			// Public methods entrypoints
-//			// CallGraph cg = construirCallGraphClassEntrypoints(scope, cha);
-//
-//			Collection<CGNode> entrypointNodes = cg.getEntrypointNodes();
-//
-//			for (CGNode cgNode : entrypointNodes) {
-//				// System.out.println(cgNode.toString());
-//				// TODO: Comentado apenas para imprimir todos os n�s,
-//				// DESCOMENTAR.
-//				// IClassHierarchy classHierarchy = cgNode.getClassHierarchy();
-//
-//				IMethod method = cgNode.getMethod();
-//
-//				ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
-//				searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL);
-//			} 
-			
+		// AnalysisScope scope = getSplashScope();
+		AnalysisScope scope = AnalysisScopeReader.readJavaScope(scopeFile.getAbsolutePath(), scopeExclusion,
+				JavaCollectionsAnalyser.class.getClassLoader());
 
 
-			// Graph<CGNode> pruneGraph = null;
-			// if (cg != null) {
-			// pruneGraph = pruneGraph(cg);
-			// }
+		// build a class hierarchy
+		System.err.print("Build class hierarchy...");
+		cha = ClassHierarchy.make(scope);
 
-			// ATUAL -> TODO: descomentar
-			// for (IClass c: cha) {
-			//
-			// ReferenceCleanser.registerClassHierarchy(cha);
-			//
-			// if (isApplicationClass(c)) {
-			//
-			// for (IMethod method: c.getDeclaredMethods()) {
-			//
-			// System.out.println(method.toString());
-			//
-			// if (!method.isAbstract()) {
-			// searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE,
-			// false, null, PROFUNDIDADE_LOOP_INICIAL);
-			// }
-			//
-			// }
-			//
-			//
-			// }
-			// }
-			// FIM
-
-			// TODO:DESCOMENTAR PARA OS BENCHMARK - TORNAR PARAMETRIZADO
-			for (IClass c : cha) {
-
-				ReferenceCleanser.registerClassHierarchy(cha);
-
-				if (isApplicationClass(c)) {
-
-					for (IMethod method : c.getDeclaredMethods()) {
-						
-						//TOMCAT
-						if ((method.toString().contains("org/dacapo/Main")&& method.toString().contains("main"))
-								||
-								 (method.toString().toLowerCase().contains("catalina/startup/catalina") && method.toString().toLowerCase().contains("start()"))
-								|| (method.toString().toLowerCase().contains("catalina/startup/catalina") && method.toString().toLowerCase().contains("load()"))
-								 ||(method.toString().toLowerCase().contains("catalina/core/standardserver") && method.toString().toLowerCase().contains("start"))
-									|| (method.toString().toLowerCase().contains("catalina/core/standardserver") && method.toString().toLowerCase().contains("initialize"))
-									
-									//mais detalhado
-									||(method.toString().contains("catalina/core/StandardContext") && method.toString().contains("resourcesStart"))
-									|| (method.toString().contains("catalina/core/StandardSession") && method.toString().toLowerCase().contains("readobject"))
-									|| (method.toString().contains("catalina/util/StringManager") && method.toString().contains("getManager"))
-									|| (method.toString().contains("org/apache/commons/httpclient/URI") && method.toString().contains("getCharset"))
-									|| (method.toString().contains("org/apache/coyote/http11/Http11NioProtocol") && method.toString().contains("setAttribute"))
-									|| (method.toString().contains("org/apache/jk/core/WorkerEnv") && method.toString().contains("addHandler"))
-									|| (method.toString().contains("org/apache/naming/resources/DirContextURLStreamHandler") && method.toString().contains("bind")) 
-									|| (method.toString().contains("org/apache/naming/resources/ProxyDirContext"))
-									|| (method.toString().contains("org/apache/naming/ContextAccessController"))
-									|| (method.toString().contains("org/apache/naming/ContextBindings"))
-									|| (method.toString().contains("org/apache/naming/NamingContext"))
-									|| (method.toString().contains("org/apache/tomcat/util/modeler/modulesMbeansDescriptorsIntrospectionSource"))
-									|| (method.toString().contains("org/apache/tomcat/util/res/StringManager"))
-									|| (method.toString().contains("org/apache/tomcat/util/threads/ThreadPool") && method.toString().contains("Thread"))
-									|| (method.toString().contains("org/apache/tomcat/util/IntrospectionUtils"))
-							//	){
-								||
-								(method.toString().contains("org/dacapo/tomcat/Client")&& method.toString().contains("run"))) {
-							
-						//XALAN
-//						if ((method.toString().contains("org/apache/xalan/CopyOfXSLTBenchOld")
-//								&& /*(method.toString().contains("run") ||*/ method.toString().contains("main"))
-//								|| (method.toString().contains("org/apache/xalan/processor/StylesheetHandler") && method.toString().contains("startElement"))
-//								|| (method.toString().contains("org/apache/xalan/processor/StylesheetHandler") && method.toString().contains("endDocument"))
-//								|| (method.toString().contains("org/apache/xalan/processor/StylesheetHandler") && method.toString().contains("startPrefixMapping"))
-//								
-//								
-//								) {
-
-							ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
-							searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL);
-
-						}
-					}
-				}
-			}
-			
-			//Search for the methods inside the method run of thread class or runnable
-			while (!threadsRunnableClasses.isEmpty()){
-				ArrayList<IClass> classesTemp = new ArrayList<IClass>();
-				classesTemp.addAll(threadsRunnableClasses);
-				
-				for (int i = 0; i < classesTemp.size(); i++) {
-					IClass c = classesTemp.get(i);
-					IMethod methodRun = callMethods("Run", c.getDeclaredMethods());
-					if(methodRun!=null){
-						ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
-						searchMethodsLoopInside(methodRun, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL);
-					}
-					threadsRunnableClasses.remove(0);
-				}
-				
-			}
-
-		} catch (Exception ex) {
-
-			System.out.println("Mensagem de erro: " + ex.getMessage());
-			System.out.println("Mensagem 2 de erro:" + ex.getStackTrace());
-			// System.out.println("Projeto com problema: " + projeto.getName());
-			// System.out.println("Mensagem de erro: " + ex.getMessage());
-			// System.out.println("Mensagem 2 de erro:" + ex.getStackTrace());
-			//
-		}
-
-		// System.out.println("Terminou projeto: " + caminhoProjeto);
-		exibirHora();
-		gerarArquivoCsv(criarNomeArquivo(projeto.getName()));
-		// }
+		System.err.println("Done");
+		
+		java.util.List<ComponentOfInterest> tomcatComponentsOfInterest = new ArrayList<ComponentOfInterest>();
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/dacapo/Main", "main"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest("catalina/startup/catalina", null, "load"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest("catalina/core/standardserver",null, "start"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest("catalina/core/standardserver",null, "initialize"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "catalina/core/StandardContext", "resourcesStart"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "catalina/core/StandardSession", "readobject"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "catalina/util/StringManager", "getManager"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/commons/httpclient/URI", "getCharset"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/coyote/http11/Http11NioProtocol", "setAttribute"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/jk/core/WorkerEnv", "addHandler"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/naming/resources/DirContextURLStreamHandler", "bind"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/dacapo/tomcat/Client", "run"));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/naming/resources/ProxyDirContext", null));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/naming/ContextAccessController", null));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/naming/ContextBindings", null));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/naming/NamingContext", null));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/modeler/modulesMbeansDescriptorsIntrospectionSource", null));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/res/StringManager", null));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/threads/ThreadPool", null));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/IntrospectionUtils", null));
+		
+		java.util.List<ComponentOfInterest> xalanComponentsOfInterest = new ArrayList<ComponentOfInterest>();
+		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/CopyOfXSLTBenchOld", "main"));
+		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startElement"));
+		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "endDocument"));
+		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startPrefixMapping"));
+		
+		traverseMethods(cha,tomcatComponentsOfInterest);
 
 	}
 	
-	private static void percorrerMetodos(IClassHierarchy cha) {
+	private static void traverseMethods(IClassHierarchy cha, java.util.List<ComponentOfInterest> componentsOfInterest) {
 		try {
 			for (IClass c : cha) {
 
@@ -321,15 +210,16 @@ public class JavaCollectionsAnalyser {
 				if (isApplicationClass(c)) {
 
 					for (IMethod method : c.getDeclaredMethods()) {
-						
-						ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
-						searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL);
+						if(isMethodOfInterest(method,componentsOfInterest)) {
+							ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
+							searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL);
+						}
 
 					}
 				}
 			}
 			
-			//Search for the methods inside the method run of thread class or runnable
+			//Search for the methods inside the run method of the thread class or runnable
 			while (!threadsRunnableClasses.isEmpty()){
 				ArrayList<IClass> classesTemp = new ArrayList<IClass>();
 				classesTemp.addAll(threadsRunnableClasses);
@@ -353,6 +243,19 @@ public class JavaCollectionsAnalyser {
 		exibirHora();
 		gerarArquivoCsv(criarNomeArquivo(""));
 		
+	}
+	
+	private static boolean isMethodOfInterest(IMethod method, java.util.List<ComponentOfInterest> componentsOfInterest) {
+		boolean result=false;
+		if(method!=null) {
+			for(ComponentOfInterest component : componentsOfInterest) {
+				if(component.checkIfMethodMeetsComponent(method)) {
+					result=true;
+					break;
+				}
+			}
+		}
+		return result;
 	}
 
 	private static void exibirHora() {
