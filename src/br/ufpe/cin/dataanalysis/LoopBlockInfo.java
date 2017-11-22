@@ -229,12 +229,13 @@ public class LoopBlockInfo {
 
 							if (ssaInstruction instanceof SSAInvokeInstruction) {
 								SSAInvokeInstruction iinvokeBlock = (SSAInvokeInstruction) ssaInstruction;
-
-								int use = iinvokeBlock.getUse(0);
-
-								if ((conditionalBranchInstruction.getUse(0) == use || conditionalBranchInstruction.getUse(0) == iinvokeBlock.getDef())){
-										//&& iinvokeBlock.toString().toLowerCase().contains("next")) {
-									loopOverVariable = true;
+								if(iinvokeBlock.getNumberOfUses()>0) {
+									int use = iinvokeBlock.getUse(0);
+	
+									if ((conditionalBranchInstruction.getUse(0) == use || conditionalBranchInstruction.getUse(0) == iinvokeBlock.getDef())){
+											//&& iinvokeBlock.toString().toLowerCase().contains("next")) {
+										loopOverVariable = true;
+									}
 								}
 							}
 

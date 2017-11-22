@@ -135,8 +135,8 @@ public class JavaCollectionsAnalyser {
 	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException {
 
-		final String ESCOPO = "dat/bm-tomcat";
-		final String EXCLUSOES = "dat/bm-tomcatExclusions.txt";
+		final String ESCOPO = "dat/meuteste.txt";
+		final String EXCLUSOES = "dat/meuteste-exclusions.txt";
 
 		
 		File projeto = new File("hello.txt");
@@ -164,7 +164,7 @@ public class JavaCollectionsAnalyser {
 
 
 		// build a class hierarchy
-		System.err.print("Build class hierarchy...");
+		System.err.print("Building class hierarchy...");
 		cha = ClassHierarchy.make(scope);
 
 		System.err.println("Done");
@@ -197,7 +197,10 @@ public class JavaCollectionsAnalyser {
 		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "endDocument"));
 		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startPrefixMapping"));
 		
-		traverseMethods(cha,tomcatComponentsOfInterest);
+		java.util.List<ComponentOfInterest> alibabaDubbo = new ArrayList<ComponentOfInterest>();
+		alibabaDubbo.add(new ComponentOfInterest("com/alibaba/dubbo", "", ""));
+		
+		traverseMethods(cha,alibabaDubbo);
 
 	}
 	
@@ -212,7 +215,8 @@ public class JavaCollectionsAnalyser {
 					for (IMethod method : c.getDeclaredMethods()) {
 						if(isMethodOfInterest(method,componentsOfInterest)) {
 							ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
-							searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL);
+							java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
+							searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest);
 						}
 
 					}
@@ -229,7 +233,8 @@ public class JavaCollectionsAnalyser {
 					IMethod methodRun = callMethods("Run", c.getDeclaredMethods());
 					if(methodRun!=null){
 						ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
-						searchMethodsLoopInside(methodRun, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL);
+						java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
+						searchMethodsLoopInside(methodRun, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest);
 					}
 					threadsRunnableClasses.remove(0);
 				}
@@ -607,6 +612,213 @@ public class JavaCollectionsAnalyser {
 		}
 
 	}
+	
+	private static void searchMethodsLoopInside(IMethod method, int profundidade, boolean isIntoLoop, LoopBlockInfo outerLoop, ArrayList<LoopBlockInfo> loops,
+			int loopProfundidade, java.util.List<IMethod> alreadyVisited,java.util.List<ComponentOfInterest> componentsOfInterest) throws InvalidClassFileException {
+
+		alreadyVisited.add(method);
+		AnalysisCache cache = new AnalysisCache();
+		ReferenceCleanser.registerCache(cache);
+
+		if (method == null) {
+			return;
+		} 
+		if(profundidade==1) {
+			System.out.printf("Method name:%s.%s\n",method.getDeclaringClass().getName(),method.getName());
+		}
+		
+
+		if (method.isAbstract()) {
+			return;
+		}
+
+		IR ir;
+		try {
+			
+			wipeSoftCaches();
+			ir = cache.getIRFactory().makeIR(method, Everywhere.EVERYWHERE, SSAOptions.defaultOptions());
+			
+
+		
+
+			Set<Object> loopHeaders = LoopUtil.getLoopHeaders(ir);
+			java.util.Set<Object> loopHeadersSet = scala.collection.JavaConversions.setAsJavaSet(loopHeaders);
+
+			SSACFG cfg = ir.getControlFlowGraph();
+
+			ArrayList<LoopBlockInfo> methodLoops = new ArrayList<LoopBlockInfo>();
+
+			for (Object blockNumber : loopHeadersSet) {
+				BasicBlock basicBlockLoopHeader = cfg.getBasicBlock((Integer) blockNumber);
+
+				// Operacoes com o Loop Header
+
+				// Get Loop body
+				Set<ISSABasicBlock> loopBody = LoopUtil.getLoopBody(basicBlockLoopHeader, ir);
+				java.util.Set<ISSABasicBlock> javaLoopBody = scala.collection.JavaConversions.setAsJavaSet(loopBody);
+
+				// Get loop tails
+				List<ISSABasicBlock> loopTails = LoopUtil.getLoopTails(basicBlockLoopHeader, ir);
+				java.util.List<ISSABasicBlock> javaLoopTails = new ArrayList<ISSABasicBlock>();
+				scala.collection.Iterator<ISSABasicBlock> iterator = loopTails.iterator();
+				for (int i = 0; i < loopTails.length(); i++) {
+					ISSABasicBlock loopTailBlock = iterator.next();
+					javaLoopTails.add(loopTailBlock);
+				}
+
+				Option<ISSABasicBlock> loopConditionalBlock = LoopUtil.getLoopConditionalBlock(basicBlockLoopHeader, ir);
+				
+				boolean isDoWhileLoop = LoopUtil.isDoWhileLoop(basicBlockLoopHeader, ir);
+				
+				boolean explicitlyInfiniteLoop = LoopUtil.isExplicitlyInfiniteLoop(basicBlockLoopHeader, ir);
+
+				ISSABasicBlock loopConditional = null;
+				if (!loopConditionalBlock.isEmpty()) {
+					loopConditional = loopConditionalBlock.get();
+				}
+				LoopBlockInfo loopBlockInfo = new LoopBlockInfo(basicBlockLoopHeader, javaLoopBody, javaLoopTails, loopConditional, isDoWhileLoop,
+						explicitlyInfiniteLoop, ir);
+				methodLoops.add(loopBlockInfo);
+			}
+
+			boolean isRecursive = isMethodRecursive(method, ir.getInstructions());
+			
+			
+			for (int i = 0; i < ir.getInstructions().length; i++) {
+
+				SSAInstruction instruction = ir.getInstructions()[i];
+
+				if (instruction instanceof SSAInvokeInstruction) { // save
+																	// method of
+																	// collections
+					SSAInvokeInstruction invokeIR = (SSAInvokeInstruction) instruction;
+					//System.out.println(invokeIR);
+					MethodReference invokedMethodRef = invokeIR.getDeclaredTarget();
+
+
+					if (invokedMethodRef.getDeclaringClass().toString().contains("Application,")) {
+
+						String concreteType = "";
+						if (invokeIR.getNumberOfUses() > 0) {
+							TypeInference ti = TypeInference.make(ir, false);
+							ti.getType(invokeIR.getUse(0));
+
+							concreteType = ti.getType(invokeIR.getUse(0)).toString();
+							if (concreteType.contains(",")) {
+								concreteType = concreteType.split(",")[1];
+							}
+						}
+			
+
+						if (invokedMethodRef != null) {
+
+							ISSABasicBlock basicBlockForInstruction = ir.getBasicBlockForInstruction(invokeIR);
+
+							if (!isIntoLoop && methodLoops != null && !methodLoops.isEmpty()) {
+
+								for (LoopBlockInfo loopBlockInfo : methodLoops) {
+									if (loopBlockInfo.getLoopBody().contains(basicBlockForInstruction)
+											|| loopBlockInfo.getLoopHeader().equals(basicBlockForInstruction)
+											|| 
+											(loopBlockInfo.getLoopConditionalBlock() != null && loopBlockInfo.getLoopConditionalBlock().equals(
+													basicBlockForInstruction))) {
+										isIntoLoop = true;
+										loopProfundidade = profundidade;
+										outerLoop = loopBlockInfo;
+										outerLoop.setProfundidade(loopProfundidade);
+										loops.add(0, outerLoop);
+									}
+								}
+
+							} else { // Se n�o ele verifica se esta dentro de um
+										// inner loop, e insere
+
+								for (LoopBlockInfo loopBlockInfo : methodLoops) {
+									if (loopBlockInfo.getLoopBody().contains(basicBlockForInstruction)) {
+										loopBlockInfo.setProfundidade(profundidade);
+										loops.add(loopBlockInfo);
+									}
+								}
+							}
+
+
+							CallSiteReference callSite = invokeIR.getCallSite();
+
+							ArrayList<String> pacotesJava = iniciarPacotes();
+
+							if (isJavaCollectionMethod(callSite.toString(), pacotesJava)) {
+
+								int bcIndex = ((IBytecodeMethod) method).getBytecodeIndex(invokeIR.iindex);
+								int invokeLineNumber = method.getLineNumber(bcIndex);
+
+								// method.getLocalVariableName(bcIndex,0);
+
+								CollectionMethod metodo = criarMetodo(callSite.getDeclaredTarget(), ir.getMethod(), concreteType, isIntoLoop, outerLoop,
+										invokeLineNumber,ir,invokeIR);
+
+								if (metodo != null) {
+
+									metodo.setProfundidade(profundidade);
+									metodo.setOuterLoops(loops);
+
+									Collection<FieldReference> fields = CodeScanner.getFieldsRead(method);
+
+									String fieldName = "";
+									fieldName = getFieldName(ir, invokeIR, fieldName);
+									metodo.setFieldName(fieldName);
+									metodo.setInsideRecursiveMethod(isRecursive);
+
+									if (!ONLY_LOOP) {
+										adicionarMetodo(metodo);
+									} else if (isIntoLoop) {
+										adicionarMetodo(metodo);
+									}									
+									
+								}
+							} else {
+
+								if (callSite.getDeclaredTarget().getDeclaringClass().getClassLoader().toString().equals("Application classloader\n")
+										&& profundidade < LIMITE) {
+									
+									//verify if method is a start() from thread									
+									if(invokedMethodRef.toString().contains("start()") || invokedMethodRef.toString().contains("ExecutorService, submit(")){
+										
+										//Add to the list if the method start is from a thread/runnable class
+										addThreadRunnableClass(ir, invokeIR, invokedMethodRef);
+									}
+									
+									IMethod resolveMethod = cha.resolveMethod(invokedMethodRef);									
+									// TODO verificar com primordial !!!!
+									if (resolveMethod != null && resolveMethod.getDeclaringClass().getClassLoader().toString().equals("Application")/*&&!sameSignature*/) {
+										if(!alreadyVisited.contains(resolveMethod) && isMethodOfInterest(method, componentsOfInterest)){
+											searchMethodsLoopInside(resolveMethod, profundidade + 1, isIntoLoop, outerLoop, loops, loopProfundidade,alreadyVisited,componentsOfInterest);
+										}
+									}
+								}
+							}
+
+						}
+					}
+				} 
+
+
+				// delete the loops in the same depth or deeper
+				deleteLoopsOutside(loops, profundidade);
+
+				// Checagem para zerar se estiver dentro do loop
+				if (profundidade == loopProfundidade) {
+					isIntoLoop = false;
+					outerLoop = null;
+				}
+
+			}
+
+		} catch (NullPointerException e) {
+
+			e.printStackTrace();
+		}
+
+	}
 
 	private static void addThreadRunnableClass(IR ir, SSAInvokeInstruction invokeIR, MethodReference invokedMethodRef) {
 		System.out.println("start");
@@ -833,7 +1045,7 @@ public class JavaCollectionsAnalyser {
 		if(methodReference.toString().contains("List")){
 			if(nome.equals("add")){
 				if(methodReference.getNumberOfParameters()==1)
-					nome="\"add(value)\"";
+					nome="add(value)";
 				else {
 					boolean isStartingIndex=ir.getSymbolTable().isConstant(invks.getUse(1))&& ir.getSymbolTable().getValue(invks.getUse(1)).toString().equals("#0");
 					
@@ -847,9 +1059,9 @@ public class JavaCollectionsAnalyser {
 				if(ti.getType(invks.getUse(1)).toString().equals("int")){
 					boolean isStartingIndex=ir.getSymbolTable().isConstant(invks.getUse(1))&& ir.getSymbolTable().getValue(invks.getUse(1)).toString().equals("#0");
 					if(isStartingIndex) {
-						nome="remove(starting-index;value)";
+						nome="remove(starting-index)";
 					} else
-						nome="remove(middle-index;value)";
+						nome="remove(middle-index)";
 				} else {
 					nome = "remove(value)";
 				}
@@ -937,8 +1149,13 @@ public class JavaCollectionsAnalyser {
 	}
 	
 	private static boolean extendsThread(IClass c) {
-		if (c.getSuperclass().getName().toString().substring(1).equals(JAVA_LANG_THREAD)) { return true; }
-		return false;
+		boolean result=false;
+		if(c!=null) {
+			if(c.getSuperclass()!=null) {
+				result = c.getSuperclass().getName().toString().substring(1).equals(JAVA_LANG_THREAD);
+			}
+		}
+		return result;
 	}
 
 	/*
