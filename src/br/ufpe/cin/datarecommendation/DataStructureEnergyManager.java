@@ -173,7 +173,8 @@ public class DataStructureEnergyManager {
 					HashMap<String, Double> consumptions = recomendation.get(name);
 					for (String operation : consumptions.keySet()) {
 						Double consumption = consumptions.get(operation);
-						consumptions.put(operation, consumption+methodEnergy.getConsumptions().get(operation));
+						if(methodEnergy.getConsumptions().get(operation)!=null)
+							consumptions.put(operation, consumption+methodEnergy.getConsumptions().get(operation));
 					}
 				}
 			}

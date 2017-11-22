@@ -96,7 +96,7 @@ public class JavaCollectionsAnalyser {
 	private static String MAPS = "Map,AbstractMap, Attributes, AuthProvider, ConcurrentHashMap, ConcurrentSkipListMap, EnumMap, HashMap, Hashtable, IdentityHashMap, LinkedHashMap, PrinterStateReasons, Properties, Provider, RenderingHints, SimpleBindings, TabularDataSupport, TreeMap, UIDefaults, WeakHashMap";
 	private static String SETS = "Set,AbstractSet, ConcurrentSkipListSet, CopyOnWriteArraySet, EnumSet, HashSet, JobStateReasons, LinkedHashSet, TreeSet";
 
-	private static String CAMINHO_CSV = "C:/Users/RENATO/Documents/";
+	private static String CAMINHO_CSV = "/home/ros/Documents/Mestrado/Analise/";
 	
 	private static String MAIN = "XSLTBenchOld";
 	
@@ -135,8 +135,8 @@ public class JavaCollectionsAnalyser {
 	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException {
 
-		final String ESCOPO = "dat/meuteste.txt";
-		final String EXCLUSOES = "dat/meuteste-exclusions.txt";
+		final String ESCOPO = "dat/meuteste-linux.txt";
+		final String EXCLUSOES = "dat/meuteste-linux-exclusions.txt";
 
 		
 		File projeto = new File("hello.txt");
@@ -197,10 +197,10 @@ public class JavaCollectionsAnalyser {
 		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "endDocument"));
 		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startPrefixMapping"));
 		
-		java.util.List<ComponentOfInterest> alibabaDubbo = new ArrayList<ComponentOfInterest>();
-		alibabaDubbo.add(new ComponentOfInterest("com/alibaba/dubbo", "", ""));
+		java.util.List<ComponentOfInterest> nlgservice = new ArrayList<ComponentOfInterest>();
+		nlgservice.add(new ComponentOfInterest("NLGService/simplenlg/realiser", "", ""));
 		
-		traverseMethods(cha,alibabaDubbo);
+		traverseMethods(cha,nlgservice);
 
 	}
 	
