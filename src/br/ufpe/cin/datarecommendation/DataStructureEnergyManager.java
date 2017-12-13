@@ -88,7 +88,8 @@ public class DataStructureEnergyManager {
 		return collectionMethod.getConcreteType().toLowerCase().contains("hashtable")
 				|| collectionMethod.getConcreteType().toLowerCase().contains("concurrenthashmap")
 				|| collectionMethod.getConcreteType().toLowerCase().equals("ljava/util/map") 
-				|| collectionMethod.getConcreteType().toLowerCase().contains("concurrentskiplistmap");
+				|| collectionMethod.getConcreteType().toLowerCase().contains("concurrentskiplistmap")
+				|| collectionMethod.getConcreteType().toLowerCase().contains("hashmap");
 	}
 	
 	private boolean isList(CollectionMethod collectionMethod) {
@@ -103,7 +104,8 @@ public class DataStructureEnergyManager {
 		return collectionMethod.getConcreteType().toLowerCase().contains("concurrentskiplistset")
 				|| collectionMethod.getConcreteType().toLowerCase().equals("ljava/util/set") 
 				|| collectionMethod.getConcreteType().toLowerCase().contains("concurrenthashset")
-				|| collectionMethod.getConcreteType().toLowerCase().contains("copyonwritehashset");
+				|| collectionMethod.getConcreteType().toLowerCase().contains("copyonwritehashset")
+				|| collectionMethod.getConcreteType().toLowerCase().contains("hashset");
 	}
 
 

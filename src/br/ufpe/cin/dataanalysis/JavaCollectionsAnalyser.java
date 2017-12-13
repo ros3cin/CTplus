@@ -200,7 +200,10 @@ public class JavaCollectionsAnalyser {
 		java.util.List<ComponentOfInterest> nlgservice = new ArrayList<ComponentOfInterest>();
 		nlgservice.add(new ComponentOfInterest("NLGService/simplenlg/realiser", "", ""));
 		
-		traverseMethods(cha,nlgservice);
+		java.util.List<ComponentOfInterest> automata = new ArrayList<ComponentOfInterest>();
+		automata.add(new ComponentOfInterest("pl/edu/amu", "", ""));
+		
+		traverseMethods(cha,automata);
 
 	}
 	
