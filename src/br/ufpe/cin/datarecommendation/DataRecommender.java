@@ -45,14 +45,6 @@ public class DataRecommender {
 		
 	}
 	
-	private void printTypesRecommendedNumbers(ArrayList<String> typesReccommended){
-		
-		for (String string : typesReccommended) {
-			
-		}
-	}
-	
-	
 	private static String getStructureRecommendation(HashMap<String,Double> typeConsumption){
 		
 		String typeR = "";
@@ -77,7 +69,7 @@ public class DataRecommender {
 	public static void main(String[] args) {
 		try {			
 			
-			energyFilePath = "/home/ros/Documents/Mestrado/Analise/Profile.csv";
+			energyFilePath = "/home/ros/Documents/Mestrado/Analise/complete-profile-05-03-2018.csv";
 			dataAnalysisFilePath = "/home/ros/Documents/Mestrado/Analise/analise.csv";
 			
 			//energyFilePath = "energyData/energy-profile-note.csv";

@@ -16,31 +16,19 @@ public class EnergyProfileManager {
 		
 		fillTypes();		
 	}
+	
+	
 
 	private void fillTypes() {
-		
+		ICollectionsNameResolver nameResolver = new CollectionsNameResolver();
 		for (EnergyProfile profile : profiles) {
 			
-			if(profile.getDataStructureType().toLowerCase().contains("set")
-					&& !setTypes.contains(profile.getDataStructureType())){
-				
+			if(nameResolver.isSet(profile.getDataStructureType())){
 				setTypes.add(profile.getDataStructureType());
-				
-			}else if((profile.getDataStructureType().toLowerCase().contains("hash") 
-					|| profile.getDataStructureType().toLowerCase().contains("map"))
-					&& !profile.getDataStructureType().toLowerCase().contains("set")
-					&& !mapTypes.contains(profile.getDataStructureType())){
-				
+			}else if(nameResolver.isMap(profile.getDataStructureType())){
 				mapTypes.add(profile.getDataStructureType());
-				
-			} else if((profile.getDataStructureType().toLowerCase().contains("vector") 
-					|| profile.getDataStructureType().toLowerCase().contains("list"))
-					&& !profile.getDataStructureType().toLowerCase().contains("map")
-					&& !profile.getDataStructureType().toLowerCase().contains("set")
-					&& !listTypes.contains(profile.getDataStructureType())){
-				
+			} else if(nameResolver.isList(profile.getDataStructureType())){
 				listTypes.add(profile.getDataStructureType());
-				
 			} 
 		}
 	}

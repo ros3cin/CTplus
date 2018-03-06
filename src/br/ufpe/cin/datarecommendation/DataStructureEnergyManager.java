@@ -29,25 +29,24 @@ public class DataStructureEnergyManager {
 		fillMethodsEnergy();		
 	}
 
-
 	private void fillMethodsEnergy() {
 		
-		
+		ICollectionsNameResolver nameResolver = new CollectionsNameResolver();
 		for (CollectionMethod collectionMethod : methods) {
 			HashMap<String, Double> consumptions = new HashMap<String, Double>();
 			
-			if(isMap(collectionMethod)){
+			if(nameResolver.isMap(collectionMethod.getConcreteType())){
 				
-				if(collectionMethod.getNome().equals("put") 
-						|| collectionMethod.getNome().equals("remove") 
-						|| collectionMethod.getNome().equals("get")){
+				if(collectionMethod.getNome().equals("put(key;value)") 
+						|| collectionMethod.getNome().equals("remove(key)") 
+						|| collectionMethod.getNome().equals("iterator")){
 				
 					setConsumptions(collectionMethod, consumptions,profileManager.getMapTypes(),collectionMethod.getNome());
 					MethodEnergy method = new MethodEnergy(collectionMethod,consumptions);
 					methodsEnergyMap.add(method);					
 				} 
 				
-			} else if(isList(collectionMethod)){
+			} else if(nameResolver.isList(collectionMethod.getConcreteType())){
 				
 				if(collectionMethod.getNome().equals("add") 
 						|| collectionMethod.getNome().equals("addElement") 
@@ -69,9 +68,9 @@ public class DataStructureEnergyManager {
 					methodsEnergyList.add(method);					
 				} 
 				
-			} else if(isSet(collectionMethod)){
-				if(collectionMethod.getNome().equals("add") 
-						|| collectionMethod.getNome().equals("remove") 
+			} else if(nameResolver.isSet(collectionMethod.getConcreteType())){
+				if(collectionMethod.getNome().equals("add(value)") 
+						|| collectionMethod.getNome().equals("remove(key)") 
 						|| collectionMethod.getNome().equals("iterator")){
 				
 					setConsumptions(collectionMethod, consumptions,profileManager.getSetTypes(),collectionMethod.getNome());
@@ -81,31 +80,6 @@ public class DataStructureEnergyManager {
 			}			
 		}
 		
-	}
-
-
-	private boolean isMap(CollectionMethod collectionMethod) {
-		return collectionMethod.getConcreteType().toLowerCase().contains("hashtable")
-				|| collectionMethod.getConcreteType().toLowerCase().contains("concurrenthashmap")
-				|| collectionMethod.getConcreteType().toLowerCase().equals("ljava/util/map") 
-				|| collectionMethod.getConcreteType().toLowerCase().contains("concurrentskiplistmap")
-				|| collectionMethod.getConcreteType().toLowerCase().contains("hashmap");
-	}
-	
-	private boolean isList(CollectionMethod collectionMethod) {
-		String methodStr = collectionMethod.getConcreteType().toLowerCase();
-		return collectionMethod.getConcreteType().toLowerCase().contains("vector")
-				|| collectionMethod.getConcreteType().toLowerCase().equals("ljava/util/list") 
-				|| collectionMethod.getConcreteType().toLowerCase().contains("copyonwritearraylist")
-				|| (methodStr.contains("list")&&!methodStr.contains("map")&&!methodStr.contains("set"));
-	}
-	
-	private boolean isSet(CollectionMethod collectionMethod) {
-		return collectionMethod.getConcreteType().toLowerCase().contains("concurrentskiplistset")
-				|| collectionMethod.getConcreteType().toLowerCase().equals("ljava/util/set") 
-				|| collectionMethod.getConcreteType().toLowerCase().contains("concurrenthashset")
-				|| collectionMethod.getConcreteType().toLowerCase().contains("copyonwritehashset")
-				|| collectionMethod.getConcreteType().toLowerCase().contains("hashset");
 	}
 
 

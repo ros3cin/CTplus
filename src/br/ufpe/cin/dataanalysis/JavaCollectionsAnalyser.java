@@ -69,6 +69,8 @@ import com.ibm.wala.util.graph.Graph;
 import com.ibm.wala.util.graph.GraphSlicer;
 import com.ibm.wala.util.ref.ReferenceCleanser;
 
+import br.ufpe.cin.datarecommendation.CollectionsNameResolver;
+import br.ufpe.cin.datarecommendation.ICollectionsNameResolver;
 import edu.colorado.walautil.LoopUtil;
 
 //import collection.JavaConversions._;
@@ -192,10 +194,11 @@ public class JavaCollectionsAnalyser {
 		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/IntrospectionUtils", null));
 		
 		java.util.List<ComponentOfInterest> xalanComponentsOfInterest = new ArrayList<ComponentOfInterest>();
-		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/CopyOfXSLTBenchOld", "main"));
+		/*xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/CopyOfXSLTBenchOld", "main"));
 		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startElement"));
 		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "endDocument"));
-		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startPrefixMapping"));
+		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startPrefixMapping"));*/
+		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan", null));
 		
 		java.util.List<ComponentOfInterest> nlgservice = new ArrayList<ComponentOfInterest>();
 		nlgservice.add(new ComponentOfInterest("NLGService/simplenlg/realiser", "", ""));
@@ -203,7 +206,10 @@ public class JavaCollectionsAnalyser {
 		java.util.List<ComponentOfInterest> automata = new ArrayList<ComponentOfInterest>();
 		automata.add(new ComponentOfInterest("pl/edu/amu", "", ""));
 		
-		traverseMethods(cha,automata);
+		java.util.List<ComponentOfInterest> tomcat85 = new ArrayList<ComponentOfInterest>();
+		tomcat85.add(new ComponentOfInterest("org/apache/catalina/util", "", ""));
+		
+		traverseMethods(cha,xalanComponentsOfInterest);
 
 	}
 	
@@ -708,7 +714,7 @@ public class JavaCollectionsAnalyser {
 
 							concreteType = ti.getType(invokeIR.getUse(0)).toString();
 							if (concreteType.contains(",")) {
-								concreteType = concreteType.split(",")[1];
+								concreteType = concreteType.substring(concreteType.indexOf(',')+1, concreteType.length()-1);
 							}
 						}
 			
@@ -1012,7 +1018,7 @@ public class JavaCollectionsAnalyser {
 		String nome = methodReference.getName().toString();
 		String pacote[] = methodReference.toString().split(",");
 		
-		nome = treatListMethod(methodReference, metodoPai, ir, invks, nome);
+		nome = treatMethodSignature(methodReference, metodoPai, ir, invks, nome, concreteType);
 
 		if (nome.equals("<init>")) {
 			return null;
@@ -1042,10 +1048,11 @@ public class JavaCollectionsAnalyser {
 
 	}
 
-	private static String treatListMethod(MethodReference methodReference, IMethod metodoPai, IR ir,
-			SSAInvokeInstruction invks, String nome) {
+	private static String treatMethodSignature(MethodReference methodReference, IMethod metodoPai, IR ir,
+			SSAInvokeInstruction invks, String nome, String concreteType) {
+		ICollectionsNameResolver nameResolver = new CollectionsNameResolver();
 		TypeInference ti = TypeInference.make(ir, true);
-		if(methodReference.toString().contains("List")){
+		if(nameResolver.isList(concreteType)){
 			if(nome.equals("add")){
 				if(methodReference.getNumberOfParameters()==1)
 					nome="add(value)";
@@ -1070,7 +1077,24 @@ public class JavaCollectionsAnalyser {
 				}
 				
 			}
-		}
+		} else if (nameResolver.isMap(concreteType)) {
+			if(nome.equals("put")) {
+				nome="put(key;value)";
+			} else if (nome.equals("remove")) {
+				nome="remove(key)";
+			} else if (nome.equals("get")) {
+				nome="iterator";
+			}
+		} else if (nameResolver.isSet(concreteType)) {
+			if(nome.equals("add")) {
+				nome = "add(value)";
+			} else if (nome.equals("remove")) {
+				nome = "remove(key)";
+			} else if (nome.equals("get")) {
+				nome="iterator";
+			}
+		} 
+		
 		return nome;
 	}
 
