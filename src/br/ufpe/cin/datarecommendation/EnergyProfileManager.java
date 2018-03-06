@@ -20,15 +20,21 @@ public class EnergyProfileManager {
 	
 
 	private void fillTypes() {
-		ICollectionsNameResolver nameResolver = new CollectionsNameResolver();
+		ICollectionsTypeResolver nameResolver = new CollectionsTypeResolver();
 		for (EnergyProfile profile : profiles) {
 			
 			if(nameResolver.isSet(profile.getDataStructureType())){
-				setTypes.add(profile.getDataStructureType());
+				if(!setTypes.contains(profile.getDataStructureType())) {
+					setTypes.add(profile.getDataStructureType());
+				}
 			}else if(nameResolver.isMap(profile.getDataStructureType())){
-				mapTypes.add(profile.getDataStructureType());
+				if(!mapTypes.contains(profile.getDataStructureType())) {
+					mapTypes.add(profile.getDataStructureType());
+				}
 			} else if(nameResolver.isList(profile.getDataStructureType())){
-				listTypes.add(profile.getDataStructureType());
+				if(!listTypes.contains(profile.getDataStructureType())) {
+					listTypes.add(profile.getDataStructureType());
+				}
 			} 
 		}
 	}

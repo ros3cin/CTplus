@@ -12,7 +12,7 @@ public class DataRecommender {
 	
 	static String energyFilePath;
 	static String dataAnalysisFilePath;
-	static DecimalFormat df = new DecimalFormat("#.00");
+	static DecimalFormat df = new DecimalFormat("0.00");
 	
 	public static void doRecommendation(String energyFilePath,ArrayList<CollectionMethod> methods) throws IOException{
 		
@@ -24,19 +24,23 @@ public class DataRecommender {
 		
 		EnergyProfileManager profileManager = new EnergyProfileManager(energyProfilesFromFile);
 		DataStructureEnergyManager dataEnergyManager = new DataStructureEnergyManager(methods,profileManager);
-		HashMap<String, HashMap<String,Double>> recommendationOrder = dataEnergyManager.getRecommendationOrder();
+		HashMap<CollectionMethod, HashMap<String,Double>> recommendationOrder = dataEnergyManager.getRecommendationOrder();
 		
 		
 		HashMap<String, String> typesReccommended = new HashMap<String, String>();
-		 
-		for (String name : recommendationOrder.keySet()) {
+		ICollectionsTypeResolver typeResolver = new CollectionsTypeResolver();
+		
+		for (CollectionMethod methodInfo : recommendationOrder.keySet()) {
 			
-			HashMap<String,Double> typeConsumption = recommendationOrder.get(name);
+			HashMap<String,Double> typeConsumption = recommendationOrder.get(methodInfo);
 			for (String type : typeConsumption.keySet()) {				
-				System.out.println(name +";"+type+";"+df.format(typeConsumption.get(type)));
+				System.out.println(methodInfo.getFieldName() +";"+type+";"+df.format(typeConsumption.get(type)));
 			}	
-			
-			typesReccommended.put(name,getStructureRecommendation(typeConsumption));			
+			String recommendedType = getStructureRecommendation(typeConsumption);
+			if(typeResolver.isSameCollection(methodInfo.getConcreteType(), recommendedType))
+				typesReccommended.put(methodInfo.getFieldName(),"Keeps the type \""+recommendedType+"\"");
+			else
+				typesReccommended.put(methodInfo.getFieldName(),"Changes the type to \""+recommendedType+"\"");
 		}
 		
 		for (String nome : typesReccommended.keySet()) {

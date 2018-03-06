@@ -31,7 +31,7 @@ public class DataStructureEnergyManager {
 
 	private void fillMethodsEnergy() {
 		
-		ICollectionsNameResolver nameResolver = new CollectionsNameResolver();
+		ICollectionsTypeResolver nameResolver = new CollectionsTypeResolver();
 		for (CollectionMethod collectionMethod : methods) {
 			HashMap<String, Double> consumptions = new HashMap<String, Double>();
 			
@@ -41,18 +41,15 @@ public class DataStructureEnergyManager {
 						|| collectionMethod.getNome().equals("remove(key)") 
 						|| collectionMethod.getNome().equals("iterator")){
 				
-					setConsumptions(collectionMethod, consumptions,profileManager.getMapTypes(),collectionMethod.getNome());
+					setConsumptions(collectionMethod, consumptions,profileManager.getMapTypes(),collectionMethod.getNome(),collectionMethod.getConcreteType());
 					MethodEnergy method = new MethodEnergy(collectionMethod,consumptions);
 					methodsEnergyMap.add(method);					
 				} 
 				
 			} else if(nameResolver.isList(collectionMethod.getConcreteType())){
 				
-				if(collectionMethod.getNome().equals("add") 
-						|| collectionMethod.getNome().equals("addElement") 
-						|| collectionMethod.getNome().equals("remove") 
-						|| collectionMethod.getNome().equals("get")
-						|| collectionMethod.getNome().equals("elementAt")
+				if(collectionMethod.getNome().equals("randomGet")
+						|| collectionMethod.getNome().equals("sequentialGet")
 						
 						|| collectionMethod.getNome().equals("add(value)")
 						|| collectionMethod.getNome().equals("add(starting-index;value)")
@@ -63,7 +60,7 @@ public class DataStructureEnergyManager {
 						|| collectionMethod.getNome().equals("remove(middle-index)")
 						|| collectionMethod.getNome().equals("remove(ending-index)")){
 				
-					setConsumptions(collectionMethod, consumptions,profileManager.getListTypes(),collectionMethod.getNome());
+					setConsumptions(collectionMethod, consumptions,profileManager.getListTypes(),collectionMethod.getNome(),collectionMethod.getConcreteType());
 					MethodEnergy method = new MethodEnergy(collectionMethod,consumptions);
 					methodsEnergyList.add(method);					
 				} 
@@ -73,7 +70,7 @@ public class DataStructureEnergyManager {
 						|| collectionMethod.getNome().equals("remove(key)") 
 						|| collectionMethod.getNome().equals("iterator")){
 				
-					setConsumptions(collectionMethod, consumptions,profileManager.getSetTypes(),collectionMethod.getNome());
+					setConsumptions(collectionMethod, consumptions,profileManager.getSetTypes(),collectionMethod.getNome(),collectionMethod.getConcreteType());
 					MethodEnergy method = new MethodEnergy(collectionMethod,consumptions);
 					methodsEnergySet.add(method);					
 				} 
@@ -83,43 +80,24 @@ public class DataStructureEnergyManager {
 	}
 
 
-	private void setConsumptions(CollectionMethod collectionMethod, HashMap<String, Double> consumptions, ArrayList<String> types, String operation) {
-		
+	private void setConsumptions(CollectionMethod collectionMethod, HashMap<String, Double> consumptions, ArrayList<String> types, String operation, String sourceConcreteType) {
+		ICollectionTypeCompatibility collectionCompatibility = new CollectionTypeCompatibility();
 		for (String type : types) {
-			
-			Double consumption = EnergyConsumption.energyConsumption(collectionMethod,profileManager.getEnergy(type, operation));
-			if(consumption!=null){
-				consumptions.put(type, consumption);
+			if(collectionCompatibility.isThreadSafenessEqual(sourceConcreteType, type)) {
+				Double consumption = EnergyConsumption.energyConsumption(collectionMethod,profileManager.getEnergy(type, operation));
+				if(consumption!=null){
+					consumptions.put(type, consumption);
+				}
 			}
 		}
 	}
 	
-	public HashMap<String, HashMap<String,Double>> getRecommendationOrder(){
+	public HashMap<CollectionMethod, HashMap<String,Double>> getRecommendationOrder(){
 		
-		HashMap<String, HashMap<String,Double>> recomendation = new HashMap<String, HashMap<String,Double>>();
+		HashMap<CollectionMethod, HashMap<String,Double>> recomendation = new HashMap<CollectionMethod, HashMap<String,Double>>();
 		
 		
-		if(!methodsEnergyMap.isEmpty()){
-			
-//			ArrayList<String> distinctVariableNames = getDistinctVariableNames(methodsEnergyMap);
-//			
-//			for (String name : distinctVariableNames) {
-//				ArrayList<MethodEnergy> variableMethods = getVariableMethods(name,methodsEnergyMap);
-//				
-//				for (MethodEnergy methodEnergy : variableMethods) {
-//					if(!recomendation.containsKey(name)){
-//						recomendation.put(name, methodEnergy.getConsumptions());
-//					} else {
-//						HashMap<String, Double> consumptions = recomendation.get(name);
-//						for (String operation : consumptions.keySet()) {
-//							Double consumption = consumptions.get(operation);
-//							consumptions.put(operation, consumption+methodEnergy.getConsumptions().get(operation));
-//						}
-//					}
-//				}
-//			}
-			
-			
+		if(!methodsEnergyMap.isEmpty()){			
 			setRecomendationForMethods(recomendation,methodsEnergyMap);			
 		} 
 		
@@ -136,7 +114,7 @@ public class DataStructureEnergyManager {
 	}
 	
 	
-	private void setRecomendationForMethods(HashMap<String, HashMap<String,Double>> recomendation , ArrayList<MethodEnergy> methodsEnergy){
+	private void setRecomendationForMethods(HashMap<CollectionMethod, HashMap<String,Double>> recomendation , ArrayList<MethodEnergy> methodsEnergy){
 		ArrayList<String> distinctVariableNames = getDistinctVariableNames(methodsEnergy);
 		
 		for (String name : distinctVariableNames) {
@@ -144,7 +122,7 @@ public class DataStructureEnergyManager {
 			
 			for (MethodEnergy methodEnergy : variableMethods) {
 				if(!recomendation.containsKey(name)){
-					recomendation.put(name, methodEnergy.getConsumptions());
+					recomendation.put(methodEnergy.getMethod(), methodEnergy.getConsumptions());
 				} else {
 					HashMap<String, Double> consumptions = recomendation.get(name);
 					for (String operation : consumptions.keySet()) {

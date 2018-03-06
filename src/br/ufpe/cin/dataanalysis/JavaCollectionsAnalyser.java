@@ -69,8 +69,8 @@ import com.ibm.wala.util.graph.Graph;
 import com.ibm.wala.util.graph.GraphSlicer;
 import com.ibm.wala.util.ref.ReferenceCleanser;
 
-import br.ufpe.cin.datarecommendation.CollectionsNameResolver;
-import br.ufpe.cin.datarecommendation.ICollectionsNameResolver;
+import br.ufpe.cin.datarecommendation.CollectionsTypeResolver;
+import br.ufpe.cin.datarecommendation.ICollectionsTypeResolver;
 import edu.colorado.walautil.LoopUtil;
 
 //import collection.JavaConversions._;
@@ -1050,7 +1050,7 @@ public class JavaCollectionsAnalyser {
 
 	private static String treatMethodSignature(MethodReference methodReference, IMethod metodoPai, IR ir,
 			SSAInvokeInstruction invks, String nome, String concreteType) {
-		ICollectionsNameResolver nameResolver = new CollectionsNameResolver();
+		ICollectionsTypeResolver nameResolver = new CollectionsTypeResolver();
 		TypeInference ti = TypeInference.make(ir, true);
 		if(nameResolver.isList(concreteType)){
 			if(nome.equals("add")){
@@ -1076,6 +1076,9 @@ public class JavaCollectionsAnalyser {
 					nome = "remove(value)";
 				}
 				
+			}
+			else if (nome.equals("get")) {
+				nome = "randomGet";
 			}
 		} else if (nameResolver.isMap(concreteType)) {
 			if(nome.equals("put")) {
