@@ -56,6 +56,7 @@ import com.ibm.wala.ssa.SSAInstruction;
 import com.ibm.wala.ssa.SSAInvokeInstruction;
 import com.ibm.wala.ssa.SSANewInstruction;
 import com.ibm.wala.ssa.SSAOptions;
+import com.ibm.wala.ssa.SSAReturnInstruction;
 import com.ibm.wala.ssa.SymbolTable;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.FieldReference;
@@ -347,279 +348,6 @@ public class JavaCollectionsAnalyser {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private static ArrayList<String> getClassesNames(IClassHierarchy cha) {
-		ArrayList<String> nomes = new ArrayList<String>();
-		for (IClass c : cha) {
-
-			if (isApplicationClass(c) && !c.isInterface()) {
-				nomes.add(c.getName().toString());
-
-				// for (IMethod m: c.getDeclaredMethods()) {
-				// if (m.getName().toString().equals("run")) {
-				// System.out.println(c.getName());
-				// }
-				// nMethods++;
-				// nParameters += m.getNumberOfParameters();
-				// }
-			}
-		}
-		return nomes;
-	}
-
-	private static void searchMethodsLoopInside(IMethod method, int profundidade, boolean isIntoLoop, LoopBlockInfo outerLoop, ArrayList<LoopBlockInfo> loops,
-			int loopProfundidade) throws InvalidClassFileException {
-
-		AnalysisCache cache = new AnalysisCache();
-		ReferenceCleanser.registerCache(cache);
-
-		if (method == null) {
-			System.out.println("method null");
-		}
-
-		if (method.isAbstract()) {
-			return;
-		}
-
-		IR ir;
-		try {
-			System.out.println("Creating IR...");
-			wipeSoftCaches();
-			ir = cache.getIRFactory().makeIR(method, Everywhere.EVERYWHERE, SSAOptions.defaultOptions());
-			System.out.println("IR OK");
-
-			// ir.toString();
-
-			// LOOP.UTIL
-			// Dominators<ISSABasicBlock> dominators =
-			// LoopUtil.getDominators(ir);
-
-			Set<Object> loopHeaders = LoopUtil.getLoopHeaders(ir);
-			java.util.Set<Object> loopHeadersSet = scala.collection.JavaConversions.setAsJavaSet(loopHeaders);
-
-			SSACFG cfg = ir.getControlFlowGraph();
-
-			ArrayList<LoopBlockInfo> methodLoops = new ArrayList<LoopBlockInfo>();
-
-			for (Object blockNumber : loopHeadersSet) {
-				BasicBlock basicBlockLoopHeader = cfg.getBasicBlock((Integer) blockNumber);
-
-				// Operacoes com o Loop Header
-
-				// Get Loop body
-				Set<ISSABasicBlock> loopBody = LoopUtil.getLoopBody(basicBlockLoopHeader, ir);
-				java.util.Set<ISSABasicBlock> javaLoopBody = scala.collection.JavaConversions.setAsJavaSet(loopBody);
-
-				// Get loop tails
-				List<ISSABasicBlock> loopTails = LoopUtil.getLoopTails(basicBlockLoopHeader, ir);
-				java.util.List<ISSABasicBlock> javaLoopTails = new ArrayList<ISSABasicBlock>();
-				scala.collection.Iterator<ISSABasicBlock> iterator = loopTails.iterator();
-				for (int i = 0; i < loopTails.length(); i++) {
-					ISSABasicBlock loopTailBlock = iterator.next();
-					javaLoopTails.add(loopTailBlock);
-				}
-
-				Option<ISSABasicBlock> loopConditionalBlock = LoopUtil.getLoopConditionalBlock(basicBlockLoopHeader, ir);
-				// boolean isLoopHeader =
-				// LoopUtil.isLoopHeader(basicBlockLoopHeader, ir);
-				boolean isDoWhileLoop = LoopUtil.isDoWhileLoop(basicBlockLoopHeader, ir);
-				// TODO: verivar a exceção Exception in thread "main"
-				// java.lang.AssertionError: assertion failed
-				boolean explicitlyInfiniteLoop = LoopUtil.isExplicitlyInfiniteLoop(basicBlockLoopHeader, ir);
-
-				// no condBlk; we suspect that BB[SSA:68..69]27 -
-				// org.apache.commons.beanutils.converters.AbstractArrayConverter.parseElements(Ljava/lang/String;)Ljava/util/List;
-				// is an explicitly infinite loop
-				// None.get
-				// CHECK IF GET IS NULL or NONE or NONE$ ?
-				ISSABasicBlock loopConditional = null;
-				if (!loopConditionalBlock.isEmpty()) {
-					loopConditional = loopConditionalBlock.get();
-				}
-				LoopBlockInfo loopBlockInfo = new LoopBlockInfo(basicBlockLoopHeader, javaLoopBody, javaLoopTails, loopConditional, isDoWhileLoop,
-						explicitlyInfiniteLoop, ir);
-				methodLoops.add(loopBlockInfo);
-			}
-
-			// DEBUG
-			// boolean loopInside = false;
-			// MethodReference invokedMethod = null;
-
-			// v
-			// Integer iindexTarget = null;
-			// HashMap<Integer, String> collectionsType = new HashMap<Integer,
-			// String>();
-			// LoopInfo loop = null;
-			// for (SSAInstruction instruction: ir.getInstructions()) {
-
-			boolean isRecursive = isMethodRecursive(method, ir.getInstructions());
-			
-			
-			for (int i = 0; i < ir.getInstructions().length; i++) {
-
-				SSAInstruction instruction = ir.getInstructions()[i];
-
-				if (instruction instanceof SSAInvokeInstruction) { // save
-																	// method of
-																	// collections
-					SSAInvokeInstruction invokeIR = (SSAInvokeInstruction) instruction;
-					System.out.println(invokeIR);
-					MethodReference invokedMethodRef = invokeIR.getDeclaredTarget();
-
-					// for (int i = 1; i <=
-					// ir.getSymbolTable().getMaxValueNumber(); i++) {
-					// System.err.println(i + " " + ti.getType(i));
-					// ti.getStatements().toString();
-					// }
-
-					if (invokedMethodRef.getDeclaringClass().toString().contains("Application,")) {
-
-						String concreteType = "";
-						if (invokeIR.getNumberOfUses() > 0) {
-							TypeInference ti = TypeInference.make(ir, false);
-							ti.getType(invokeIR.getUse(0));
-
-							concreteType = ti.getType(invokeIR.getUse(0)).toString();
-							if (concreteType.contains(",")) {
-								concreteType = concreteType.split(",")[1];
-							}
-						}
-
-						/*
-						 * if (invokeIR.getNumberOfUses() > 0) { if
-						 * (collectionsType.containsKey(invokeIR.getUse(0))) {
-						 * concreteType =
-						 * collectionsType.get(invokeIR.getUse(0))
-						 * .split(",")[1]; } }
-						 */
-
-						if (invokedMethodRef != null) {
-							// boolean loopInside = false;
-
-							// Se o metodo ja nao esta dentro de um loop, checa
-							// se ele esta (pega o outer loop)
-							// LoopBlockInfo loop = null;
-
-							ISSABasicBlock basicBlockForInstruction = ir.getBasicBlockForInstruction(invokeIR);
-
-							if (!isIntoLoop && methodLoops != null && !methodLoops.isEmpty()) {
-
-								for (LoopBlockInfo loopBlockInfo : methodLoops) {
-									if (loopBlockInfo.getLoopBody().contains(basicBlockForInstruction)
-											|| loopBlockInfo.getLoopHeader().equals(basicBlockForInstruction)
-											|| /*
-												 * ((!loopBlockInfo.
-												 * isExplicitlyInfiniteLoop())
-												 * &&
-												 */
-											(loopBlockInfo.getLoopConditionalBlock() != null && loopBlockInfo.getLoopConditionalBlock().equals(
-													basicBlockForInstruction))) {
-										isIntoLoop = true;
-										loopProfundidade = profundidade;
-										outerLoop = loopBlockInfo;
-										outerLoop.setProfundidade(loopProfundidade);
-										loops.add(0, outerLoop);
-									}
-								}
-
-							} else { // Se n�o ele verifica se esta dentro de um
-										// inner loop, e insere
-
-								for (LoopBlockInfo loopBlockInfo : methodLoops) {
-									if (loopBlockInfo.getLoopBody().contains(basicBlockForInstruction)) {
-										loopBlockInfo.setProfundidade(profundidade);
-										loops.add(loopBlockInfo);
-									}
-								}
-							}
-
-							// if (!isIntoLoop && loop != null &&
-							// loop.getLoopTarget() > invokeIR.iindex) {
-							// isIntoLoop = true;
-							// loopProfundidade = profundidade;
-							// }
-
-							CallSiteReference callSite = invokeIR.getCallSite();
-
-							ArrayList<String> pacotesJava = iniciarPacotes();
-
-							if (isJavaCollectionMethod(callSite.toString(), pacotesJava)) {
-
-								int bcIndex = ((IBytecodeMethod) method).getBytecodeIndex(invokeIR.iindex);
-								int invokeLineNumber = method.getLineNumber(bcIndex);
-
-								// method.getLocalVariableName(bcIndex,0);
-
-								CollectionMethod metodo = criarMetodo(callSite.getDeclaredTarget(), ir.getMethod(), concreteType, isIntoLoop, outerLoop,
-										invokeLineNumber,ir,invokeIR);
-
-								if (metodo != null) {
-
-									metodo.setProfundidade(profundidade);
-									metodo.setOuterLoops(loops);
-
-									Collection<FieldReference> fields = CodeScanner.getFieldsRead(method);
-
-									String fieldName = "";
-									fieldName = getFieldName(ir, invokeIR, fieldName);
-									metodo.setFieldName(fieldName);
-									metodo.setInsideRecursiveMethod(isRecursive);
-
-									if (!ONLY_LOOP) {
-										adicionarMetodo(metodo);
-									} else if (isIntoLoop) {
-										adicionarMetodo(metodo);
-									}									
-									
-								}
-							} else {
-
-								if (callSite.getDeclaredTarget().getDeclaringClass().getClassLoader().toString().equals("Application classloader\n")
-										&& profundidade < LIMITE) {
-									
-									//verify if method is a start() from thread									
-									if(invokedMethodRef.toString().contains("start()") || invokedMethodRef.toString().contains("ExecutorService, submit(")){
-										
-										//Add to the list if the method start is from a thread/runnable class
-										addThreadRunnableClass(ir, invokeIR, invokedMethodRef);
-									}
-									
-									IMethod resolveMethod = cha.resolveMethod(invokedMethodRef);									
-									
-									// TODO verificar com primordial !!!!
-									if (resolveMethod != null && resolveMethod.getDeclaringClass().getClassLoader().toString().equals("Application")/*&&!sameSignature*/) {
-										if(!sameSignature(method,resolveMethod)){
-											searchMethodsLoopInside(resolveMethod, profundidade + 1, isIntoLoop, outerLoop, loops, loopProfundidade);
-										}
-									}
-								}
-							}
-
-						}
-					}
-				} 
-				
-//				else if(instruction instanceof SSANewInstruction){
-//					
-//				}
-
-				// delete the loops in the same depth or deeper
-				deleteLoopsOutside(loops, profundidade);
-
-				// Checagem para zerar se estiver dentro do loop
-				if (profundidade == loopProfundidade) {
-					isIntoLoop = false;
-					outerLoop = null;
-				}
-
-			}
-
-		} catch (NullPointerException e) {
-
-			e.printStackTrace();
-		}
-
 	}
 	
 	private static void searchMethodsLoopInside(IMethod method, int profundidade, boolean isIntoLoop, LoopBlockInfo outerLoop, ArrayList<LoopBlockInfo> loops,
@@ -948,19 +676,6 @@ public class JavaCollectionsAnalyser {
 		String[] localNames = null;
 		localNames = ir.getLocalNames(invokeIR.iindex, invokeIR.getUse(0));
 
-		// for (int i = 0; i < invokeIR.getNumberOfUses(); i++) {
-		// if(localNames==null){
-		// String[] localNamesDef = ir.getLocalNames(invokeIR.iindex,
-		// invokeIR.getDef());
-		// localNames = ir.getLocalNames(invokeIR.iindex, invokeIR.getUse(i));
-		// System.out.println(localNames);
-		// }
-		// }
-
-		// if(localNames!=null){
-		// fieldName = localNames[0];
-		// }
-
 		if (localNames == null) { // if isn't a local variable
 			for (int j = 0; j < ir.getInstructions().length; j++) {
 				SSAInstruction inst = ir.getInstructions()[j];
@@ -1011,6 +726,41 @@ public class JavaCollectionsAnalyser {
 		}
 	}
 	
+	private static boolean isCollectionReturnedOrPassedAsParameter(IMethod scope, SSAInvokeInstruction invks, IR methodIR) {
+		int collectionReference = invks.getUse(0);//the this parameter
+		boolean returnValue = false;
+		
+		SSAInstruction[] methodInstructions = methodIR.getInstructions();
+		for(SSAInstruction instruction : methodInstructions) {
+			if(instruction instanceof SSAReturnInstruction) {
+				SSAReturnInstruction returnInstruction = (SSAReturnInstruction)instruction;
+				if(!returnInstruction.returnsVoid()) {
+					returnValue = returnInstruction.getUse(0)==collectionReference;
+				}
+			} else if (instruction instanceof SSAInvokeInstruction) {
+				SSAInvokeInstruction invokeInstruction = (SSAInvokeInstruction)instruction;
+				if(invokeInstruction.getNumberOfUses() > 0) {
+					if(!invokeInstruction.isStatic()) {
+						for(int i = 1; i < invokeInstruction.getNumberOfUses(); i++) {
+							if(invokeInstruction.getUse(i) == collectionReference) {
+								returnValue = true;
+								break;
+							}
+						}
+					} else {
+						for(int i = 0; i < invokeInstruction.getNumberOfUses(); i++) {
+							if(invokeInstruction.getUse(i) == collectionReference) {
+								returnValue = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return returnValue;
+	}
 	
 	private static CollectionMethod criarMetodo(MethodReference methodReference, IMethod metodoPai, String concreteType, boolean isIntoLoop,
 			LoopBlockInfo loop, int invokeLineNumber, IR ir, SSAInvokeInstruction invks) {
@@ -1020,7 +770,7 @@ public class JavaCollectionsAnalyser {
 		
 		nome = treatMethodSignature(methodReference, metodoPai, ir, invks, nome, concreteType);
 
-		if (nome.equals("<init>")) {
+		if (nome.equals("<init>") || isCollectionReturnedOrPassedAsParameter(metodoPai,invks,ir)) {
 			return null;
 		}
 
@@ -1101,40 +851,6 @@ public class JavaCollectionsAnalyser {
 		return nome;
 	}
 
-	private static CollectionMethod criarMetodo(MethodReference methodReference, IMethod metodoPai, String concreteType, boolean isIntoLoop,
-			LoopBlockInfo loop, int invokeLineNumber) {
-
-		String nome = methodReference.getName().toString();
-		String pacote[] = methodReference.toString().split(",");
-
-		if (nome.equals("<init>")) {
-			return null;
-		}
-
-		CollectionMethod metodo = new CollectionMethod();
-		metodo.setNome(nome);
-		metodo.setClasse(metodoPai.getDeclaringClass().toString().split(",")[1]);
-		metodo.setCallMethodName(metodoPai.getName().toString());
-		metodo.setPacote(pacote[1].substring(2));
-		metodo.setOcorrencias(1);
-		metodo.setIntoLoop(isIntoLoop);
-		metodo.setConcreteType(concreteType);
-		metodo.setInvokeLineNumber(invokeLineNumber);
-		if (loop != null && loop.getLoopConditionalBlock() != null) {
-			metodo.setConditionalBlock(loop.getLoopConditionalBlock().toString());
-			metodo.setConditionalBlockN(loop.getconditionalBranchInterationNumber());
-		}
-		// if (isIntoLoop && loop != null) {
-		// if (loop.getConditionalInstruntion() != null) {
-		// System.out.println(loop.getConditionalInstruntion());
-		// }
-		// metodo.setInsideForeach(loop.isForeachLoop());
-		// }
-
-		return metodo;
-
-	}
-
 	private static void adicionarMetodo(CollectionMethod metodo) {
 		boolean metodoExistente = false;
 
@@ -1188,85 +904,7 @@ public class JavaCollectionsAnalyser {
 		return result;
 	}
 
-	/*
-	 * Entrypoits -> MainEntrypoints or AllApplicationEntrypoints
-	 */
-	private static CallGraph construirCallGraph(AnalysisScope scope, IClassHierarchy cha) {
-
-		Iterable<Entrypoint> e = Util.makeMainEntrypoints(scope, cha);
-		// All entry points
-		// Iterable<Entrypoint> e = new AllApplicationEntrypoints(scope, cha);
-
-		// Iterable<Entrypoint> e = getAllSourceApplicationEntrypoints(cha);
-
-		// encapsulates various analysis options
-		AnalysisOptions o = new AnalysisOptions(scope, e);
-
-		CallGraphBuilder builder = Util.makeZeroCFABuilder(o, new AnalysisCache(), cha, scope);
-		CallGraph cg = null;
-		try {
-			cg = builder.makeCallGraph(o, null);
-			// System.out.println("Teste");
-		} catch (IllegalArgumentException e1) {
-			// TODOAuto-generated catch block
-			e1.printStackTrace();
-		} catch (CallGraphBuilderCancelException e1) {
-			e1.printStackTrace();
-		}
-
-		return cg;
-	}
-
-	/*
-	 * Entrypoits -> public methods
-	 */
-	private static CallGraph construirCallGraphClassEntrypoints(AnalysisScope scope, IClassHierarchy cha) {
-
-		ArrayList<String> classes = getClassesNames(cha);
-
-		System.out.println("Comecar fazer entryPoints ");
-		Iterable<Entrypoint> e = Util.makeMainEntrypoints(scope, cha, classes.toArray(new String[classes.size()]));
-
-		//
-
-		// get the entrypoints
-		ClassLoaderReference clr = scope.getApplicationLoader();
-		final HashSet<Entrypoint> result = HashSetFactory.make();
-		for (IClass klass : cha) {
-
-			if (isApplicationClass(klass)) {
-
-				if (klass.getClassLoader().getReference().equals(clr)) {
-					Collection<IMethod> allMethods = klass.getDeclaredMethods();
-					for (IMethod m : allMethods) {
-						if (m.isPublic()) {
-							result.add(new DefaultEntrypoint(m, cha));
-						}
-					}
-				}
-
-			}
-		}
-
-		//
-		System.out.println("Comecar a construir CG ");
-		// encapsulates various analysis options
-		AnalysisOptions o = new AnalysisOptions(scope, result);
-		CallGraphBuilder builder = Util.makeZeroCFABuilder(o, new AnalysisCache(), cha, scope);
-		CallGraph cg = null;
-		try {
-			cg = builder.makeCallGraph(o, null);
-			// System.out.println("Teste");
-		} catch (IllegalArgumentException e1) {
-			// TODOAuto-generated catch block
-			e1.printStackTrace();
-		} catch (CallGraphBuilderCancelException e1) {
-			e1.printStackTrace();
-		}
-
-		System.out.println("Terminou o CG ");
-		return cg;
-	}
+	
 
 	/*
 	 * source entrypoints
