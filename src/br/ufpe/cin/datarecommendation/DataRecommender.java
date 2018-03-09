@@ -41,9 +41,10 @@ public class DataRecommender {
 				System.out.println(methodInfo.getFieldName() +";"+type+";"+df.format(typeConsumption.get(type)));
 			}	
 			String recommendedType = getStructureRecommendation(typeConsumption);
-			if(typeResolver.isSameCollection(methodInfo.getConcreteType(), recommendedType))
+			/*if(typeResolver.isSameCollection(methodInfo.getConcreteType(), recommendedType))
 				typesReccommended.put(methodInfo,"Keeps the type \""+recommendedType+"\"");
-			else
+			else*/
+			if(!typeResolver.isSameCollection(methodInfo.getConcreteType(), recommendedType))
 				typesReccommended.put(methodInfo,"Changes the type to \""+recommendedType+"\"");
 		}
 		

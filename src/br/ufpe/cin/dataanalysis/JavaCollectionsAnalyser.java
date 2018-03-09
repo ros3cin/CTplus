@@ -801,20 +801,9 @@ public class JavaCollectionsAnalyser {
 		int collectionReference = invks.getUse(0);//the this parameter
 		boolean returnValue = false;
 		
-		if(scope.isStatic()) {
-			for(int i = 0; i < methodIR.getNumberOfParameters(); i++) {
-				if(collectionReference == methodIR.getParameter(i)) {
-					returnValue = true;
-					break;
-				}
-			}
-		} else {
-			for(int i = 1; i < methodIR.getNumberOfParameters(); i++) {
-				if(collectionReference == methodIR.getParameter(i)) {
-					returnValue = true;
-					break;
-				}
-			}
+		for(int i = scope.isStatic()?0:1; i < methodIR.getNumberOfParameters(); i++) {
+			if(collectionReference == methodIR.getParameter(i))
+				returnValue = true;
 		}
 		
 		SSAInstruction[] methodInstructions = methodIR.getInstructions();
@@ -822,7 +811,8 @@ public class JavaCollectionsAnalyser {
 			if(instruction instanceof SSAReturnInstruction) {
 				SSAReturnInstruction returnInstruction = (SSAReturnInstruction)instruction;
 				if(!returnInstruction.returnsVoid()) {
-					returnValue = returnInstruction.getUse(0)==collectionReference;
+					if(returnInstruction.getUse(0)==collectionReference)
+						returnValue = true;
 				}
 			} else if (instruction instanceof SSAInvokeInstruction) {
 				SSAInvokeInstruction invokeInstruction = (SSAInvokeInstruction)instruction;
