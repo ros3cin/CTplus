@@ -3,7 +3,11 @@ package br.ufpe.cin.datarecommendation;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.TreeMap;
 
 import br.ufpe.cin.dataanalysis.CollectionMethod;
 
@@ -24,10 +28,10 @@ public class DataRecommender {
 		
 		EnergyProfileManager profileManager = new EnergyProfileManager(energyProfilesFromFile);
 		DataStructureEnergyManager dataEnergyManager = new DataStructureEnergyManager(methods,profileManager);
-		HashMap<CollectionMethod, HashMap<String,Double>> recommendationOrder = dataEnergyManager.getRecommendationOrder();
+		TreeMap<CollectionMethod, HashMap<String,Double>> recommendationOrder = dataEnergyManager.getRecommendationOrder();
 		
 		
-		HashMap<String, String> typesReccommended = new HashMap<String, String>();
+		HashMap<CollectionMethod, String> typesReccommended = new HashMap<CollectionMethod, String>();
 		ICollectionsTypeResolver typeResolver = new CollectionsTypeResolver();
 		
 		for (CollectionMethod methodInfo : recommendationOrder.keySet()) {
@@ -38,15 +42,35 @@ public class DataRecommender {
 			}	
 			String recommendedType = getStructureRecommendation(typeConsumption);
 			if(typeResolver.isSameCollection(methodInfo.getConcreteType(), recommendedType))
-				typesReccommended.put(methodInfo.getFieldName(),"Keeps the type \""+recommendedType+"\"");
+				typesReccommended.put(methodInfo,"Keeps the type \""+recommendedType+"\"");
 			else
-				typesReccommended.put(methodInfo.getFieldName(),"Changes the type to \""+recommendedType+"\"");
+				typesReccommended.put(methodInfo,"Changes the type to \""+recommendedType+"\"");
 		}
 		
-		for (String nome : typesReccommended.keySet()) {
-			System.out.println(nome+";"+typesReccommended.get(nome));
+		class Result {
+			public String fieldName;
+			public String classContainingField;
+			public String recommendation;
 		}
+		List<Result> results = new ArrayList<Result>();
+		for (CollectionMethod methodInfo : typesReccommended.keySet()) {
+			Result result = new Result();
+			result.fieldName = methodInfo.getFieldName();
+			result.classContainingField = methodInfo.getClasse();
+			result.recommendation = typesReccommended.get(methodInfo);
+			results.add(result);
+			//System.out.println(methodInfo.getFieldName()+";"+typesReccommended.get(methodInfo));
+		}
+		Collections.sort(results, new Comparator<Result>() {
+			@Override
+			public int compare(Result o1, Result o2) {
+				return o1.classContainingField.compareTo(o2.classContainingField);
+			}
+		});
 		
+		for(Result result : results) {
+			System.out.println(result.fieldName+";"+result.recommendation);
+		}
 	}
 	
 	private static String getStructureRecommendation(HashMap<String,Double> typeConsumption){

@@ -14,15 +14,15 @@ public class CollectionMethodDTO extends CollectionMethod{
 	private Integer ocurrencies;
 	private String loopInfo;
 	
-	public CollectionMethodDTO(String concreteType, String fieldName, String method, Integer ocurrencies, String loopInfo) {
+	public CollectionMethodDTO(String concreteType, String fieldName, String method, Integer ocurrencies, String loopInfo, String classContainingField) {
 		super();
 		this.concreteType = concreteType;
 		this.fieldName = fieldName;
 		this.method = method;
 		this.ocurrencies = ocurrencies;
 		this.loopInfo = loopInfo;
+		setClasse(classContainingField);
 	}
-	
 	
 	@Override
 	public String getConcreteType() {
@@ -97,7 +97,5 @@ public class CollectionMethodDTO extends CollectionMethod{
 	public void setLoopInfo(String loopInfo) {
 		this.loopInfo = loopInfo;
 	}
-	
-	
 
 }

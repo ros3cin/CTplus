@@ -60,18 +60,13 @@ public class ReadFile {
 
 		    if(elements.length > 10){
 			    String type = elements[1];
+			    String classContainingField = elements[6];
 			    String name = elements[3]+"-"+elements[6];
 			    String operation = elements[4];
 			    Integer ocurrencies = Integer.parseInt(elements[7]);
 			    String loopInfo = elements[9];
-			    
-			    if(operation.equals("addElement")){
-			    	operation = "add";
-			    }else if(operation.equals("elementAt")){
-			    	operation = "get";
-			    }
 	
-			    CollectionMethodDTO temp = new CollectionMethodDTO(type,name, operation,ocurrencies, loopInfo);
+			    CollectionMethodDTO temp = new CollectionMethodDTO(type,name, operation,ocurrencies, loopInfo, classContainingField);
 			    datalist.add(temp);
 	
 			    // read the next line

@@ -1,7 +1,9 @@
 package br.ufpe.cin.datarecommendation;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import br.ufpe.cin.dataanalysis.CollectionMethod;
 
@@ -92,10 +94,17 @@ public class DataStructureEnergyManager {
 		}
 	}
 	
-	public HashMap<CollectionMethod, HashMap<String,Double>> getRecommendationOrder(){
+	public TreeMap<CollectionMethod, HashMap<String,Double>> getRecommendationOrder(){
 		
-		HashMap<CollectionMethod, HashMap<String,Double>> recomendation = new HashMap<CollectionMethod, HashMap<String,Double>>();
-		
+		TreeMap<CollectionMethod, HashMap<String,Double>> recomendation = 
+				new TreeMap<CollectionMethod, HashMap<String,Double>>(new Comparator<CollectionMethod>() {
+
+			@Override
+			public int compare(CollectionMethod o1, CollectionMethod o2) {
+				return o1.getFieldName().compareTo(o2.getFieldName());
+			}
+			
+		});
 		
 		if(!methodsEnergyMap.isEmpty()){			
 			setRecomendationForMethods(recomendation,methodsEnergyMap);			
@@ -114,17 +123,17 @@ public class DataStructureEnergyManager {
 	}
 	
 	
-	private void setRecomendationForMethods(HashMap<CollectionMethod, HashMap<String,Double>> recomendation , ArrayList<MethodEnergy> methodsEnergy){
+	private void setRecomendationForMethods(TreeMap<CollectionMethod, HashMap<String,Double>> recomendation , ArrayList<MethodEnergy> methodsEnergy){
 		ArrayList<String> distinctVariableNames = getDistinctVariableNames(methodsEnergy);
 		
 		for (String name : distinctVariableNames) {
 			ArrayList<MethodEnergy> variableMethods = getVariableMethods(name,methodsEnergy);
 			
 			for (MethodEnergy methodEnergy : variableMethods) {
-				if(!recomendation.containsKey(name)){
+				if(!recomendation.containsKey(methodEnergy.getMethod())){
 					recomendation.put(methodEnergy.getMethod(), methodEnergy.getConsumptions());
 				} else {
-					HashMap<String, Double> consumptions = recomendation.get(name);
+					HashMap<String, Double> consumptions = recomendation.get(methodEnergy.getMethod());
 					for (String operation : consumptions.keySet()) {
 						Double consumption = consumptions.get(operation);
 						if(methodEnergy.getConsumptions().get(operation)!=null)

@@ -14,9 +14,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Map;
 
 import scala.Option;
 import scala.collection.immutable.List;
@@ -29,6 +31,7 @@ import com.ibm.wala.classLoader.CallSiteReference;
 import com.ibm.wala.classLoader.CodeScanner;
 import com.ibm.wala.classLoader.IBytecodeMethod;
 import com.ibm.wala.classLoader.IClass;
+import com.ibm.wala.classLoader.IField;
 import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.ipa.callgraph.AnalysisCache;
 import com.ibm.wala.ipa.callgraph.AnalysisOptions;
@@ -47,6 +50,7 @@ import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.shrikeCT.InvalidClassFileException;
+import com.ibm.wala.ssa.DefaultIRFactory;
 import com.ibm.wala.ssa.IR;
 import com.ibm.wala.ssa.ISSABasicBlock;
 import com.ibm.wala.ssa.SSACFG;
@@ -69,6 +73,7 @@ import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.graph.Graph;
 import com.ibm.wala.util.graph.GraphSlicer;
 import com.ibm.wala.util.ref.ReferenceCleanser;
+import com.ibm.wala.util.strings.Atom;
 
 import br.ufpe.cin.datarecommendation.CollectionsTypeResolver;
 import br.ufpe.cin.datarecommendation.ICollectionsTypeResolver;
@@ -221,12 +226,14 @@ public class JavaCollectionsAnalyser {
 				ReferenceCleanser.registerClassHierarchy(cha);
 
 				if (isApplicationClass(c)) {
-
+					Collection<Atom> allowedFields = new ArrayList<Atom>();
+					computeAllowedFields(c, allowedFields);
+					
 					for (IMethod method : c.getDeclaredMethods()) {
 						if(isMethodOfInterest(method,componentsOfInterest)) {
 							ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
 							java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
-							searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest);
+							searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest,allowedFields);
 						}
 
 					}
@@ -240,11 +247,13 @@ public class JavaCollectionsAnalyser {
 				
 				for (int i = 0; i < classesTemp.size(); i++) {
 					IClass c = classesTemp.get(i);
+					Collection<Atom> allowedFields = new ArrayList<Atom>();
+					computeAllowedFields(c, allowedFields);
 					IMethod methodRun = callMethods("Run", c.getDeclaredMethods());
 					if(methodRun!=null){
 						ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
 						java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
-						searchMethodsLoopInside(methodRun, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest);
+						searchMethodsLoopInside(methodRun, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest,allowedFields);
 					}
 					threadsRunnableClasses.remove(0);
 				}
@@ -258,6 +267,56 @@ public class JavaCollectionsAnalyser {
 		exibirHora();
 		gerarArquivoCsv(criarNomeArquivo(""));
 		
+	}
+
+	/**
+	 * Pre computing which class variables can receive a recommendation.
+	 * We are leaving out the public variables and the variables that are
+	 * returned or passed as parameter to some other method.
+	 * 
+	 * @param c
+	 * @param allowedFields
+	 */
+	private static void computeAllowedFields(IClass c, Collection<Atom> allowedFields) {
+		for(IField field : c.getDeclaredInstanceFields()) {
+			if(field.isPrivate()) {
+				allowedFields.add(field.getName());
+			}
+		}
+		for(IField field : c.getDeclaredStaticFields()) {
+			if(field.isPrivate()) {
+				allowedFields.add(field.getName());
+			}
+		}
+		DefaultIRFactory irFactory = new DefaultIRFactory();
+		for (IMethod method : c.getDeclaredMethods()) {
+			if(method.isAbstract())
+				continue;
+			IR methodIR = irFactory.makeIR(method, Everywhere.EVERYWHERE, SSAOptions.defaultOptions());
+			Map<Integer,Atom> classVariableRef = new HashMap<Integer,Atom>();
+			for(SSAInstruction ssaInstruction : methodIR.getInstructions()) {
+				if(ssaInstruction instanceof SSAGetInstruction) {
+					SSAGetInstruction getInstruction = (SSAGetInstruction)ssaInstruction;
+					Atom variableName = getInstruction.getDeclaredField().getName();
+					if(allowedFields.contains(variableName)) {
+						classVariableRef.put(getInstruction.getDef(0), getInstruction.getDeclaredField().getName());
+					}
+				} else if(ssaInstruction instanceof SSAReturnInstruction) {
+					SSAReturnInstruction returnInstruction = (SSAReturnInstruction)ssaInstruction;
+					if(classVariableRef.containsKey(returnInstruction.getUse(0))){
+						allowedFields.remove(classVariableRef.get(returnInstruction.getUse(0)));
+					}
+				} else if(ssaInstruction instanceof SSAInvokeInstruction) {
+					SSAInvokeInstruction invokeInstruction = (SSAInvokeInstruction)ssaInstruction;
+					int i = invokeInstruction.isStatic() ? 0 : 1;
+					for(;i<invokeInstruction.getNumberOfUses(); i++) {
+						if(classVariableRef.containsKey(invokeInstruction.getUse(i))){
+							allowedFields.remove(classVariableRef.get(invokeInstruction.getUse(i)));
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	private static boolean isMethodOfInterest(IMethod method, java.util.List<ComponentOfInterest> componentsOfInterest) {
@@ -351,7 +410,7 @@ public class JavaCollectionsAnalyser {
 	}
 	
 	private static void searchMethodsLoopInside(IMethod method, int profundidade, boolean isIntoLoop, LoopBlockInfo outerLoop, ArrayList<LoopBlockInfo> loops,
-			int loopProfundidade, java.util.List<IMethod> alreadyVisited,java.util.List<ComponentOfInterest> componentsOfInterest) throws InvalidClassFileException {
+			int loopProfundidade, java.util.List<IMethod> alreadyVisited,java.util.List<ComponentOfInterest> componentsOfInterest, Collection<Atom> allowedFields) throws InvalidClassFileException {
 
 		alreadyVisited.add(method);
 		AnalysisCache cache = new AnalysisCache();
@@ -420,12 +479,15 @@ public class JavaCollectionsAnalyser {
 
 			boolean isRecursive = isMethodRecursive(method, ir.getInstructions());
 			
-			
+			Map<Integer,Atom> classVariableRef = new HashMap<Integer,Atom>();
 			for (int i = 0; i < ir.getInstructions().length; i++) {
 
 				SSAInstruction instruction = ir.getInstructions()[i];
-
-				if (instruction instanceof SSAInvokeInstruction) { // save
+				if (instruction instanceof SSAGetInstruction) {
+					SSAGetInstruction getInstruction = (SSAGetInstruction)instruction;
+					classVariableRef.put(getInstruction.getDef(0), getInstruction.getDeclaredField().getName());
+				}
+				else if (instruction instanceof SSAInvokeInstruction) { // save
 																	// method of
 																	// collections
 					SSAInvokeInstruction invokeIR = (SSAInvokeInstruction) instruction;
@@ -489,9 +551,18 @@ public class JavaCollectionsAnalyser {
 								int invokeLineNumber = method.getLineNumber(bcIndex);
 
 								// method.getLocalVariableName(bcIndex,0);
-
-								CollectionMethod metodo = criarMetodo(callSite.getDeclaredTarget(), ir.getMethod(), concreteType, isIntoLoop, outerLoop,
+								CollectionMethod metodo = null;
+								
+								boolean isAllowed = true;
+								
+								if(classVariableRef.containsKey(invokeIR.getUse(0))) {
+									isAllowed = allowedFields.contains(classVariableRef.get(invokeIR.getUse(0)));
+								}
+								
+								if(isAllowed) {
+									metodo = criarMetodo(callSite.getDeclaredTarget(), ir.getMethod(), concreteType, isIntoLoop, outerLoop,
 										invokeLineNumber,ir,invokeIR);
+								}
 
 								if (metodo != null) {
 
@@ -528,7 +599,7 @@ public class JavaCollectionsAnalyser {
 									// TODO verificar com primordial !!!!
 									if (resolveMethod != null && resolveMethod.getDeclaringClass().getClassLoader().toString().equals("Application")/*&&!sameSignature*/) {
 										if(!alreadyVisited.contains(resolveMethod) && isMethodOfInterest(method, componentsOfInterest)){
-											searchMethodsLoopInside(resolveMethod, profundidade + 1, isIntoLoop, outerLoop, loops, loopProfundidade,alreadyVisited,componentsOfInterest);
+											searchMethodsLoopInside(resolveMethod, profundidade + 1, isIntoLoop, outerLoop, loops, loopProfundidade,alreadyVisited,componentsOfInterest,allowedFields);
 										}
 									}
 								}
@@ -729,6 +800,22 @@ public class JavaCollectionsAnalyser {
 	private static boolean isCollectionReturnedOrPassedAsParameter(IMethod scope, SSAInvokeInstruction invks, IR methodIR) {
 		int collectionReference = invks.getUse(0);//the this parameter
 		boolean returnValue = false;
+		
+		if(scope.isStatic()) {
+			for(int i = 0; i < methodIR.getNumberOfParameters(); i++) {
+				if(collectionReference == methodIR.getParameter(i)) {
+					returnValue = true;
+					break;
+				}
+			}
+		} else {
+			for(int i = 1; i < methodIR.getNumberOfParameters(); i++) {
+				if(collectionReference == methodIR.getParameter(i)) {
+					returnValue = true;
+					break;
+				}
+			}
+		}
 		
 		SSAInstruction[] methodInstructions = methodIR.getInstructions();
 		for(SSAInstruction instruction : methodInstructions) {
