@@ -5,6 +5,8 @@ public interface ICollectionsTypeResolver {
 	public boolean isList(String name);
 	public boolean isMap(String name);
 	
+	public boolean isFromStandardJCF(String name);
+	
 	public boolean isThreadSafeList(String name);
 	public boolean isThreadSafeMap(String name);
 	public boolean isThreadSafeSet(String name);

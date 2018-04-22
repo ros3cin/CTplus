@@ -52,6 +52,7 @@ public class DataRecommender {
 			public String fieldName;
 			public String classContainingField;
 			public String recommendation;
+			public String methodUsingVariable;
 		}
 		List<Result> results = new ArrayList<Result>();
 		for (CollectionMethod methodInfo : typesReccommended.keySet()) {
@@ -59,6 +60,7 @@ public class DataRecommender {
 			result.fieldName = methodInfo.getFieldName();
 			result.classContainingField = methodInfo.getClasse();
 			result.recommendation = typesReccommended.get(methodInfo);
+			result.methodUsingVariable = methodInfo.getCallMethodName();
 			results.add(result);
 			//System.out.println(methodInfo.getFieldName()+";"+typesReccommended.get(methodInfo));
 		}
@@ -70,7 +72,7 @@ public class DataRecommender {
 		});
 		
 		for(Result result : results) {
-			System.out.println(result.fieldName+";"+result.recommendation);
+			System.out.println(result.fieldName+";"+"Method that uses the variable:"+result.methodUsingVariable+";"+result.recommendation);
 		}
 	}
 	

@@ -143,8 +143,8 @@ public class JavaCollectionsAnalyser {
 	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException {
 
-		final String ESCOPO = "dat/meuteste-linux.txt";
-		final String EXCLUSOES = "dat/meuteste-linux-exclusions.txt";
+		final String ESCOPO = "dat/bm-xalan";
+		final String EXCLUSOES = "dat/bm-xalanExclusions.txt";
 
 		
 		File projeto = new File("hello.txt");
@@ -156,17 +156,11 @@ public class JavaCollectionsAnalyser {
 		threadsRunnableClasses = new ArrayList<IClass>();
 
 		File scopeFile;
-		//scopeFile = new File("dat/Project_to_analyse");
-		//scopeFile = new File("dat/TesteLoop_jar");
-		//scopeFile = new File("dat/bm-xalan");
 		scopeFile = new File(ESCOPO);
 
 		File scopeExclusion;
-		//scopeExclusion = new File("dat/AllLibraryExclusion.txt");
-	    //scopeExclusion = new File("dat/bm-xalanExclusions.txt");
 		scopeExclusion = new File(EXCLUSOES);
 
-		// AnalysisScope scope = getSplashScope();
 		AnalysisScope scope = AnalysisScopeReader.readJavaScope(scopeFile.getAbsolutePath(), scopeExclusion,
 				JavaCollectionsAnalyser.class.getClassLoader());
 
@@ -178,7 +172,7 @@ public class JavaCollectionsAnalyser {
 		System.err.println("Done");
 		
 		java.util.List<ComponentOfInterest> tomcatComponentsOfInterest = new ArrayList<ComponentOfInterest>();
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/dacapo/Main", "main"));
+		/*tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/dacapo/Main", "main"));
 		tomcatComponentsOfInterest.add(new ComponentOfInterest("catalina/startup/catalina", null, "load"));
 		tomcatComponentsOfInterest.add(new ComponentOfInterest("catalina/core/standardserver",null, "start"));
 		tomcatComponentsOfInterest.add(new ComponentOfInterest("catalina/core/standardserver",null, "initialize"));
@@ -198,13 +192,16 @@ public class JavaCollectionsAnalyser {
 		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/res/StringManager", null));
 		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/threads/ThreadPool", null));
 		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/IntrospectionUtils", null));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest("org/apache/catalina/session", null, null));
+		tomcatComponentsOfInterest.add(new ComponentOfInterest("org/apache/catalina/core", null, null));*/
+		tomcatComponentsOfInterest.add(new ComponentOfInterest("org/apache/catalina", null, null));
 		
 		java.util.List<ComponentOfInterest> xalanComponentsOfInterest = new ArrayList<ComponentOfInterest>();
 		/*xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/CopyOfXSLTBenchOld", "main"));
 		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startElement"));
 		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "endDocument"));
 		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startPrefixMapping"));*/
-		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan", null));
+		xalanComponentsOfInterest.add(new ComponentOfInterest("org/apache/xalan", null, null));
 		
 		java.util.List<ComponentOfInterest> nlgservice = new ArrayList<ComponentOfInterest>();
 		nlgservice.add(new ComponentOfInterest("NLGService/simplenlg/realiser", "", ""));
@@ -569,8 +566,6 @@ public class JavaCollectionsAnalyser {
 									metodo.setProfundidade(profundidade);
 									metodo.setOuterLoops(loops);
 
-									Collection<FieldReference> fields = CodeScanner.getFieldsRead(method);
-
 									String fieldName = "";
 									fieldName = getFieldName(ir, invokeIR, fieldName);
 									metodo.setFieldName(fieldName);
@@ -746,7 +741,7 @@ public class JavaCollectionsAnalyser {
 		// invokeIR.getNumberOfUses();
 		String[] localNames = null;
 		localNames = ir.getLocalNames(invokeIR.iindex, invokeIR.getUse(0));
-
+		
 		if (localNames == null) { // if isn't a local variable
 			for (int j = 0; j < ir.getInstructions().length; j++) {
 				SSAInstruction inst = ir.getInstructions()[j];
@@ -845,7 +840,7 @@ public class JavaCollectionsAnalyser {
 		String nome = methodReference.getName().toString();
 		String pacote[] = methodReference.toString().split(",");
 		
-		nome = treatMethodSignature(methodReference, metodoPai, ir, invks, nome, concreteType);
+		nome = treatMethodSignature(methodReference, metodoPai, ir, invks, nome, concreteType,loop);
 
 		if (nome.equals("<init>") || isCollectionReturnedOrPassedAsParameter(metodoPai,invks,ir)) {
 			return null;
@@ -875,8 +870,55 @@ public class JavaCollectionsAnalyser {
 
 	}
 
+	/**
+	 * Heuristic - the get is sequential if its parameter is a variable declared on a loop header or tail
+	 * @param ir
+	 * @param loopBlock
+	 * @param invks
+	 * @return true if, according to this heuristic, the get is sequential
+	 */
+	private static boolean isSequentialGet(IR ir, LoopBlockInfo loopBlock, SSAInvokeInstruction invks) {
+		boolean isSequential = false;
+		int parameterValueNumber = invks.getUse(1);
+		BasicBlock loopHeaderBlock = loopBlock.getLoopHeader();
+
+		for (SSAInstruction instruction :loopHeaderBlock.getAllInstructions()) {
+			int numOfDefs = instruction.getNumberOfDefs();
+			for(int i = 0; i < numOfDefs; i++) {
+				if(instruction.getDef(i) == parameterValueNumber) {
+					isSequential= true;
+					break;
+				}
+			}
+			if(isSequential)
+				break;
+		}
+		
+		if(!isSequential) {
+			for(ISSABasicBlock basicBlock : loopBlock.getLoopTails()) {
+				Iterator<SSAInstruction> instructionIterator = basicBlock.iterator();
+				while(instructionIterator.hasNext()) {
+					SSAInstruction instruction = instructionIterator.next();
+					int numOfDefs = instruction.getNumberOfDefs();
+					for(int i = 0; i < numOfDefs; i++) {
+						if(instruction.getDef(i) == parameterValueNumber) {
+							isSequential= true;
+							break;
+						}
+					}
+					if(isSequential)
+						break;
+				}
+				if(isSequential)
+					break;
+			}
+		}
+		
+		return isSequential;
+	}
+	
 	private static String treatMethodSignature(MethodReference methodReference, IMethod metodoPai, IR ir,
-			SSAInvokeInstruction invks, String nome, String concreteType) {
+			SSAInvokeInstruction invks, String nome, String concreteType, LoopBlockInfo loopBlock) {
 		ICollectionsTypeResolver nameResolver = new CollectionsTypeResolver();
 		TypeInference ti = TypeInference.make(ir, true);
 		if(nameResolver.isList(concreteType)){
@@ -905,7 +947,8 @@ public class JavaCollectionsAnalyser {
 				
 			}
 			else if (nome.equals("get")) {
-				nome = "randomGet";
+				boolean isSequentialGet= loopBlock != null? isSequentialGet(ir,loopBlock,invks) : false;
+				nome = isSequentialGet ? "sequentialGet" : "randomGet" ;
 			}
 		} else if (nameResolver.isMap(concreteType)) {
 			if(nome.equals("put")) {

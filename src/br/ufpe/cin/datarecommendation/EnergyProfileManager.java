@@ -6,9 +6,8 @@ public class EnergyProfileManager {
 
 	private ArrayList<EnergyProfile> profiles;
 	private ArrayList<String> mapTypes = new ArrayList<String>();
-	private ArrayList<String> listTypes = new ArrayList<String>();;
-	private ArrayList<String> setTypes = new ArrayList<String>();;
-	
+	private ArrayList<String> listTypes = new ArrayList<String>();
+	private ArrayList<String> setTypes = new ArrayList<String>();
 	
 	public EnergyProfileManager(ArrayList<EnergyProfile> profiles) {
 		super();
@@ -16,8 +15,6 @@ public class EnergyProfileManager {
 		
 		fillTypes();		
 	}
-	
-	
 
 	private void fillTypes() {
 		ICollectionsTypeResolver nameResolver = new CollectionsTypeResolver();
@@ -25,15 +22,24 @@ public class EnergyProfileManager {
 			
 			if(nameResolver.isSet(profile.getDataStructureType())){
 				if(!setTypes.contains(profile.getDataStructureType())) {
-					setTypes.add(profile.getDataStructureType());
+					boolean shouldAdd = RecommenderConfiguration.STANDARD_JCF_ONLY ? nameResolver.isFromStandardJCF(profile.getDataStructureType()) : true;
+					if(shouldAdd) {
+						setTypes.add(profile.getDataStructureType());
+					}
 				}
 			}else if(nameResolver.isMap(profile.getDataStructureType())){
 				if(!mapTypes.contains(profile.getDataStructureType())) {
-					mapTypes.add(profile.getDataStructureType());
+					boolean shouldAdd = RecommenderConfiguration.STANDARD_JCF_ONLY ? nameResolver.isFromStandardJCF(profile.getDataStructureType()) : true;
+					if(shouldAdd) {
+						mapTypes.add(profile.getDataStructureType());
+					}
 				}
 			} else if(nameResolver.isList(profile.getDataStructureType())){
 				if(!listTypes.contains(profile.getDataStructureType())) {
-					listTypes.add(profile.getDataStructureType());
+					boolean shouldAdd = RecommenderConfiguration.STANDARD_JCF_ONLY ? nameResolver.isFromStandardJCF(profile.getDataStructureType()) : true;
+					if(shouldAdd) {
+						listTypes.add(profile.getDataStructureType());
+					}
 				}
 			} 
 		}

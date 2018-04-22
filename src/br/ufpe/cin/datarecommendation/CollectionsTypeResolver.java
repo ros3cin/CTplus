@@ -338,4 +338,37 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 			return false;
 	}
 
+	@Override
+	public boolean isFromStandardJCF(String name) {
+		return isSynchronizedLinkedList(name)||
+				isVector(name)||
+				isSynchronizedArrayList(name)||
+				isCopyOnWriteArrayList(name)||
+				isArrayList(name)||
+				isLinkedList(name)||
+				isListInterface(name)||
+				isLinkedHashMap(name)||
+				isSynchronizedLinkedHashMap(name)||
+				isConcurrentHashMap(name)||
+				isConcurrentSkipListMap(name)||
+
+				isHashtable(name)||
+				isSynchronizedHashMap(name)||
+				isSynchronizedTreeMap(name)||
+				isSynchronizedWeakHashMap(name)||
+				isHashMap(name)||
+				isTreeMap(name)||
+				isWeakHashMap(name)||
+				isMapInterface(name)||
+
+				isSynchronizedLinkedHashSet(name)||
+				isConcurrentSkipListSet(name)||
+				isSynchronizedHashSet(name)||
+				isSetFromConcurrentHashMap(name)||
+				isSynchronizedTreeSet(name)||
+				isHashSet(name)||
+				isTreeSet(name)||
+				isLinkedHashSet(name)||
+				isSetInterface(name);
+	}
 }
