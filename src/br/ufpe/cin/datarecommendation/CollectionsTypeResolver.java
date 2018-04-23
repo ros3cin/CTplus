@@ -371,4 +371,26 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 				isLinkedHashSet(name)||
 				isSetInterface(name);
 	}
+
+	@Override
+	public boolean isFromEclipseCollections(String name) {
+		return isSynchronizedFastList(name)||isFastList(name)||isConcurrentHashMapEclipseCollections(name)||
+				isSynchronizedUnifiedMap(name)||isUnifiedMap(name)||isSynchronizedUnifiedSet(name)||isSynchronizedTreeSortedSet(name)
+				||isUnifiedSet(name)||isTreeSortedSet(name);
+	}
+
+	@Override
+	public boolean isFromApacheCommonsCollections(String name) {
+		return isTreeList(name)||isNodeCachingLinkedList(name)||isCursorableLinkedList(name)||isStaticBucketMap(name)||isHashedMap(name);
+	}
+
+	@Override
+	public boolean isFromJSR166e(String name) {
+		return isConcurrentHashMapV8(name);
+	}
+	
+	@Override
+	public boolean isCursorableLinkedList(String source) {
+		return "cursorableLinkedList(ApacheCommonsCollections)".equalsIgnoreCase(source);
+	}
 }

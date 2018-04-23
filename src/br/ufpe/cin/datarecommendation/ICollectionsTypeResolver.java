@@ -6,6 +6,9 @@ public interface ICollectionsTypeResolver {
 	public boolean isMap(String name);
 	
 	public boolean isFromStandardJCF(String name);
+	public boolean isFromEclipseCollections(String name);
+	public boolean isFromApacheCommonsCollections(String name);
+	public boolean isFromJSR166e(String name);
 	
 	public boolean isThreadSafeList(String name);
 	public boolean isThreadSafeMap(String name);
@@ -27,6 +30,7 @@ public interface ICollectionsTypeResolver {
 	public boolean isFastList(String source);
 	public boolean isTreeList(String source);
 	public boolean isNodeCachingLinkedList(String source);
+	public boolean isCursorableLinkedList(String source);
 	public boolean isListInterface(String source);
 	
 	public boolean isLinkedHashMap(String source);

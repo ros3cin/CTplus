@@ -16,28 +16,33 @@ public class EnergyProfileManager {
 		fillTypes();		
 	}
 
+	private boolean shouldAddDataStructure(String type) {
+		ICollectionsTypeResolver nameResolver = new CollectionsTypeResolver();
+		return (RecommenderConfiguration.INCLUDE_JCF && nameResolver.isFromStandardJCF(type)) || 
+				(RecommenderConfiguration.INCLUDE_ECLIPSE_COLLECTIONS && nameResolver.isFromEclipseCollections(type)) ||
+				(RecommenderConfiguration.INCLUDE_APACHE_COMMONS_COLLECTIONS && nameResolver.isFromApacheCommonsCollections(type)) ||
+				(RecommenderConfiguration.INCLUDE_JSR166e && nameResolver.isFromJSR166e(type));
+	}
+	
 	private void fillTypes() {
 		ICollectionsTypeResolver nameResolver = new CollectionsTypeResolver();
 		for (EnergyProfile profile : profiles) {
 			
 			if(nameResolver.isSet(profile.getDataStructureType())){
 				if(!setTypes.contains(profile.getDataStructureType())) {
-					boolean shouldAdd = RecommenderConfiguration.STANDARD_JCF_ONLY ? nameResolver.isFromStandardJCF(profile.getDataStructureType()) : true;
-					if(shouldAdd) {
+					if(shouldAddDataStructure(profile.getDataStructureType())) {
 						setTypes.add(profile.getDataStructureType());
 					}
 				}
 			}else if(nameResolver.isMap(profile.getDataStructureType())){
 				if(!mapTypes.contains(profile.getDataStructureType())) {
-					boolean shouldAdd = RecommenderConfiguration.STANDARD_JCF_ONLY ? nameResolver.isFromStandardJCF(profile.getDataStructureType()) : true;
-					if(shouldAdd) {
+					if(shouldAddDataStructure(profile.getDataStructureType())) {
 						mapTypes.add(profile.getDataStructureType());
 					}
 				}
 			} else if(nameResolver.isList(profile.getDataStructureType())){
 				if(!listTypes.contains(profile.getDataStructureType())) {
-					boolean shouldAdd = RecommenderConfiguration.STANDARD_JCF_ONLY ? nameResolver.isFromStandardJCF(profile.getDataStructureType()) : true;
-					if(shouldAdd) {
+					if(shouldAddDataStructure(profile.getDataStructureType())) {
 						listTypes.add(profile.getDataStructureType());
 					}
 				}

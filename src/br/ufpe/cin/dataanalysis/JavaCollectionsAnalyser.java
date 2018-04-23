@@ -143,8 +143,8 @@ public class JavaCollectionsAnalyser {
 	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException {
 
-		final String ESCOPO = "dat/bm-xalan";
-		final String EXCLUSOES = "dat/bm-xalanExclusions.txt";
+		final String ESCOPO = "dat/bm-tomcat";
+		final String EXCLUSOES = "dat/bm-tomcatExclusions.txt";
 
 		
 		File projeto = new File("hello.txt");
@@ -212,7 +212,7 @@ public class JavaCollectionsAnalyser {
 		java.util.List<ComponentOfInterest> tomcat85 = new ArrayList<ComponentOfInterest>();
 		tomcat85.add(new ComponentOfInterest("org/apache/catalina/util", "", ""));
 		
-		traverseMethods(cha,xalanComponentsOfInterest);
+		traverseMethods(cha,tomcatComponentsOfInterest);
 
 	}
 	
