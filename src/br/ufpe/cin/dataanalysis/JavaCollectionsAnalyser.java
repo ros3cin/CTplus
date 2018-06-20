@@ -104,9 +104,7 @@ public class JavaCollectionsAnalyser {
 	private static String MAPS = "Map,AbstractMap, Attributes, AuthProvider, ConcurrentHashMap, ConcurrentSkipListMap, EnumMap, HashMap, Hashtable, IdentityHashMap, LinkedHashMap, PrinterStateReasons, Properties, Provider, RenderingHints, SimpleBindings, TabularDataSupport, TreeMap, UIDefaults, WeakHashMap";
 	private static String SETS = "Set,AbstractSet, ConcurrentSkipListSet, CopyOnWriteArraySet, EnumSet, HashSet, JobStateReasons, LinkedHashSet, TreeSet";
 
-	private static String CAMINHO_CSV = "/home/ros/Documents/Mestrado/Analise/";
-	
-	private static String MAIN = "XSLTBenchOld";
+	private static String CAMINHO_CSV = "C:\\Users\\RENATO\\Documents\\";
 	
 	private static String JAVA_LANG_RUNNABLE = "java/lang/Runnable";
 	private static String JAVA_LANG_THREAD = "java/lang/Thread";
@@ -143,8 +141,8 @@ public class JavaCollectionsAnalyser {
 	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException {
 
-		final String ESCOPO = "dat/bm-tomcat";
-		final String EXCLUSOES = "dat/bm-tomcatExclusions.txt";
+		final String ESCOPO = "dat/commonsMath3.txt";
+		final String EXCLUSOES = "dat/commonsMath3Exclusions.txt";
 
 		
 		File projeto = new File("hello.txt");
@@ -212,7 +210,16 @@ public class JavaCollectionsAnalyser {
 		java.util.List<ComponentOfInterest> tomcat85 = new ArrayList<ComponentOfInterest>();
 		tomcat85.add(new ComponentOfInterest("org/apache/catalina/util", "", ""));
 		
-		traverseMethods(cha,tomcatComponentsOfInterest);
+		java.util.List<ComponentOfInterest> xstreamComponentsOfInterest = new ArrayList<ComponentOfInterest>();
+		xstreamComponentsOfInterest.add(new ComponentOfInterest("com/thoughtworks/xstream", null, null));
+		
+		java.util.List<ComponentOfInterest> gsonComponentsOfInterest = new ArrayList<ComponentOfInterest>();
+		gsonComponentsOfInterest.add(new ComponentOfInterest("com/google/gson", null, null));
+		
+		java.util.List<ComponentOfInterest> commonsMath3ComponentsOfInterest = new ArrayList<ComponentOfInterest>();
+		commonsMath3ComponentsOfInterest.add(new ComponentOfInterest("org/apache/commons/math3", null, null));
+		
+		traverseMethods(cha,commonsMath3ComponentsOfInterest);
 
 	}
 	
@@ -463,7 +470,12 @@ public class JavaCollectionsAnalyser {
 				
 				boolean isDoWhileLoop = LoopUtil.isDoWhileLoop(basicBlockLoopHeader, ir);
 				
-				boolean explicitlyInfiniteLoop = LoopUtil.isExplicitlyInfiniteLoop(basicBlockLoopHeader, ir);
+				boolean explicitlyInfiniteLoop = false;
+				try {
+					//explicitlyInfiniteLoop = LoopUtil.isExplicitlyInfiniteLoop(basicBlockLoopHeader, ir);
+				} catch (Exception e) {
+					
+				}
 
 				ISSABasicBlock loopConditional = null;
 				if (!loopConditionalBlock.isEmpty()) {
@@ -552,9 +564,9 @@ public class JavaCollectionsAnalyser {
 								
 								boolean isAllowed = true;
 								
-								if(classVariableRef.containsKey(invokeIR.getUse(0))) {
+								/*if(classVariableRef.containsKey(invokeIR.getUse(0))) {
 									isAllowed = allowedFields.contains(classVariableRef.get(invokeIR.getUse(0)));
-								}
+								}*/
 								
 								if(isAllowed) {
 									metodo = criarMetodo(callSite.getDeclaredTarget(), ir.getMethod(), concreteType, isIntoLoop, outerLoop,

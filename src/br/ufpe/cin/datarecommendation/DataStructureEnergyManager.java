@@ -52,6 +52,7 @@ public class DataStructureEnergyManager {
 				
 				if(collectionMethod.getNome().equals("randomGet")
 						|| collectionMethod.getNome().equals("sequentialGet")
+						|| collectionMethod.getNome().equals("iterator")
 						
 						|| collectionMethod.getNome().equals("add(value)")
 						|| collectionMethod.getNome().equals("add(starting-index;value)")

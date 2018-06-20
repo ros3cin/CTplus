@@ -120,10 +120,10 @@ public class LoopBlockInfo {
 
 					// get the valeu of the operation
 					String[] val2StringSplit = val2String.split("#");
-					int valueOp = 0;
+					double valueOp = 0;
 					if (val2StringSplit.length > 1) {
 						if (!val2StringSplit[1].equals("null")) {
-							valueOp = Integer.parseInt(val2StringSplit[1]);
+							valueOp = Double.parseDouble(val2StringSplit[1]);
 						}
 					}
 
@@ -326,10 +326,10 @@ public class LoopBlockInfo {
 					System.out.println(val1String + " - " + val2String);
 
 					String[] val2StringSplit = val2String.split("#");
-					int valueOp = 0;
+					double valueOp = 0;
 					if (val2StringSplit.length > 1) {
 						if (!val2StringSplit[1].equals("null")) {
-							valueOp = Integer.parseInt(val2StringSplit[1]);
+							valueOp = Double.parseDouble(val2StringSplit[1]);
 						}
 					}
 

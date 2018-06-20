@@ -1,0 +1,10 @@
+Primordial,Java,jarFile,C:/Program Files/Java/jdk1.8.0_151/jre/lib/resources.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jdk1.8.0_151/jre/lib/rt.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jdk1.8.0_151/jre/lib/jsse.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jdk1.8.0_151/jre/lib/jce.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jdk1.8.0_151/jre/lib/charsets.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jdk1.8.0_151/jre/lib/ext/dnsns.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jdk1.8.0_151/jre/lib/ext/localedata.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jdk1.8.0_151/jre/lib/ext/sunjce_provider.jar
+Primordial,Java,jarFile,C:/Program Files/Java/jdk1.8.0_151/jre/lib/ext/sunmscapi.jar
+Application,Java,jarFile,C:/Users/RENATO/Documents/Hasan Apps/commons-math/target/commons-math3-3.4.jar

@@ -100,8 +100,8 @@ public class DataRecommender {
 	public static void main(String[] args) {
 		try {			
 			
-			energyFilePath = "/home/ros/Documents/Mestrado/Analise/complete-profile-05-03-2018.csv";
-			dataAnalysisFilePath = "/home/ros/Documents/Mestrado/Analise/analise.csv";
+			energyFilePath = "C:\\Users\\RENATO\\Documents\\complete-profile-mobile-J7.csv";
+			dataAnalysisFilePath = "C:\\Users\\RENATO\\Documents\\analise.csv";
 			
 			//energyFilePath = "energyData/energy-profile-note.csv";
 			if(args.length>0){
