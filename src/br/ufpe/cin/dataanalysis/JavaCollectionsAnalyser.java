@@ -6,6 +6,7 @@
 package br.ufpe.cin.dataanalysis;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
 
@@ -24,6 +26,8 @@ import scala.Option;
 import scala.collection.immutable.List;
 import scala.collection.immutable.Set;
 
+import com.ibm.wala.analysis.pointers.BasicHeapGraph;
+import com.ibm.wala.analysis.pointers.HeapGraph;
 import com.ibm.wala.analysis.typeInference.TypeAbstraction;
 import com.ibm.wala.analysis.typeInference.TypeInference;
 import com.ibm.wala.cast.java.ipa.callgraph.JavaSourceAnalysisScope;
@@ -33,6 +37,8 @@ import com.ibm.wala.classLoader.IBytecodeMethod;
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IField;
 import com.ibm.wala.classLoader.IMethod;
+import com.ibm.wala.classLoader.Language;
+import com.ibm.wala.classLoader.NewSiteReference;
 import com.ibm.wala.ipa.callgraph.AnalysisCache;
 import com.ibm.wala.ipa.callgraph.AnalysisOptions;
 import com.ibm.wala.ipa.callgraph.AnalysisScope;
@@ -46,6 +52,17 @@ import com.ibm.wala.ipa.callgraph.impl.ArgumentTypeEntrypoint;
 import com.ibm.wala.ipa.callgraph.impl.DefaultEntrypoint;
 import com.ibm.wala.ipa.callgraph.impl.Everywhere;
 import com.ibm.wala.ipa.callgraph.impl.Util;
+import com.ibm.wala.ipa.callgraph.propagation.HeapModel;
+import com.ibm.wala.ipa.callgraph.propagation.InstanceFieldKey;
+import com.ibm.wala.ipa.callgraph.propagation.InstanceKey;
+import com.ibm.wala.ipa.callgraph.propagation.LocalPointerKey;
+import com.ibm.wala.ipa.callgraph.propagation.PointerAnalysis;
+import com.ibm.wala.ipa.callgraph.propagation.PointerKey;
+import com.ibm.wala.ipa.callgraph.propagation.ReturnValueKey;
+import com.ibm.wala.ipa.callgraph.propagation.SmushedAllocationSiteInNode;
+import com.ibm.wala.ipa.callgraph.propagation.SmushedAllocationSiteInstanceKeys;
+import com.ibm.wala.ipa.callgraph.propagation.StaticFieldKey;
+import com.ibm.wala.ipa.callgraph.propagation.cfa.ExceptionReturnValueKey;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
@@ -58,8 +75,10 @@ import com.ibm.wala.ssa.SSACFG.BasicBlock;
 import com.ibm.wala.ssa.SSAGetInstruction;
 import com.ibm.wala.ssa.SSAInstruction;
 import com.ibm.wala.ssa.SSAInvokeInstruction;
+import com.ibm.wala.ssa.SSALoadIndirectInstruction;
 import com.ibm.wala.ssa.SSANewInstruction;
 import com.ibm.wala.ssa.SSAOptions;
+import com.ibm.wala.ssa.SSAPutInstruction;
 import com.ibm.wala.ssa.SSAReturnInstruction;
 import com.ibm.wala.ssa.SymbolTable;
 import com.ibm.wala.types.ClassLoaderReference;
@@ -67,6 +86,7 @@ import com.ibm.wala.types.FieldReference;
 import com.ibm.wala.types.MethodReference;
 import com.ibm.wala.types.TypeName;
 import com.ibm.wala.types.TypeReference;
+import com.ibm.wala.util.MonitorUtil.IProgressMonitor;
 import com.ibm.wala.util.Predicate;
 import com.ibm.wala.util.collections.HashSetFactory;
 import com.ibm.wala.util.config.AnalysisScopeReader;
@@ -75,6 +95,8 @@ import com.ibm.wala.util.graph.GraphSlicer;
 import com.ibm.wala.util.ref.ReferenceCleanser;
 import com.ibm.wala.util.strings.Atom;
 
+import br.ufpe.cin.dataanalysis.pointeranalysis.AnalyzedClass;
+import br.ufpe.cin.dataanalysis.pointeranalysis.PointerAnalysisAnalyzer;
 import br.ufpe.cin.datarecommendation.CollectionsTypeResolver;
 import br.ufpe.cin.datarecommendation.ICollectionsTypeResolver;
 import edu.colorado.walautil.LoopUtil;
@@ -141,8 +163,8 @@ public class JavaCollectionsAnalyser {
 	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException {
 
-		final String ESCOPO = "dat/commonsMath3.txt";
-		final String EXCLUSOES = "dat/commonsMath3Exclusions.txt";
+		final String ESCOPO = "dat/gson.txt";
+		final String EXCLUSOES = "dat/gsonExclusions.txt";
 
 		
 		File projeto = new File("hello.txt");
@@ -166,6 +188,8 @@ public class JavaCollectionsAnalyser {
 		// build a class hierarchy
 		System.err.print("Building class hierarchy...");
 		cha = ClassHierarchy.make(scope);
+		
+		
 
 		System.err.println("Done");
 		
@@ -219,7 +243,10 @@ public class JavaCollectionsAnalyser {
 		java.util.List<ComponentOfInterest> commonsMath3ComponentsOfInterest = new ArrayList<ComponentOfInterest>();
 		commonsMath3ComponentsOfInterest.add(new ComponentOfInterest("org/apache/commons/math3", null, null));
 		
-		traverseMethods(cha,commonsMath3ComponentsOfInterest);
+		PointerAnalysisAnalyzer pAnalyzer = new PointerAnalysisAnalyzer();
+		pAnalyzer.extractPointsToAnalysisInformation(scope,gsonComponentsOfInterest,cha);
+		
+		traverseMethods(cha,gsonComponentsOfInterest);
 
 	}
 	
@@ -328,6 +355,19 @@ public class JavaCollectionsAnalyser {
 		if(method!=null) {
 			for(ComponentOfInterest component : componentsOfInterest) {
 				if(component.checkIfMethodMeetsComponent(method)) {
+					result=true;
+					break;
+				}
+			}
+		}
+		return result;
+	}
+	
+	private static boolean isClassOfInterest(String className, java.util.List<ComponentOfInterest> componentsOfInterest) {
+		boolean result=false;
+		if(className!=null) {
+			for(ComponentOfInterest component : componentsOfInterest) {
+				if(component.checkIfClassNameMeetsComponent(className)) {
 					result=true;
 					break;
 				}
@@ -472,9 +512,9 @@ public class JavaCollectionsAnalyser {
 				
 				boolean explicitlyInfiniteLoop = false;
 				try {
-					//explicitlyInfiniteLoop = LoopUtil.isExplicitlyInfiniteLoop(basicBlockLoopHeader, ir);
+					explicitlyInfiniteLoop = LoopUtil.isExplicitlyInfiniteLoop(basicBlockLoopHeader, ir);
 				} catch (Exception e) {
-					
+
 				}
 
 				ISSABasicBlock loopConditional = null;

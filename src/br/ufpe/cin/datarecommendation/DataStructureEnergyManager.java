@@ -102,7 +102,7 @@ public class DataStructureEnergyManager {
 
 			@Override
 			public int compare(CollectionMethod o1, CollectionMethod o2) {
-				return o1.getFieldName().compareTo(o2.getFieldName());
+				return (o1.getFieldName()).compareTo(o2.getFieldName());
 			}
 			
 		});

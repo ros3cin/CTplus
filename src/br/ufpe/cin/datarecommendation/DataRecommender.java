@@ -45,7 +45,7 @@ public class DataRecommender {
 				typesReccommended.put(methodInfo,"Keeps the type \""+recommendedType+"\"");
 			else*/
 			if(!typeResolver.isSameCollection(methodInfo.getConcreteType(), recommendedType))
-				typesReccommended.put(methodInfo,"Changes the type to \""+recommendedType+"\"");
+				typesReccommended.put(methodInfo,"Changes the type from "+methodInfo.getConcreteType()+" to \""+recommendedType+"\"");
 		}
 		
 		class Result {

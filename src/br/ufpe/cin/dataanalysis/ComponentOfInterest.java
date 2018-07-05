@@ -32,6 +32,20 @@ public class ComponentOfInterest {
 		
 		return result;
 	}
+	public boolean checkIfClassNameMeetsComponent(String className) {
+		boolean result = false;
+		
+		if(className!=null) {
+			boolean currentCheck=(this.packageName!=null) || (this.className!=null);
+			if(this.packageName!=null)
+				currentCheck = currentCheck && className.toLowerCase().contains(this.packageName.toLowerCase());
+			if(this.className!=null)
+				currentCheck = currentCheck && className.toLowerCase().contains(this.className.toLowerCase());
+			result = currentCheck;
+		}
+		
+		return result;
+	}
 	public String getPackageName() {
 		return packageName;
 	}
