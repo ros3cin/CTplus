@@ -40,6 +40,7 @@ import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.classLoader.Language;
 import com.ibm.wala.classLoader.NewSiteReference;
 import com.ibm.wala.ipa.callgraph.AnalysisCache;
+import com.ibm.wala.ipa.callgraph.AnalysisCacheImpl;
 import com.ibm.wala.ipa.callgraph.AnalysisOptions;
 import com.ibm.wala.ipa.callgraph.AnalysisScope;
 import com.ibm.wala.ipa.callgraph.CGNode;
@@ -47,6 +48,7 @@ import com.ibm.wala.ipa.callgraph.CallGraph;
 import com.ibm.wala.ipa.callgraph.CallGraphBuilder;
 import com.ibm.wala.ipa.callgraph.CallGraphBuilderCancelException;
 import com.ibm.wala.ipa.callgraph.Entrypoint;
+import com.ibm.wala.ipa.callgraph.IAnalysisCacheView;
 import com.ibm.wala.ipa.callgraph.impl.AllApplicationEntrypoints;
 import com.ibm.wala.ipa.callgraph.impl.ArgumentTypeEntrypoint;
 import com.ibm.wala.ipa.callgraph.impl.DefaultEntrypoint;
@@ -65,6 +67,7 @@ import com.ibm.wala.ipa.callgraph.propagation.StaticFieldKey;
 import com.ibm.wala.ipa.callgraph.propagation.cfa.ExceptionReturnValueKey;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
+import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.ssa.DefaultIRFactory;
@@ -160,11 +163,12 @@ public class JavaCollectionsAnalyser {
 	/**
 	 * Use the 'CountParameters' launcher to run this program with the
 	 * appropriate classpath
+	 * @throws InvalidClassFileException 
 	 */
-	public static void main(String[] args) throws IOException, ClassHierarchyException {
+	public static void main(String[] args) throws IOException, ClassHierarchyException, InvalidClassFileException {
 
-		final String ESCOPO = "dat/gson.txt";
-		final String EXCLUSOES = "dat/gsonExclusions.txt";
+		final String ESCOPO = "dat/bm-tomcat";
+		final String EXCLUSOES = "dat/bm-tomcatExclusions.txt";
 
 		
 		File projeto = new File("hello.txt");
@@ -187,42 +191,16 @@ public class JavaCollectionsAnalyser {
 
 		// build a class hierarchy
 		System.err.print("Building class hierarchy...");
-		cha = ClassHierarchy.make(scope);
+		cha = ClassHierarchyFactory.make(scope);
 		
 		
 
 		System.err.println("Done");
 		
 		java.util.List<ComponentOfInterest> tomcatComponentsOfInterest = new ArrayList<ComponentOfInterest>();
-		/*tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/dacapo/Main", "main"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest("catalina/startup/catalina", null, "load"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest("catalina/core/standardserver",null, "start"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest("catalina/core/standardserver",null, "initialize"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "catalina/core/StandardContext", "resourcesStart"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "catalina/core/StandardSession", "readobject"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "catalina/util/StringManager", "getManager"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/commons/httpclient/URI", "getCharset"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/coyote/http11/Http11NioProtocol", "setAttribute"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/jk/core/WorkerEnv", "addHandler"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/naming/resources/DirContextURLStreamHandler", "bind"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/dacapo/tomcat/Client", "run"));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/naming/resources/ProxyDirContext", null));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/naming/ContextAccessController", null));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/naming/ContextBindings", null));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/naming/NamingContext", null));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/modeler/modulesMbeansDescriptorsIntrospectionSource", null));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/res/StringManager", null));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/threads/ThreadPool", null));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/tomcat/util/IntrospectionUtils", null));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest("org/apache/catalina/session", null, null));
-		tomcatComponentsOfInterest.add(new ComponentOfInterest("org/apache/catalina/core", null, null));*/
 		tomcatComponentsOfInterest.add(new ComponentOfInterest("org/apache/catalina", null, null));
 		
 		java.util.List<ComponentOfInterest> xalanComponentsOfInterest = new ArrayList<ComponentOfInterest>();
-		/*xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/CopyOfXSLTBenchOld", "main"));
-		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startElement"));
-		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "endDocument"));
-		xalanComponentsOfInterest.add(new ComponentOfInterest(null, "org/apache/xalan/processor/StylesheetHandler", "startPrefixMapping"));*/
 		xalanComponentsOfInterest.add(new ComponentOfInterest("org/apache/xalan", null, null));
 		
 		java.util.List<ComponentOfInterest> nlgservice = new ArrayList<ComponentOfInterest>();
@@ -244,9 +222,9 @@ public class JavaCollectionsAnalyser {
 		commonsMath3ComponentsOfInterest.add(new ComponentOfInterest("org/apache/commons/math3", null, null));
 		
 		PointerAnalysisAnalyzer pAnalyzer = new PointerAnalysisAnalyzer();
-		pAnalyzer.extractPointsToAnalysisInformation(scope,gsonComponentsOfInterest,cha);
+		//pAnalyzer.extractPointsToAnalysisInformation(scope,tomcatComponentsOfInterest,cha);
 		
-		traverseMethods(cha,gsonComponentsOfInterest);
+		traverseMethods(cha,tomcatComponentsOfInterest);
 
 	}
 	
@@ -457,8 +435,8 @@ public class JavaCollectionsAnalyser {
 			int loopProfundidade, java.util.List<IMethod> alreadyVisited,java.util.List<ComponentOfInterest> componentsOfInterest, Collection<Atom> allowedFields) throws InvalidClassFileException {
 
 		alreadyVisited.add(method);
-		AnalysisCache cache = new AnalysisCache();
-		ReferenceCleanser.registerCache(cache);
+		IAnalysisCacheView cache = new AnalysisCacheImpl();
+		//ReferenceCleanser.registerCache(cache);
 
 		if (method == null) {
 			return;

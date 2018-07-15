@@ -3,7 +3,7 @@ package br.ufpe.cin.dataanalysis.pointeranalysis;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class AnalyzedLocalVariable implements IContainAlias {
+public class AnalyzedLocalVariable implements IContainAlias, Comparable<AnalyzedLocalVariable> {
 	private AnalyzedMethod declaringMethod;
 	private String variableName;
 	private Set<AnalyzedAlias> aliases;
@@ -34,5 +34,14 @@ public class AnalyzedLocalVariable implements IContainAlias {
 	
 	public Set<AnalyzedAlias> getAliases() {
 		return this.aliases;
+	}
+	@Override
+	public int compareTo(AnalyzedLocalVariable o) {
+		int result = 0;
+		result = this.declaringMethod.getMethodName().compareTo(o.getDeclaringMethod().getMethodName());
+		if(result == 0) {
+			result = this.variableName.compareTo(o.getVariableName());
+		}
+		return result;
 	}
 }

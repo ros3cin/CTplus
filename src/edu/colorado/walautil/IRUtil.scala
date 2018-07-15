@@ -14,6 +14,7 @@ import com.ibm.wala.classLoader.JavaLanguage
 import com.ibm.wala.types.TypeReference
 import com.ibm.wala.classLoader.IMethod
 import com.ibm.wala.ipa.callgraph.AnalysisCache
+import com.ibm.wala.ipa.callgraph.AnalysisCacheImpl
 import com.ibm.wala.ipa.callgraph.impl.Everywhere
 import com.ibm.wala.ssa.SSAOptions
 import com.ibm.wala.ipa.cha.IClassHierarchy
@@ -43,7 +44,7 @@ object IRUtil {
   def makeIR(m : IMethod, analysisCache : Option[AnalysisCache] = None) : IR = {
     val cache = analysisCache match {
       case Some(analysisCache) => analysisCache
-      case None => new AnalysisCache
+      case None => new AnalysisCacheImpl
     }
     cache.getSSACache().findOrCreateIR(m, Everywhere.EVERYWHERE, SSAOptions.defaultOptions()) 
   }

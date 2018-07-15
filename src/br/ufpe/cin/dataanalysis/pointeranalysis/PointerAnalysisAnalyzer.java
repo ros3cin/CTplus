@@ -13,11 +13,14 @@ import java.util.Map;
 import com.ibm.wala.analysis.pointers.HeapGraph;
 import com.ibm.wala.analysis.typeInference.TypeAbstraction;
 import com.ibm.wala.analysis.typeInference.TypeInference;
+import com.ibm.wala.classLoader.IBytecodeMethod;
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IField;
 import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.classLoader.NewSiteReference;
+import com.ibm.wala.demandpa.alg.DemandRefinementPointsTo;
 import com.ibm.wala.ipa.callgraph.AnalysisCache;
+import com.ibm.wala.ipa.callgraph.AnalysisCacheImpl;
 import com.ibm.wala.ipa.callgraph.AnalysisOptions;
 import com.ibm.wala.ipa.callgraph.AnalysisScope;
 import com.ibm.wala.ipa.callgraph.CGNode;
@@ -35,6 +38,7 @@ import com.ibm.wala.ipa.callgraph.propagation.PointerKey;
 import com.ibm.wala.ipa.callgraph.propagation.ReturnValueKey;
 import com.ibm.wala.ipa.callgraph.propagation.StaticFieldKey;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.ssa.SSAGetInstruction;
 import com.ibm.wala.ssa.SSAInstruction;
 import com.ibm.wala.ssa.SSAInvokeInstruction;
@@ -49,34 +53,39 @@ import br.ufpe.cin.datarecommendation.ICollectionsTypeResolver;
 
 public class PointerAnalysisAnalyzer {
 	
-	public void extractPointsToAnalysisInformation(AnalysisScope scope, java.util.List<ComponentOfInterest> componentsOfInterest, IClassHierarchy cha) {
+	public void extractPointsToAnalysisInformation(AnalysisScope scope, java.util.List<ComponentOfInterest> componentsOfInterest, IClassHierarchy cha) throws InvalidClassFileException {
+		System.out.println("Starting pointer analysis...");
 		Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(scope,cha);
 		try {
-			
 
 			java.util.List<Entrypoint> myEntrypoints = new ArrayList<Entrypoint>();
 	
 			for(IClass currClass : cha) {
 				if(isApplicationClass(currClass)) {
-					for(IMethod method : currClass.getDeclaredMethods()) {
-						if(isMethodOfInterest(method, componentsOfInterest)) {
-							myEntrypoints.add((new DefaultEntrypoint(method, cha)));
+					if(isClassOfInterest(currClass.toString(), componentsOfInterest)) {
+						for(IMethod method : currClass.getDeclaredMethods()) {
+							if(isMethodOfInterest(method, componentsOfInterest)) {
+								myEntrypoints.add((new DefaultEntrypoint(method, cha)));
+							}
 						}
 					}
 				}
 			}
 			
 			AnalysisOptions options = new AnalysisOptions(scope,myEntrypoints);
-			AnalysisCache analysisCache = new AnalysisCache();
+			AnalysisCache analysisCache = new AnalysisCacheImpl();
 			CallGraphBuilder cgBuilder = Util.makeZeroOneCFABuilder(options, analysisCache, cha, scope);
 		
+			System.out.println("Creating call graph. This step can take up to 1 hour...");
 			CallGraph cg = cgBuilder.makeCallGraph(options,null);
+			System.out.println("Call graph creationg ended...");
 			Map<CGNode,Boolean> isNodeVisited = new HashMap<CGNode,Boolean>();
 			Map<IClass,Boolean> isClassComputed = new HashMap<IClass,Boolean>();
 			Iterator<CGNode> allNodes = cg.iterator();
 			
 			Map<String, AnalyzedClass> pointerResult = new HashMap<String, AnalyzedClass>();
 
+			System.out.println("Gathering pointers and aliases...");
 			while(allNodes.hasNext()) {
 				CGNode node = allNodes.next();
 				String declaringClassName = node.getMethod().getDeclaringClass().getName().toString();
@@ -88,35 +97,37 @@ public class PointerAnalysisAnalyzer {
 							pointerResult);
 				}
 			}
+			
+			System.out.println("Writing out the result...");
 			BufferedWriter out = new BufferedWriter(new FileWriter("pointerAnalysis.txt"),100000);
 			
 			for(AnalyzedClass analyzedClass : pointerResult.values()) {
 				if(analyzedClass.hasAnyAlias()) {
-					out.write("Class:"+analyzedClass.getClassName()+"\n");
+					out.write(String.format("Class:%s\n",analyzedClass.getClassName()));
 					for(AnalyzedInstanceField instanceField : analyzedClass.getAnalyzedInstanceFields()) {
 						if(instanceField.getAliases().size() > 0) {
-							out.write("\t- Instance field:"+instanceField.getFieldName()+"\n");
+							out.write(String.format("\t- Instance field:%s\n",instanceField.getFieldName()));
 							for(AnalyzedAlias alias : instanceField.getAliases()) {
-								out.write("\t\t- Alias:"+alias.toString()+"\n");
+								out.write(String.format("\t\t\t- Alias(%s):%s\n",alias.getType().toString(),alias.toString()));
 							}
 						}
 					}
 					for(AnalyzedStaticField instanceField : analyzedClass.getAnalyzedStaticFields()) {
 						if(instanceField.getAliases().size() > 0) {
-							out.write("\t- Static field:"+instanceField.getFieldName()+"\n");
+							out.write(String.format("\t- Static field:%s\n",instanceField.getFieldName()));
 							for(AnalyzedAlias alias : instanceField.getAliases()) {
-								out.write("\t\t- Alias:"+alias.toString()+"\n");
+								out.write(String.format("\t\t\t- Alias(%s):%s\n",alias.getType().toString(),alias.toString()));
 							}
 						}
 					}
 					for(AnalyzedMethod method : analyzedClass.getAnalyzedMethods()) {
 						if(method.hasAnyAlias()) {
-							out.write("\t- Method:"+method.getMethodName()+"\n");
+							out.write(String.format("\t- Method:%s(%d)\n",method.getMethodName(),method.getSourceCodeLineNumber()));
 							for(AnalyzedLocalVariable localVariable : method.getAnalyzedLocalVariables()) {
 								if(localVariable.getAliases().size() > 0) {
-									out.write("\t\t- Local variable:"+localVariable.getVariableName()+"\n");
+									out.write(String.format("\t\t- Local variable:%s\n",localVariable.getVariableName()));
 									for(AnalyzedAlias alias : localVariable.getAliases()) {
-										out.write("\t\t\t- Alias:"+alias.toString()+"\n");
+										out.write(String.format("\t\t\t- Alias(%s):%s\n",alias.getType().toString(),alias.toString()));
 									}
 								}
 							}
@@ -126,6 +137,7 @@ public class PointerAnalysisAnalyzer {
 			}
 			
 			out.close();
+			System.out.println("End of pointer analysis.");
 	
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -143,7 +155,7 @@ public class PointerAnalysisAnalyzer {
 			HeapModel heapModel,
 			HeapGraph heapGraph,
 			java.util.List<ComponentOfInterest> componentsOfInterest,
-			Map<String, AnalyzedClass> pointerResult) throws IOException {
+			Map<String, AnalyzedClass> pointerResult) throws IOException, InvalidClassFileException {
 		
 		Iterator childs = cg.getSuccNodes(node);
 		isNodeVisited.put(node, true);
@@ -167,13 +179,15 @@ public class PointerAnalysisAnalyzer {
 			while(siteIterator.hasNext()) {
 				NewSiteReference site = siteIterator.next();
 				InstanceKey current = heapModel.getInstanceKeyForAllocation(node, site);
-				for(IField instanceField : instanceFields) {
-					String typeRef = instanceField.getFieldTypeReference().getName().toString();
-					if(nameResolver.isList(typeRef) || nameResolver.isMap(typeRef) || nameResolver.isSet(typeRef)) {
-						AnalyzedInstanceField analyzedInstanceField = new AnalyzedInstanceField(analyzedClass, instanceField.getName().toString());
-						PointerKey pInstanceField = heapModel.getPointerKeyForInstanceField(current, instanceField);
-						getVariablesPointingToTheSamePlace(heapGraph, pInstanceField, analyzedInstanceField, componentsOfInterest);
-						analyzedClass.addAnalyzedInstanceField(analyzedInstanceField);
+				if(current != null) {
+					for(IField instanceField : instanceFields) {
+						String typeRef = instanceField.getFieldTypeReference().getName().toString();
+						if(nameResolver.isList(typeRef) || nameResolver.isMap(typeRef) || nameResolver.isSet(typeRef)) {
+							AnalyzedInstanceField analyzedInstanceField = new AnalyzedInstanceField(analyzedClass, instanceField.getName().toString());
+							PointerKey pInstanceField = heapModel.getPointerKeyForInstanceField(current, instanceField);
+							getVariablesPointingToTheSamePlace(heapGraph, pInstanceField, analyzedInstanceField, componentsOfInterest);
+							analyzedClass.addAnalyzedInstanceField(analyzedInstanceField);
+						}
 					}
 				}
 			}
@@ -193,57 +207,76 @@ public class PointerAnalysisAnalyzer {
 		
 		SSAInstruction[] instructions = node.getIR().getInstructions();
 		TypeInference ti = TypeInference.make(node.getIR(), true);
-		AnalyzedMethod analyzedMethod = new AnalyzedMethod(analyzedClass, node.getMethod().getName().toString());
-		for(int i = 0; i < instructions.length; i++) {
-			SSAInstruction instruction = instructions[i];
-			PointerKey pLocalField = null;
-			int vn = -1;
-			if(instruction instanceof SSAGetInstruction) {
-				SSAGetInstruction getInstruction = (SSAGetInstruction)instruction;
-				vn = getInstruction.getDef(0);
-				if(vn>-1)
-					pLocalField = heapModel.getPointerKeyForLocal(node, getInstruction.getDef(0));
-			} else if (instruction instanceof SSAInvokeInstruction) {
-				SSAInvokeInstruction invokeInstruction = (SSAInvokeInstruction)instruction;
-				vn = invokeInstruction.getReturnValue(0);
-				if(vn>-1) 
-					pLocalField = heapModel.getPointerKeyForLocal(node, vn);
-			} else if (instruction instanceof SSAReturnInstruction) {
-				SSAReturnInstruction returnInstruction = (SSAReturnInstruction)instruction;
-				vn = returnInstruction.getResult();
-				if(vn>-1)
-					pLocalField = heapModel.getPointerKeyForLocal(node, vn);
-			} else if (instruction instanceof SSAPutInstruction) {
-				SSAPutInstruction putInstruction = (SSAPutInstruction)instruction;
-				vn = putInstruction.getVal();
-				if(vn>-1)
-					pLocalField = heapModel.getPointerKeyForLocal(node, vn);
-			} else if(instruction instanceof SSALoadIndirectInstruction) {
-				SSALoadIndirectInstruction loadIndirectInstruction = (SSALoadIndirectInstruction)instruction;
-				vn = loadIndirectInstruction.getDef();
-				if(vn>-1)
-					pLocalField = heapModel.getPointerKeyForLocal(node, vn);
+		if( (instructions != null) && (instructions.length>0) ) {
+			SSAInstruction firstNonNullInstruction = null;
+			for(int i = 0; i < instructions.length; i++) {
+				if(instructions[i]!=null) {
+					firstNonNullInstruction=instructions[i];
+					break;
+				}
 			}
-			if((pLocalField != null) && (vn > -1)) {
-				String[] variablePossibleNames = node.getIR().getLocalNames(instruction.iindex, vn);
-				if(variablePossibleNames != null) {
-					TypeAbstraction typeAbstraction = ti.getType(vn);
-					if(typeAbstraction != null) {
-						TypeReference typeReference = ti.getType(vn).getTypeReference();
-						if(typeReference != null) {
-							String typeRef = typeReference.getName().toString();
-							if(nameResolver.isList(typeRef) || nameResolver.isMap(typeRef) || nameResolver.isSet(typeRef)) {
-								AnalyzedLocalVariable analyzedLocalVariable = new AnalyzedLocalVariable(analyzedMethod, variablePossibleNames[0]);
-								getVariablesPointingToTheSamePlace(heapGraph, pLocalField, analyzedLocalVariable, componentsOfInterest);
-								analyzedMethod.addLocalVariable(analyzedLocalVariable);
+			if(firstNonNullInstruction!=null) {
+				AnalyzedMethod analyzedMethod = new AnalyzedMethod(
+						analyzedClass, 
+						node.getMethod().getName().toString(),
+						node.getMethod().getLineNumber(((IBytecodeMethod)node.getMethod()).getBytecodeIndex(firstNonNullInstruction.iindex))
+				);
+				for(int i = 0; i < instructions.length; i++) {
+					SSAInstruction instruction = instructions[i];
+					PointerKey pLocalField = null;
+					int vn = -1;
+					if(instruction instanceof SSAGetInstruction) {
+						SSAGetInstruction getInstruction = (SSAGetInstruction)instruction;
+						vn = getInstruction.getDef(0);
+						if(vn>-1)
+							pLocalField = heapModel.getPointerKeyForLocal(node, getInstruction.getDef(0));
+					} else if (instruction instanceof SSAInvokeInstruction) {
+						SSAInvokeInstruction invokeInstruction = (SSAInvokeInstruction)instruction;
+						vn = invokeInstruction.getReturnValue(0);
+						if(vn>-1) 
+							pLocalField = heapModel.getPointerKeyForLocal(node, vn);
+					} else if (instruction instanceof SSAReturnInstruction) {
+						SSAReturnInstruction returnInstruction = (SSAReturnInstruction)instruction;
+						vn = returnInstruction.getResult();
+						if(vn>-1)
+							pLocalField = heapModel.getPointerKeyForLocal(node, vn);
+					} else if (instruction instanceof SSAPutInstruction) {
+						SSAPutInstruction putInstruction = (SSAPutInstruction)instruction;
+						vn = putInstruction.getVal();
+						if(vn>-1)
+							pLocalField = heapModel.getPointerKeyForLocal(node, vn);
+					} else if(instruction instanceof SSALoadIndirectInstruction) {
+						SSALoadIndirectInstruction loadIndirectInstruction = (SSALoadIndirectInstruction)instruction;
+						vn = loadIndirectInstruction.getDef();
+						if(vn>-1)
+							pLocalField = heapModel.getPointerKeyForLocal(node, vn);
+					}
+					if((pLocalField != null) && (vn > -1)) {
+						String[] variablePossibleNames = node.getIR().getLocalNames(instruction.iindex, vn);
+						if( (variablePossibleNames != null)  && (variablePossibleNames.length > 0) && (variablePossibleNames[0] != null)) {
+							TypeAbstraction typeAbstraction = ti.getType(vn);
+							if(typeAbstraction != null) {
+								TypeReference typeReference = ti.getType(vn).getTypeReference();
+								if(typeReference != null) {
+									String typeRef = typeReference.getName().toString();
+									if(nameResolver.isList(typeRef) || nameResolver.isMap(typeRef) || nameResolver.isSet(typeRef)) {
+										AnalyzedLocalVariable analyzedLocalVariable = new AnalyzedLocalVariable(analyzedMethod, variablePossibleNames[0]);
+										if(!analyzedMethod.contains(analyzedLocalVariable)) {
+											getVariablesPointingToTheSamePlace(heapGraph, pLocalField, analyzedLocalVariable, componentsOfInterest);
+											analyzedMethod.addLocalVariable(analyzedLocalVariable);
+										}
+									}
+								}
 							}
 						}
 					}
 				}
+				
+				analyzedClass.addAnalyzedMethod(analyzedMethod);
+			
 			}
-		}
 		
-		analyzedClass.addAnalyzedMethod(analyzedMethod);
+		}
 		
 		while(childs.hasNext()) {
 			CGNode next = (CGNode)childs.next();
@@ -292,26 +325,28 @@ public class PointerAnalysisAnalyzer {
 					} else if (alias instanceof LocalPointerKey) {
 						LocalPointerKey localKey = (LocalPointerKey)alias;
 						CGNode node = ((LocalPointerKey)alias).getNode();
-						SSAInstruction[] instructions = node.getIR().getInstructions();
-						boolean indexFound = false;
-						for(SSAInstruction instruction : instructions) {
-							if(instruction != null) {
-								for(int i = 0; (i < instruction.getNumberOfUses()) && !indexFound; i++) {
-									if(instruction.getUse(i)==((LocalPointerKey)alias).getValueNumber()) {
-										String[] possibleVariableNames = node.getIR().getLocalNames(instruction.iindex, instruction.getUse(i));
-										if( (possibleVariableNames!=null) && (possibleVariableNames.length > 0) && (possibleVariableNames[0] != null) ) {
-											String declaringClassName = node.getMethod().getDeclaringClass().getName().toString();
-											if(isClassOfInterest(declaringClassName, componentsOfInterest)) {
-												AnalyzedAlias analyzedAlias = new AnalyzedAlias(
-														node.getMethod().getDeclaringClass().getName().toString(), 
-														node.getMethod().getName().toString(), 
-														possibleVariableNames[0], 
-														PointerAnalysisVariableType.LOCAL_VARIABLE);
-												aliasContainer.addAlias(analyzedAlias);
+						if(node.getIR() != null) {
+							SSAInstruction[] instructions = node.getIR().getInstructions();
+							boolean indexFound = false;
+							for(SSAInstruction instruction : instructions) {
+								if(instruction != null) {
+									for(int i = 0; (i < instruction.getNumberOfUses()) && !indexFound; i++) {
+										if(instruction.getUse(i)==((LocalPointerKey)alias).getValueNumber()) {
+											String[] possibleVariableNames = node.getIR().getLocalNames(instruction.iindex, instruction.getUse(i));
+											if( (possibleVariableNames!=null) && (possibleVariableNames.length > 0) && (possibleVariableNames[0] != null) ) {
+												String declaringClassName = node.getMethod().getDeclaringClass().getName().toString();
+												if(isClassOfInterest(declaringClassName, componentsOfInterest)) {
+													AnalyzedAlias analyzedAlias = new AnalyzedAlias(
+															node.getMethod().getDeclaringClass().getName().toString(), 
+															node.getMethod().getName().toString(), 
+															possibleVariableNames[0], 
+															PointerAnalysisVariableType.LOCAL_VARIABLE);
+													aliasContainer.addAlias(analyzedAlias);
+												}
 											}
+											indexFound = true;
+											break;
 										}
-										indexFound = true;
-										break;
 									}
 								}
 							}

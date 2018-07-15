@@ -355,7 +355,7 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 				isHashtable(name)||
 				isSynchronizedHashMap(name)||
 				isSynchronizedTreeMap(name)||
-				isSynchronizedWeakHashMap(name)||
+				//isSynchronizedWeakHashMap(name)||
 				isHashMap(name)||
 				isTreeMap(name)||
 				//isWeakHashMap(name)||

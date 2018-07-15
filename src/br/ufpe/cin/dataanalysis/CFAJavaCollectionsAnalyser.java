@@ -32,6 +32,7 @@ import com.ibm.wala.classLoader.IMethod;
 //import com.ibm.wala.examples.analysis.Metodo;
 //import com.ibm.wala.examples.drivers.PDFCallGraph.ApplicationLoaderFilter;
 import com.ibm.wala.ipa.callgraph.AnalysisCache;
+import com.ibm.wala.ipa.callgraph.AnalysisCacheImpl;
 import com.ibm.wala.ipa.callgraph.AnalysisOptions;
 import com.ibm.wala.ipa.callgraph.AnalysisScope;
 import com.ibm.wala.ipa.callgraph.CGNode;
@@ -46,6 +47,7 @@ import com.ibm.wala.ipa.callgraph.impl.Util;
 import com.ibm.wala.ipa.callgraph.propagation.LocalPointerKey;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
+import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.ssa.IR;
@@ -166,7 +168,7 @@ public class CFAJavaCollectionsAnalyser {
 
 			// build a class hierarchy
 			System.err.print("Build class hierarchy...");
-			cha = ClassHierarchy.make(scope);
+			cha = ClassHierarchyFactory.make(scope);
 
 			System.err.println("Done");
 
@@ -465,7 +467,7 @@ public class CFAJavaCollectionsAnalyser {
 				
 				//callsite.getDeclaredTarget().
 
-				AnalysisCache cache = new AnalysisCache();
+				AnalysisCache cache = new AnalysisCacheImpl();
 				ReferenceCleanser.registerCache(cache);
 
 				if (method == null) {
@@ -1083,7 +1085,7 @@ public class CFAJavaCollectionsAnalyser {
 		// encapsulates various analysis options
 		AnalysisOptions o = new AnalysisOptions(scope, e);
 
-		CallGraphBuilder builder = Util.makeZeroCFABuilder(o, new AnalysisCache(), cha, scope);
+		CallGraphBuilder builder = Util.makeZeroCFABuilder(o, new AnalysisCacheImpl(), cha, scope);
 		CallGraph cg = null;
 		try {
 			cg = builder.makeCallGraph(o, null);
@@ -1133,7 +1135,7 @@ public class CFAJavaCollectionsAnalyser {
 		System.out.println("Comecar a construir CG ");
 		// encapsulates various analysis options
 		AnalysisOptions o = new AnalysisOptions(scope, result);
-		CallGraphBuilder builder = Util.makeZeroCFABuilder(o, new AnalysisCache(), cha, scope);
+		CallGraphBuilder builder = Util.makeZeroCFABuilder(o, new AnalysisCacheImpl(), cha, scope);
 		CallGraph cg = null;
 		try {
 			cg = builder.makeCallGraph(o, null);

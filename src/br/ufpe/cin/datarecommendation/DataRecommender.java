@@ -7,7 +7,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import br.ufpe.cin.dataanalysis.CollectionMethod;
 
@@ -40,12 +42,18 @@ public class DataRecommender {
 			for (String type : typeConsumption.keySet()) {				
 				System.out.println(methodInfo.getFieldName() +";"+type+";"+df.format(typeConsumption.get(type)));
 			}	
-			String recommendedType = getStructureRecommendation(typeConsumption);
-			/*if(typeResolver.isSameCollection(methodInfo.getConcreteType(), recommendedType))
-				typesReccommended.put(methodInfo,"Keeps the type \""+recommendedType+"\"");
-			else*/
-			if(!typeResolver.isSameCollection(methodInfo.getConcreteType(), recommendedType))
-				typesReccommended.put(methodInfo,"Changes the type from "+methodInfo.getConcreteType()+" to \""+recommendedType+"\"");
+			SortedSet<RecommendedStructure> recommendations = getStructureRecommendation(typeConsumption);
+			
+			if(!typeResolver.isSameCollection(methodInfo.getConcreteType(), recommendations.first().getStructure())) {
+				String orderedRecommendations = recommendations.first().getStructure();
+				recommendations.remove(recommendations.first());
+				for(RecommendedStructure recStructure : recommendations) {
+					if(typeResolver.isSameCollection(methodInfo.getConcreteType(), recStructure.getStructure()))
+						break;
+					orderedRecommendations += String.format("<%s",recStructure.getStructure());
+				}
+				typesReccommended.put(methodInfo,"Changes the type from "+methodInfo.getConcreteType()+" to \""+orderedRecommendations+"\"");
+			}
 		}
 		
 		class Result {
@@ -76,13 +84,15 @@ public class DataRecommender {
 		}
 	}
 	
-	private static String getStructureRecommendation(HashMap<String,Double> typeConsumption){
+	private static SortedSet<RecommendedStructure> getStructureRecommendation(HashMap<String,Double> typeConsumption){
 		
 		String typeR = "";
 		Double minor = new Double(0);
 		
+		SortedSet<RecommendedStructure> recommendations = new TreeSet<RecommendedStructure>();
+		
 		for (String type : typeConsumption.keySet()) {
-			if(typeR.isEmpty()){
+			/*if(typeR.isEmpty()){
 				typeR = type;
 				minor = typeConsumption.get(type);
 			}else{
@@ -91,16 +101,17 @@ public class DataRecommender {
 					typeR = type;
 					minor = typeConsumption.get(type);
 				}				
-			}
+			}*/
+			recommendations.add(new RecommendedStructure(type, typeConsumption.get(type)));
 		}
 		
-		return typeR;		
+		return recommendations;		
 	}
 	
 	public static void main(String[] args) {
 		try {			
 			
-			energyFilePath = "C:\\Users\\RENATO\\Documents\\complete-profile-mobile-J7.csv";
+			energyFilePath = "C:\\Users\\RENATO\\Documents\\Mestrado\\linuxapps02-profile.csv";
 			dataAnalysisFilePath = "C:\\Users\\RENATO\\Documents\\analise.csv";
 			
 			//energyFilePath = "energyData/energy-profile-note.csv";

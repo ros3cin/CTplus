@@ -15,7 +15,7 @@ public class AnalyzedClass {
 		this.className = className;
 		this.analyzedInstanceFields = new HashSet<AnalyzedInstanceField>();
 		this.analyzedStaticFields = new HashSet<AnalyzedStaticField>();
-		this.analyzedMethods = new HashSet<AnalyzedMethod>();
+		this.analyzedMethods = new TreeSet<AnalyzedMethod>();
 	}
 	
 	public boolean hasAnyAlias() {

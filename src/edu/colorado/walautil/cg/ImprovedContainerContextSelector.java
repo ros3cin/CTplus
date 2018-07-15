@@ -24,9 +24,9 @@ public class ImprovedContainerContextSelector extends ContainerContextSelector {
     return m.getName().toString().startsWith("access$");
   }
 
-  @Override
+  
   public boolean mayUnderstand(CGNode caller, CallSiteReference site, IMethod targetMethod, InstanceKey receiver) {
-    return isAccessMethod(targetMethod.getReference()) || super.mayUnderstand(caller, site, targetMethod, receiver);
+    return isAccessMethod(targetMethod.getReference()) || super.mayUnderstand(site, targetMethod, receiver);
   }
 
   @Override

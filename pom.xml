@@ -5,8 +5,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <!-- https://mvnrepository.com/artifact/com.ibm.wala/com.ibm.wala.core -->
 	<properties>
-		<wala.version>1.3.9</wala.version>
-		<wala.java.cast.version>1.4.0</wala.java.cast.version>
+		<wala.version>1.4.3</wala.version>
+		<wala.java.cast.version>1.4.3</wala.java.cast.version>
 		<scala.lang.version>2.12.2</scala.lang.version>
 	</properties>
 	
