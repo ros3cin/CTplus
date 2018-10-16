@@ -22,6 +22,9 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.scandroid.util.AndroidAnalysisContext;
+import org.scandroid.util.ISCanDroidOptions;
+
 import scala.Option;
 import scala.collection.immutable.List;
 import scala.collection.immutable.Set;
@@ -39,6 +42,14 @@ import com.ibm.wala.classLoader.IField;
 import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.classLoader.Language;
 import com.ibm.wala.classLoader.NewSiteReference;
+import com.ibm.wala.dalvik.classLoader.DexIMethod;
+import com.ibm.wala.dalvik.classLoader.DexIRFactory;
+import com.ibm.wala.dalvik.dex.instructions.GetField;
+import com.ibm.wala.dalvik.dex.instructions.Instruction;
+import com.ibm.wala.dalvik.dex.instructions.Invoke;
+import com.ibm.wala.dalvik.dex.instructions.New;
+import com.ibm.wala.dalvik.dex.instructions.UnaryOperation;
+import com.ibm.wala.dalvik.util.AndroidAnalysisScope;
 import com.ibm.wala.ipa.callgraph.AnalysisCache;
 import com.ibm.wala.ipa.callgraph.AnalysisCacheImpl;
 import com.ibm.wala.ipa.callgraph.AnalysisOptions;
@@ -72,6 +83,7 @@ import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.ssa.DefaultIRFactory;
 import com.ibm.wala.ssa.IR;
+import com.ibm.wala.ssa.IRFactory;
 import com.ibm.wala.ssa.ISSABasicBlock;
 import com.ibm.wala.ssa.SSACFG;
 import com.ibm.wala.ssa.SSACFG.BasicBlock;
@@ -83,6 +95,7 @@ import com.ibm.wala.ssa.SSANewInstruction;
 import com.ibm.wala.ssa.SSAOptions;
 import com.ibm.wala.ssa.SSAPutInstruction;
 import com.ibm.wala.ssa.SSAReturnInstruction;
+import com.ibm.wala.ssa.SSAStoreIndirectInstruction;
 import com.ibm.wala.ssa.SymbolTable;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.FieldReference;
@@ -167,8 +180,8 @@ public class JavaCollectionsAnalyser {
 	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException, InvalidClassFileException {
 
-		final String ESCOPO = "dat/bm-tomcat";
-		final String EXCLUSOES = "dat/bm-tomcatExclusions.txt";
+		final String ESCOPO = "dat/bm-passwordGenerator.txt";
+		final String EXCLUSOES = "dat/bm-passwordGeneratorExclusions.txt";
 
 		
 		File projeto = new File("hello.txt");
@@ -185,8 +198,14 @@ public class JavaCollectionsAnalyser {
 		File scopeExclusion;
 		scopeExclusion = new File(EXCLUSOES);
 
-		AnalysisScope scope = AnalysisScopeReader.readJavaScope(scopeFile.getAbsolutePath(), scopeExclusion,
-				JavaCollectionsAnalyser.class.getClassLoader());
+		//AnalysisScope scope = AnalysisScopeReader.readJavaScope(scopeFile.getAbsolutePath(), scopeExclusion,
+		//		JavaCollectionsAnalyser.class.getClassLoader());
+		AnalysisScope scope = AndroidAnalysisScope.setUpAndroidAnalysisScope(
+				(new File("C:\\Users\\RENATO\\Documents\\Mestrado\\Apps F-droid\\built apks\\PasswordGenerator-original.apk")).toURI(), 
+				EXCLUSOES,
+				JavaCollectionsAnalyser.class.getClassLoader()
+		);
+		
 
 
 		// build a class hierarchy
@@ -221,10 +240,16 @@ public class JavaCollectionsAnalyser {
 		java.util.List<ComponentOfInterest> commonsMath3ComponentsOfInterest = new ArrayList<ComponentOfInterest>();
 		commonsMath3ComponentsOfInterest.add(new ComponentOfInterest("org/apache/commons/math3", null, null));
 		
+		java.util.List<ComponentOfInterest> passwordGeneratorComponentsOfInterest = new ArrayList<ComponentOfInterest>();
+		passwordGeneratorComponentsOfInterest.add(new ComponentOfInterest("org/secuso/privacyfriendlypasswordgenerator", null, null));
+		
+		java.util.List<ComponentOfInterest> fastSearchComponentsOfInterest = new ArrayList<ComponentOfInterest>();
+		fastSearchComponentsOfInterest.add(new ComponentOfInterest("org/ligi/fast", null, null));
+		
 		PointerAnalysisAnalyzer pAnalyzer = new PointerAnalysisAnalyzer();
 		//pAnalyzer.extractPointsToAnalysisInformation(scope,tomcatComponentsOfInterest,cha);
 		
-		traverseMethods(cha,tomcatComponentsOfInterest);
+		traverseMethods(cha,passwordGeneratorComponentsOfInterest);
 
 	}
 	
@@ -236,7 +261,7 @@ public class JavaCollectionsAnalyser {
 
 				if (isApplicationClass(c)) {
 					Collection<Atom> allowedFields = new ArrayList<Atom>();
-					computeAllowedFields(c, allowedFields);
+					//computeAllowedFields(c, allowedFields);
 					
 					for (IMethod method : c.getDeclaredMethods()) {
 						if(isMethodOfInterest(method,componentsOfInterest)) {
@@ -454,8 +479,9 @@ public class JavaCollectionsAnalyser {
 		try {
 			
 			wipeSoftCaches();
-			ir = cache.getIRFactory().makeIR(method, Everywhere.EVERYWHERE, SSAOptions.defaultOptions());
-			
+			IRFactory defaultFactory = new DexIRFactory();
+			//ir = cache.getIRFactory().makeIR(method, Everywhere.EVERYWHERE, SSAOptions.defaultOptions());
+			ir = defaultFactory.makeIR(method, Everywhere.EVERYWHERE, SSAOptions.defaultOptions());
 
 		
 
@@ -597,7 +623,8 @@ public class JavaCollectionsAnalyser {
 									metodo.setOuterLoops(loops);
 
 									String fieldName = "";
-									fieldName = getFieldName(ir, invokeIR, fieldName);
+									boolean android = true;
+									fieldName = android ? getFieldNameAndroid((DexIMethod)ir.getMethod(), invokeIR) : getFieldName(ir, invokeIR, fieldName);
 									metodo.setFieldName(fieldName);
 									metodo.setInsideRecursiveMethod(isRecursive);
 
@@ -772,10 +799,10 @@ public class JavaCollectionsAnalyser {
 		String[] localNames = null;
 		localNames = ir.getLocalNames(invokeIR.iindex, invokeIR.getUse(0));
 		
-		if (localNames == null) { // if isn't a local variable
+		if ((localNames == null) || (localNames.length == 0)) { // if isn't a local variable
 			for (int j = 0; j < ir.getInstructions().length; j++) {
 				SSAInstruction inst = ir.getInstructions()[j];
-
+				
 				// GetInstrutions to get declaradField from
 				if (inst instanceof SSAGetInstruction && inst.iindex <= invokeIR.iindex) {
 					SSAGetInstruction getInstruction = (SSAGetInstruction) inst;
@@ -785,10 +812,56 @@ public class JavaCollectionsAnalyser {
 						System.out.println(getInstruction.getDef() + " " + declaredField.getName());
 						break;
 					}
+				} else if (inst instanceof SSANewInstruction && inst.iindex <= invokeIR.iindex) {
+					SSANewInstruction newInstruction = (SSANewInstruction) inst;
+					if (newInstruction.getDef() == invokeIR.getUse(0)) {
+						localNames = ir.getLocalNames(newInstruction.iindex, newInstruction.getDef());
+						if((localNames!=null) && (localNames.length > 0))
+							System.out.println(newInstruction.getDef()+" "+localNames[0]);
+						else
+							fieldName = String.format("v%d",newInstruction.getDef());
+						break;
+					}
+				} else if (inst instanceof SSAStoreIndirectInstruction) {
+					//TODO check if this is another case where we can get local variable names
 				}
 			}
 		} else {
 			fieldName = localNames[0];
+		}
+		return fieldName;
+	}
+	
+	
+	private static String getFieldNameAndroid(DexIMethod method, SSAInvokeInstruction invokeIR) {
+		String fieldName = "N/A";
+		Instruction[] instructions = method.getDexInstructions();
+		Invoke dexInvoke = (Invoke)instructions[invokeIR.iindex];
+		if(instructions != null) {
+			for(int i = 0; i < instructions.length; i++) {
+				Instruction instruction = instructions[i];
+				if(instruction!=null) {
+					if(instruction instanceof GetField) {
+						GetField getFieldInstruction = (GetField)instruction;
+						if(getFieldInstruction.destination == dexInvoke.args[0]) {
+							fieldName = getFieldInstruction.fieldName;
+							break;
+						}
+					} else if (instruction instanceof New) {
+						New newInstruction = (New)instruction;
+						if(newInstruction.destination == dexInvoke.args[0]) {
+							fieldName = String.format("v%d",newInstruction.destination);
+							break;
+						}
+					} else if (instruction instanceof UnaryOperation) {
+						UnaryOperation unaryOpInstruction = (UnaryOperation)instruction;
+						if(unaryOpInstruction.destination == dexInvoke.args[0]) {
+							fieldName = String.format("v%d",unaryOpInstruction.destination);
+							break;
+						}
+					}
+				}
+			}
 		}
 		return fieldName;
 	}
