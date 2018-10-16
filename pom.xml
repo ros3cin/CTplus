@@ -23,8 +23,17 @@
 		    <artifactId>scala-reflect</artifactId>
 		    <version>${scala.lang.version}</version>
 		</dependency>
-				
-		
+			
+		<dependency>
+		    <groupId>com.ibm.wala</groupId>
+		    <artifactId>com.ibm.wala.scandroid</artifactId>
+		    <version>${wala.version}</version>
+		</dependency>	
+		<dependency>
+		    <groupId>com.ibm.wala</groupId>
+		    <artifactId>com.ibm.wala.dalvik</artifactId>
+		    <version>${wala.version}</version>
+		</dependency>
 		<dependency>
 		    <groupId>com.ibm.wala</groupId>
 		    <artifactId>com.ibm.wala.core</artifactId>

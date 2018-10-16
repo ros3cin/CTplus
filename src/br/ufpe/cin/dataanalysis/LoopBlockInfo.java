@@ -150,7 +150,7 @@ public class LoopBlockInfo {
 
 						// FOR OVER ARRAY IS TRUE
 						if (val1StringTail.equals(conditionalUseVal1String) || val1StringTail.equals(conditionalUseVal2String)
-								|| (variableTailName != null && variableConditionalName != null && variableTailName[0].equals(variableConditionalName[0]))) {
+								|| (variableTailName != null && variableConditionalName != null && variableTailName.length > 0 && variableConditionalName.length > 0 && variableTailName[0].equals(variableConditionalName[0]))) {
 							loopOverVariable = true;
 							loopOperator = tailOperator;
 						}

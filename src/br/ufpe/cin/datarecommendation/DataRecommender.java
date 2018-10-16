@@ -18,7 +18,6 @@ public class DataRecommender {
 	
 	static String energyFilePath;
 	static String dataAnalysisFilePath;
-	static DecimalFormat df = new DecimalFormat("0.00");
 	
 	public static void doRecommendation(String energyFilePath,ArrayList<CollectionMethod> methods) throws IOException{
 		
@@ -40,7 +39,7 @@ public class DataRecommender {
 			
 			HashMap<String,Double> typeConsumption = recommendationOrder.get(methodInfo);
 			for (String type : typeConsumption.keySet()) {				
-				System.out.println(methodInfo.getFieldName() +";"+type+";"+df.format(typeConsumption.get(type)));
+				System.out.println(methodInfo.getFieldName() +";"+type+";"+typeConsumption.get(type));
 			}	
 			SortedSet<RecommendedStructure> recommendations = getStructureRecommendation(typeConsumption);
 			
@@ -111,7 +110,7 @@ public class DataRecommender {
 	public static void main(String[] args) {
 		try {			
 			
-			energyFilePath = "C:\\Users\\RENATO\\Documents\\Mestrado\\linuxapps02-profile.csv";
+			energyFilePath = "C:\\Users\\RENATO\\Documents\\Mestrado\\Energy profiles\\complete profile nexus 7.csv";
 			dataAnalysisFilePath = "C:\\Users\\RENATO\\Documents\\analise.csv";
 			
 			//energyFilePath = "energyData/energy-profile-note.csv";

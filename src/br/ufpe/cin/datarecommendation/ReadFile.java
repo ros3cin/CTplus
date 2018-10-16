@@ -25,17 +25,16 @@ public class ReadFile {
 		{
 		    String[] elements = stringRead.split(",");
 
-		    if(elements.length == 3){
+		    if(elements.length >= 3){
 			    String type = elements[0];
 			    String operation = elements[1];
 			    String energy = elements[2];
 	
 			    EnergyProfile temp = new EnergyProfile(type, operation, energy);
 			    datalist.add(temp);
-	
-			    // read the next line
-			    stringRead = br.readLine();
 		    }
+		    // read the next line
+		    stringRead = br.readLine();
 		}
 	    
 	    br.close();
