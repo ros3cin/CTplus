@@ -185,9 +185,18 @@ public class JavaCollectionsAnalyser {
 		File scopeExclusion;
 		scopeExclusion = new File(EXCLUSOES);
 
-		AnalysisScope scope = AnalysisScopeReader.readJavaScope(scopeFile.getAbsolutePath(), scopeExclusion,
-				JavaCollectionsAnalyser.class.getClassLoader());
-
+		/*AnalysisScope scope = AnalysisScopeReader.readJavaScope(scopeFile.getAbsolutePath(), scopeExclusion,
+				JavaCollectionsAnalyser.class.getClassLoader());*/
+		
+		/*AnalysisScope scope = AnalysisScopeReader.readJavaScope(
+				"C:\\Users\\RENATO\\Documents\\Hasan Apps\\Built jars\\xstream-original.jar", 
+				new File(EXCLUSOES), 
+				JavaCollectionsAnalyser.class.getClassLoader()
+		);*/
+		AnalysisScope scope = AnalysisScopeReader.makeJavaBinaryAnalysisScope(
+				"C:\\Users\\RENATO\\Documents\\Hasan Apps\\Built jars\\commons-math3-3.4-original.jar",
+				new File(EXCLUSOES)
+		);
 
 		// build a class hierarchy
 		System.err.print("Building class hierarchy...");
@@ -224,7 +233,7 @@ public class JavaCollectionsAnalyser {
 		PointerAnalysisAnalyzer pAnalyzer = new PointerAnalysisAnalyzer();
 		//pAnalyzer.extractPointsToAnalysisInformation(scope,tomcatComponentsOfInterest,cha);
 		
-		traverseMethods(cha,tomcatComponentsOfInterest);
+		traverseMethods(cha,commonsMath3ComponentsOfInterest);
 
 	}
 	
