@@ -1,90 +1,150 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>CIN-UFPE</groupId>
-  <artifactId>CECOtool</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <!-- https://mvnrepository.com/artifact/com.ibm.wala/com.ibm.wala.core -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>CIN-UFPE</groupId>
+	<artifactId>CECOtool</artifactId>
+	<version>0.0.2</version>
+	<!-- https://mvnrepository.com/artifact/com.ibm.wala/com.ibm.wala.core -->
 	<properties>
 		<wala.version>1.4.3</wala.version>
 		<wala.java.cast.version>1.4.3</wala.java.cast.version>
 		<scala.lang.version>2.12.2</scala.lang.version>
+		<scala.maven.plugin.version>3.4.2</scala.maven.plugin.version>
+		<picocli.version>3.7.0</picocli.version>
+		<log4j.version>2.11.1</log4j.version>
 	</properties>
-	
+
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.scala-lang/scala-library -->
 		<dependency>
-		    <groupId>org.scala-lang</groupId>
-		    <artifactId>scala-library</artifactId>
-		    <version>${scala.lang.version}</version>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>${scala.lang.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.scala-lang/scala-reflect -->
 		<dependency>
-		    <groupId>org.scala-lang</groupId>
-		    <artifactId>scala-reflect</artifactId>
-		    <version>${scala.lang.version}</version>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-reflect</artifactId>
+			<version>${scala.lang.version}</version>
 		</dependency>
-			
+
 		<dependency>
-		    <groupId>com.ibm.wala</groupId>
-		    <artifactId>com.ibm.wala.scandroid</artifactId>
-		    <version>${wala.version}</version>
-		</dependency>	
-		<dependency>
-		    <groupId>com.ibm.wala</groupId>
-		    <artifactId>com.ibm.wala.dalvik</artifactId>
-		    <version>${wala.version}</version>
+			<groupId>com.ibm.wala</groupId>
+			<artifactId>com.ibm.wala.scandroid</artifactId>
+			<version>${wala.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.ibm.wala</groupId>
-		    <artifactId>com.ibm.wala.core</artifactId>
-		    <version>${wala.version}</version>
+			<groupId>com.ibm.wala</groupId>
+			<artifactId>com.ibm.wala.dalvik</artifactId>
+			<version>${wala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.wala</groupId>
+			<artifactId>com.ibm.wala.core</artifactId>
+			<version>${wala.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.ibm.wala/com.ibm.wala.cast -->
 		<dependency>
-		    <groupId>com.ibm.wala</groupId>
-		    <artifactId>com.ibm.wala.cast</artifactId>
-		    <version>${wala.version}</version>
+			<groupId>com.ibm.wala</groupId>
+			<artifactId>com.ibm.wala.cast</artifactId>
+			<version>${wala.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.ibm.wala/com.ibm.wala.cast.java -->
 		<dependency>
-		    <groupId>com.ibm.wala</groupId>
-		    <artifactId>com.ibm.wala.cast.java</artifactId>
-		    <version>${wala.java.cast.version}</version>
+			<groupId>com.ibm.wala</groupId>
+			<artifactId>com.ibm.wala.cast.java</artifactId>
+			<version>${wala.java.cast.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>3.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.11.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
 	</dependencies>
-  
-  <build>
-    <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <directory>energyData</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <directory>dat</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>resources</directory>
+			</resource>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>energyData</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>dat</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>scala-maven-plugin</artifactId>
+				<version>${scala.maven.plugin.version}</version>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>add-source</goal>
+							<goal>compile</goal>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>
+										br.ufpe.cin.commandline.Entry
+									</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

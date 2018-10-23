@@ -298,7 +298,7 @@ object LoopUtil {
         case None =>
           if (DEBUG) println("no condBlk; we suspect that " + loopHeader + " is an explicitly infinite loop")                    
           val succs = cfg.getNormalSuccessors(loopHeader)
-          assert(succs.size == 1, succs.size() + " succs for suspected infinite loop " + loopHeader + " IR: " + ir)
+          //assert(succs.size == 1, succs.size() + " succs for suspected infinite loop " + loopHeader + " IR: " + ir)
           val succ = succs.iterator().next()
           (succ, succ) // explicitly infinite loop
       }

@@ -6,66 +6,33 @@
 package br.ufpe.cin.dataanalysis;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Map;
 
-import scala.Option;
-import scala.collection.immutable.List;
-import scala.collection.immutable.Set;
-
-import com.ibm.wala.analysis.pointers.BasicHeapGraph;
-import com.ibm.wala.analysis.pointers.HeapGraph;
 import com.ibm.wala.analysis.typeInference.TypeAbstraction;
 import com.ibm.wala.analysis.typeInference.TypeInference;
 import com.ibm.wala.cast.java.ipa.callgraph.JavaSourceAnalysisScope;
 import com.ibm.wala.classLoader.CallSiteReference;
-import com.ibm.wala.classLoader.CodeScanner;
 import com.ibm.wala.classLoader.IBytecodeMethod;
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IField;
 import com.ibm.wala.classLoader.IMethod;
-import com.ibm.wala.classLoader.Language;
-import com.ibm.wala.classLoader.NewSiteReference;
-import com.ibm.wala.ipa.callgraph.AnalysisCache;
 import com.ibm.wala.ipa.callgraph.AnalysisCacheImpl;
-import com.ibm.wala.ipa.callgraph.AnalysisOptions;
 import com.ibm.wala.ipa.callgraph.AnalysisScope;
 import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
-import com.ibm.wala.ipa.callgraph.CallGraphBuilder;
-import com.ibm.wala.ipa.callgraph.CallGraphBuilderCancelException;
 import com.ibm.wala.ipa.callgraph.Entrypoint;
 import com.ibm.wala.ipa.callgraph.IAnalysisCacheView;
-import com.ibm.wala.ipa.callgraph.impl.AllApplicationEntrypoints;
 import com.ibm.wala.ipa.callgraph.impl.ArgumentTypeEntrypoint;
-import com.ibm.wala.ipa.callgraph.impl.DefaultEntrypoint;
 import com.ibm.wala.ipa.callgraph.impl.Everywhere;
-import com.ibm.wala.ipa.callgraph.impl.Util;
-import com.ibm.wala.ipa.callgraph.propagation.HeapModel;
-import com.ibm.wala.ipa.callgraph.propagation.InstanceFieldKey;
-import com.ibm.wala.ipa.callgraph.propagation.InstanceKey;
-import com.ibm.wala.ipa.callgraph.propagation.LocalPointerKey;
-import com.ibm.wala.ipa.callgraph.propagation.PointerAnalysis;
-import com.ibm.wala.ipa.callgraph.propagation.PointerKey;
-import com.ibm.wala.ipa.callgraph.propagation.ReturnValueKey;
-import com.ibm.wala.ipa.callgraph.propagation.SmushedAllocationSiteInNode;
-import com.ibm.wala.ipa.callgraph.propagation.SmushedAllocationSiteInstanceKeys;
-import com.ibm.wala.ipa.callgraph.propagation.StaticFieldKey;
-import com.ibm.wala.ipa.callgraph.propagation.cfa.ExceptionReturnValueKey;
-import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
@@ -78,18 +45,10 @@ import com.ibm.wala.ssa.SSACFG.BasicBlock;
 import com.ibm.wala.ssa.SSAGetInstruction;
 import com.ibm.wala.ssa.SSAInstruction;
 import com.ibm.wala.ssa.SSAInvokeInstruction;
-import com.ibm.wala.ssa.SSALoadIndirectInstruction;
-import com.ibm.wala.ssa.SSANewInstruction;
 import com.ibm.wala.ssa.SSAOptions;
-import com.ibm.wala.ssa.SSAPutInstruction;
 import com.ibm.wala.ssa.SSAReturnInstruction;
-import com.ibm.wala.ssa.SymbolTable;
-import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.FieldReference;
 import com.ibm.wala.types.MethodReference;
-import com.ibm.wala.types.TypeName;
-import com.ibm.wala.types.TypeReference;
-import com.ibm.wala.util.MonitorUtil.IProgressMonitor;
 import com.ibm.wala.util.Predicate;
 import com.ibm.wala.util.collections.HashSetFactory;
 import com.ibm.wala.util.config.AnalysisScopeReader;
@@ -98,26 +57,20 @@ import com.ibm.wala.util.graph.GraphSlicer;
 import com.ibm.wala.util.ref.ReferenceCleanser;
 import com.ibm.wala.util.strings.Atom;
 
-import br.ufpe.cin.dataanalysis.pointeranalysis.AnalyzedClass;
+import br.ufpe.cin.commandline.CommandLine;
 import br.ufpe.cin.dataanalysis.pointeranalysis.PointerAnalysisAnalyzer;
 import br.ufpe.cin.datarecommendation.CollectionsTypeResolver;
 import br.ufpe.cin.datarecommendation.ICollectionsTypeResolver;
+import br.ufpe.cin.debug.Debug;
 import edu.colorado.walautil.LoopUtil;
+import picocli.CommandLine.MissingParameterException;
+import scala.Option;
+import scala.collection.immutable.List;
+import scala.collection.immutable.Set;
 
-//import collection.JavaConversions._;
 
 /**
- * This is a simple example WALA application. This counts the number of parameters to each method in the primordial loader (the J2SE
- * standard libraries), and prints the result.
- * 
- * @author sfink
- */
-/**
- * @author BenitoAvell
- *
- */
-/**
- * @author BenitoAvell
+ * @authors BenitoAvell, Renato
  *
  */
 public class JavaCollectionsAnalyser {
@@ -129,7 +82,7 @@ public class JavaCollectionsAnalyser {
 	private static String MAPS = "Map,AbstractMap, Attributes, AuthProvider, ConcurrentHashMap, ConcurrentSkipListMap, EnumMap, HashMap, Hashtable, IdentityHashMap, LinkedHashMap, PrinterStateReasons, Properties, Provider, RenderingHints, SimpleBindings, TabularDataSupport, TreeMap, UIDefaults, WeakHashMap";
 	private static String SETS = "Set,AbstractSet, ConcurrentSkipListSet, CopyOnWriteArraySet, EnumSet, HashSet, JobStateReasons, LinkedHashSet, TreeSet";
 
-	private static String CAMINHO_CSV = "C:\\Users\\RENATO\\Documents\\";
+	private static String DEFAULT_ANALYSIS_OUTPUT_FILE = "analysis.csv";
 	
 	private static String JAVA_LANG_RUNNABLE = "java/lang/Runnable";
 	private static String JAVA_LANG_THREAD = "java/lang/Thread";
@@ -142,10 +95,8 @@ public class JavaCollectionsAnalyser {
 	// come�a do zero, assumindo que inicialmente n�o existe loop.
 	private static final int PROFUNDIDADE_LOOP_INICIAL = 0;
 
-	private static ArrayList<CollectionMethod> listaMetodos;
+	private static ArrayList<CollectionMethod> analyzedMethods;
 	private static ArrayList<IClass> threadsRunnableClasses;
-
-	static IClassHierarchy cha;
 
 	// count only if the method of collections is inside the loop
 	private static boolean ONLY_LOOP = false;
@@ -159,6 +110,48 @@ public class JavaCollectionsAnalyser {
 	 * Counter for wiping soft caches
 	 */
 	private static int wipeCount = 0;
+	
+	public static void run(String target, String exclusions, String[] packages, String analysisOutputFile, String pointsToAnalysis) {
+		if ((analysisOutputFile == null) || analysisOutputFile.isEmpty()) {
+			analysisOutputFile = DEFAULT_ANALYSIS_OUTPUT_FILE;
+		}
+		if ((exclusions == null) || exclusions.isEmpty()) {
+			exclusions = "dat/bm-tomcatExclusions.txt";
+		}
+		
+		analyzedMethods = new ArrayList<CollectionMethod>();
+		threadsRunnableClasses = new ArrayList<IClass>();
+		
+		try {
+			AnalysisScope scope = AnalysisScopeReader.makeJavaBinaryAnalysisScope(target, new File(exclusions));
+			
+			Debug.logger.info("Building class hierarchy...");
+			IClassHierarchy classHierarchy = ClassHierarchyFactory.make(scope);
+			Debug.logger.info("Done");
+			
+			java.util.List<ComponentOfInterest> cois = new ArrayList<ComponentOfInterest>();
+			if (packages != null) {
+				for (String currPackage : packages) {
+					cois.add(new ComponentOfInterest(currPackage.replace('.', '/'), null, null));
+				}
+			}
+			
+			if ((pointsToAnalysis != null) && !pointsToAnalysis.isEmpty()) {
+				PointerAnalysisAnalyzer pAnalyzer = new PointerAnalysisAnalyzer();
+				pAnalyzer.extractPointsToAnalysisInformation(scope,cois,classHierarchy,pointsToAnalysis);
+			}
+			
+			Debug.logger.info("Running analyzer, this may take a few minutes...");
+			traverseMethods(classHierarchy,cois);
+			Debug.logger.info("Done");
+			
+			Debug.logger.info(String.format("Generating analysis file at %s",analysisOutputFile));
+			generateAnalysisFile(analysisOutputFile);
+			Debug.logger.info("Done");
+		} catch (Exception e) {
+			Debug.logger.error("Exception occurred on pointer analysis", e);
+		}
+	}
 
 	/**
 	 * Use the 'CountParameters' launcher to run this program with the
@@ -166,45 +159,22 @@ public class JavaCollectionsAnalyser {
 	 * @throws InvalidClassFileException 
 	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException, InvalidClassFileException {
-
+		
 		final String ESCOPO = "dat/bm-tomcat";
 		final String EXCLUSOES = "dat/bm-tomcatExclusions.txt";
 
-		
-		File projeto = new File("hello.txt");
-
-		
-		exibirHora();
-
-		listaMetodos = new ArrayList<CollectionMethod>();
+		analyzedMethods = new ArrayList<CollectionMethod>();
 		threadsRunnableClasses = new ArrayList<IClass>();
 
-		File scopeFile;
-		scopeFile = new File(ESCOPO);
-
-		File scopeExclusion;
-		scopeExclusion = new File(EXCLUSOES);
-
-		/*AnalysisScope scope = AnalysisScopeReader.readJavaScope(scopeFile.getAbsolutePath(), scopeExclusion,
-				JavaCollectionsAnalyser.class.getClassLoader());*/
-		
-		/*AnalysisScope scope = AnalysisScopeReader.readJavaScope(
-				"C:\\Users\\RENATO\\Documents\\Hasan Apps\\Built jars\\xstream-original.jar", 
-				new File(EXCLUSOES), 
-				JavaCollectionsAnalyser.class.getClassLoader()
-		);*/
 		AnalysisScope scope = AnalysisScopeReader.makeJavaBinaryAnalysisScope(
 				"C:\\Users\\RENATO\\Documents\\Hasan Apps\\Built jars\\commons-math3-3.4-original.jar",
 				new File(EXCLUSOES)
 		);
 
 		// build a class hierarchy
-		System.err.print("Building class hierarchy...");
-		cha = ClassHierarchyFactory.make(scope);
-		
-		
-
-		System.err.println("Done");
+		System.out.print("Building class hierarchy...");
+		IClassHierarchy cha = ClassHierarchyFactory.make(scope);
+		System.out.println("Done");
 		
 		java.util.List<ComponentOfInterest> tomcatComponentsOfInterest = new ArrayList<ComponentOfInterest>();
 		tomcatComponentsOfInterest.add(new ComponentOfInterest("org/apache/catalina", null, null));
@@ -233,8 +203,10 @@ public class JavaCollectionsAnalyser {
 		PointerAnalysisAnalyzer pAnalyzer = new PointerAnalysisAnalyzer();
 		//pAnalyzer.extractPointsToAnalysisInformation(scope,tomcatComponentsOfInterest,cha);
 		
+		System.out.print("Running analyzer...");
 		traverseMethods(cha,commonsMath3ComponentsOfInterest);
-
+		System.out.println("Done");
+		System.out.printf("Program finished at %s\n", Debug.getCurrentTime());
 	}
 	
 	private static void traverseMethods(IClassHierarchy cha, java.util.List<ComponentOfInterest> componentsOfInterest) {
@@ -251,7 +223,7 @@ public class JavaCollectionsAnalyser {
 						if(isMethodOfInterest(method,componentsOfInterest)) {
 							ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
 							java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
-							searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest,allowedFields);
+							searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest,allowedFields,cha);
 						}
 
 					}
@@ -271,7 +243,7 @@ public class JavaCollectionsAnalyser {
 					if(methodRun!=null){
 						ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
 						java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
-						searchMethodsLoopInside(methodRun, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest,allowedFields);
+						searchMethodsLoopInside(methodRun, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest,allowedFields,cha);
 					}
 					threadsRunnableClasses.remove(0);
 				}
@@ -280,11 +252,7 @@ public class JavaCollectionsAnalyser {
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		}
-
-		exibirHora();
-		gerarArquivoCsv(criarNomeArquivo(""));
-		
+		}		
 	}
 
 	/**
@@ -363,11 +331,6 @@ public class JavaCollectionsAnalyser {
 		return result;
 	}
 
-	private static void exibirHora() {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
-		System.out.println(sdf.format(new Date()));
-	}
-
 	private static ArrayList<String> iniciarPacotes() {
 		ArrayList<String> pacotes = new ArrayList<String>();
 		pacotes.add(JAVA_UTIL);
@@ -375,7 +338,7 @@ public class JavaCollectionsAnalyser {
 	}
 
 	// TODO: Create classe FileWriter
-	private static void gerarArquivoCsv(String destino) {
+	private static void generateAnalysisFile(String destino) {
 		try {
 			FileWriter writer = new FileWriter(destino);
 
@@ -404,7 +367,7 @@ public class JavaCollectionsAnalyser {
 			writer.append("Inside Recursive Method");
 			writer.append('\n');
 
-			for (CollectionMethod elemento : listaMetodos) {
+			for (CollectionMethod elemento : analyzedMethods) {
 				writer.append(elemento.getPacote());
 				writer.append(',');
 				writer.append(elemento.getConcreteType());
@@ -441,7 +404,7 @@ public class JavaCollectionsAnalyser {
 	}
 	
 	private static void searchMethodsLoopInside(IMethod method, int profundidade, boolean isIntoLoop, LoopBlockInfo outerLoop, ArrayList<LoopBlockInfo> loops,
-			int loopProfundidade, java.util.List<IMethod> alreadyVisited,java.util.List<ComponentOfInterest> componentsOfInterest, Collection<Atom> allowedFields) throws InvalidClassFileException {
+			int loopProfundidade, java.util.List<IMethod> alreadyVisited,java.util.List<ComponentOfInterest> componentsOfInterest, Collection<Atom> allowedFields, IClassHierarchy classHierarchy) throws InvalidClassFileException {
 
 		alreadyVisited.add(method);
 		IAnalysisCacheView cache = new AnalysisCacheImpl();
@@ -451,7 +414,7 @@ public class JavaCollectionsAnalyser {
 			return;
 		} 
 		if(profundidade==1) {
-			System.out.printf("Method name:%s.%s\n",method.getDeclaringClass().getName(),method.getName());
+			Debug.println(String.format("Method name:%s.%s",method.getDeclaringClass().getName(),method.getName()));
 		}
 		
 
@@ -626,14 +589,14 @@ public class JavaCollectionsAnalyser {
 									if(invokedMethodRef.toString().contains("start()") || invokedMethodRef.toString().contains("ExecutorService, submit(")){
 										
 										//Add to the list if the method start is from a thread/runnable class
-										addThreadRunnableClass(ir, invokeIR, invokedMethodRef);
+										addThreadRunnableClass(ir, invokeIR, invokedMethodRef,classHierarchy);
 									}
 									
-									IMethod resolveMethod = cha.resolveMethod(invokedMethodRef);									
+									IMethod resolveMethod = classHierarchy.resolveMethod(invokedMethodRef);									
 									// TODO verificar com primordial !!!!
 									if (resolveMethod != null && resolveMethod.getDeclaringClass().getClassLoader().toString().equals("Application")/*&&!sameSignature*/) {
 										if(!alreadyVisited.contains(resolveMethod) && isMethodOfInterest(method, componentsOfInterest)){
-											searchMethodsLoopInside(resolveMethod, profundidade + 1, isIntoLoop, outerLoop, loops, loopProfundidade,alreadyVisited,componentsOfInterest,allowedFields);
+											searchMethodsLoopInside(resolveMethod, profundidade + 1, isIntoLoop, outerLoop, loops, loopProfundidade,alreadyVisited,componentsOfInterest,allowedFields,classHierarchy);
 										}
 									}
 								}
@@ -662,16 +625,16 @@ public class JavaCollectionsAnalyser {
 
 	}
 
-	private static void addThreadRunnableClass(IR ir, SSAInvokeInstruction invokeIR, MethodReference invokedMethodRef) {
+	private static void addThreadRunnableClass(IR ir, SSAInvokeInstruction invokeIR, MethodReference invokedMethodRef, IClassHierarchy classHierarchy) {
 		System.out.println("start");
-		System.out.println(cha.lookupClass(invokedMethodRef.getDeclaringClass()));
+		System.out.println(classHierarchy.lookupClass(invokedMethodRef.getDeclaringClass()));
 		
 		
 		//ALL THREAD OF CHA
 		//Collection<IClass> threads = cha.computeSubClasses(TypeReference.JavaLangThread);
 		
 		TypeAbstraction type = getInvokeConcreteType(ir, invokeIR.getUse(0));	
-		IClass threadConcreteClass = cha.lookupClass(type.getTypeReference());
+		IClass threadConcreteClass = classHierarchy.lookupClass(type.getTypeReference());
 		System.out.println(type);
 		
 		int use = invokeIR.getUse(0);
@@ -681,7 +644,7 @@ public class JavaCollectionsAnalyser {
 			use = invokeIR.getUse(1);
 		}		
 		
-		IClass runnableClassOfInvokeInstruction = getRunnableClassOfInvokeInstructions(ir,use);
+		IClass runnableClassOfInvokeInstruction = getRunnableClassOfInvokeInstructions(ir,use,classHierarchy);
 		
 		IClass concreteClass = null;
 		
@@ -705,7 +668,7 @@ public class JavaCollectionsAnalyser {
 	//Example of instruction:
 	//19   invokespecial < Application, Ljava/lang/Thread, <init>(Ljava/lang/Runnable;)V > v11,v12 @41 exception:v14(line 23)
 	//22   invokevirtual < Application, Ljava/lang/Thread, start()V > v11 @46 exception:v15(line 24) {11=[t2]}
-	private static IClass getRunnableClassOfInvokeInstructions(IR ir,int use){
+	private static IClass getRunnableClassOfInvokeInstructions(IR ir,int use, IClassHierarchy classHierarchy){
 		for (int i=0; i < ir.getInstructions().length; i++) {
 			
 			SSAInstruction instruction = ir.getInstructions()[i];
@@ -715,7 +678,7 @@ public class JavaCollectionsAnalyser {
 					if(instruction.toString().contains("invokespecial < Application, Ljava/lang/Thread, <init>(Ljava/lang/Runnable;)V >")){
 						
 						TypeAbstraction invokeConcreteType = getInvokeConcreteType(ir,instruction.getUse(1));
-						IClass lookupClass = cha.lookupClass(invokeConcreteType.getTypeReference());
+						IClass lookupClass = classHierarchy.lookupClass(invokeConcreteType.getTypeReference());
 						return lookupClass;
 					}
 				}
@@ -791,7 +754,7 @@ public class JavaCollectionsAnalyser {
 					FieldReference declaredField = getInstruction.getDeclaredField();
 					if (getInstruction.getDef() == invokeIR.getUse(0)) {
 						fieldName = declaredField.getName().toString();
-						System.out.println(getInstruction.getDef() + " " + declaredField.getName());
+						Debug.println(getInstruction.getDef() + " " + declaredField.getName());
 						break;
 					}
 				}
@@ -817,18 +780,6 @@ public class JavaCollectionsAnalyser {
 		}
 
 		return loops;
-	}
-
-	private static String criarNomeArquivo(String CaminhoProjeto) {
-		String caminhoProjeto[] = CaminhoProjeto.split("/");
-
-		if (caminhoProjeto[caminhoProjeto.length - 1].endsWith(".jar")) {
-			String nomeProjeto[] = caminhoProjeto[caminhoProjeto.length - 1].split("\\.");
-			return CAMINHO_CSV + nomeProjeto[0] + ".csv";
-		} else {
-			// criei este else caso esteja analizando uma pasta com .class
-			return CAMINHO_CSV + "analise.csv";
-		}
 	}
 	
 	private static boolean isCollectionReturnedOrPassedAsParameter(IMethod scope, SSAInvokeInstruction invks, IR methodIR) {
@@ -1013,21 +964,21 @@ public class JavaCollectionsAnalyser {
 	private static void adicionarMetodo(CollectionMethod metodo) {
 		boolean metodoExistente = false;
 
-		if (listaMetodos.size() == 0) {
-			listaMetodos.add(metodo);
+		if (analyzedMethods.size() == 0) {
+			analyzedMethods.add(metodo);
 			metodoExistente = true;
 		} else {
-			for (int i = 0; i < listaMetodos.size(); i++) {
+			for (int i = 0; i < analyzedMethods.size(); i++) {
 
-				if (listaMetodos.get(i).equals(metodo)) {
-					listaMetodos.get(i).incrementarOcorrencias();
+				if (analyzedMethods.get(i).equals(metodo)) {
+					analyzedMethods.get(i).incrementarOcorrencias();
 					metodoExistente = true;
 				}
 
 			}
 		}
 		if (!metodoExistente) {
-			listaMetodos.add(metodo);
+			analyzedMethods.add(metodo);
 		}
 	}
 

@@ -50,11 +50,12 @@ import com.ibm.wala.types.TypeReference;
 import br.ufpe.cin.dataanalysis.ComponentOfInterest;
 import br.ufpe.cin.datarecommendation.CollectionsTypeResolver;
 import br.ufpe.cin.datarecommendation.ICollectionsTypeResolver;
+import br.ufpe.cin.debug.Debug;
 
 public class PointerAnalysisAnalyzer {
 	
-	public void extractPointsToAnalysisInformation(AnalysisScope scope, java.util.List<ComponentOfInterest> componentsOfInterest, IClassHierarchy cha) throws InvalidClassFileException {
-		System.out.println("Starting pointer analysis...");
+	public void extractPointsToAnalysisInformation(AnalysisScope scope, java.util.List<ComponentOfInterest> componentsOfInterest, IClassHierarchy cha, String output) throws InvalidClassFileException {
+		Debug.logger.info("Starting pointer analysis...");
 		Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(scope,cha);
 		try {
 
@@ -76,16 +77,16 @@ public class PointerAnalysisAnalyzer {
 			AnalysisCache analysisCache = new AnalysisCacheImpl();
 			CallGraphBuilder cgBuilder = Util.makeZeroOneCFABuilder(options, analysisCache, cha, scope);
 		
-			System.out.println("Creating call graph. This step can take up to 1 hour...");
+			Debug.logger.info("Creating call graph. This step can take up to 1 hour...");
 			CallGraph cg = cgBuilder.makeCallGraph(options,null);
-			System.out.println("Call graph creationg ended...");
+			Debug.logger.info("Call graph creationg ended...");
 			Map<CGNode,Boolean> isNodeVisited = new HashMap<CGNode,Boolean>();
 			Map<IClass,Boolean> isClassComputed = new HashMap<IClass,Boolean>();
 			Iterator<CGNode> allNodes = cg.iterator();
 			
 			Map<String, AnalyzedClass> pointerResult = new HashMap<String, AnalyzedClass>();
 
-			System.out.println("Gathering pointers and aliases...");
+			Debug.logger.info("Gathering pointers and aliases...");
 			while(allNodes.hasNext()) {
 				CGNode node = allNodes.next();
 				String declaringClassName = node.getMethod().getDeclaringClass().getName().toString();
@@ -98,8 +99,8 @@ public class PointerAnalysisAnalyzer {
 				}
 			}
 			
-			System.out.println("Writing out the result...");
-			BufferedWriter out = new BufferedWriter(new FileWriter("pointerAnalysis.txt"),100000);
+			Debug.logger.info("Writing out the result...");
+			BufferedWriter out = new BufferedWriter(new FileWriter(output),100000);
 			
 			for(AnalyzedClass analyzedClass : pointerResult.values()) {
 				if(analyzedClass.hasAnyAlias()) {
@@ -137,7 +138,7 @@ public class PointerAnalysisAnalyzer {
 			}
 			
 			out.close();
-			System.out.println("End of pointer analysis.");
+			Debug.logger.info("End of pointer analysis.");
 	
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -168,7 +169,7 @@ public class PointerAnalysisAnalyzer {
 		ICollectionsTypeResolver nameResolver = new CollectionsTypeResolver();
 		
 		AnalyzedClass analyzedClass = null;
-		if(!isClassComputed.getOrDefault(declaringClass, false)) {
+		if((isClassComputed.get(declaringClass) != null) && !(isClassComputed.get(declaringClass))) {
 			analyzedClass = new AnalyzedClass(declaringClassName);
 			pointerResult.put(declaringClassName, analyzedClass);
 			isClassComputed.put(declaringClass,true);
@@ -281,8 +282,11 @@ public class PointerAnalysisAnalyzer {
 		while(childs.hasNext()) {
 			CGNode next = (CGNode)childs.next();
 			String nextChildDeclaringClassName = next.getMethod().getDeclaringClass().getName().toString();
-			if((!isNodeVisited.getOrDefault(next, false)) && isClassOfInterest(nextChildDeclaringClassName, componentsOfInterest)
-					&& !nextChildDeclaringClassName.contains("exception"))
+			if(
+					((isNodeVisited.get(next) != null) && !isNodeVisited.get(next)) 
+					&& isClassOfInterest(nextChildDeclaringClassName, componentsOfInterest)
+					&& !nextChildDeclaringClassName.contains("exception")
+			)
 				walkNodes(next,cg,isNodeVisited,isClassComputed,heapModel,heapGraph,componentsOfInterest,pointerResult);
 		}
 	}
