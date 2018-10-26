@@ -9,11 +9,11 @@ final public class Entry {
 		try {
 			CommandLine cmd = new CommandLine();
 			new picocli.CommandLine(cmd).parse(args);
-			cmd.validate();
 			if (cmd.usageHelpRequested) {
 				picocli.CommandLine.usage(new CommandLine(), System.out);
 				return;
 			}
+			cmd.validate();
 			
 			Debug.logger.info(String.format("Program started at %s",Debug.getCurrentTime()));
 			if (cmd.analyze) {
@@ -22,7 +22,8 @@ final public class Entry {
 						cmd.exclusions, 
 						cmd.packages, 
 						cmd.analysisOutputFile, 
-						cmd.pointsToAnalysis
+						cmd.pointsToAnalysisFile,
+						cmd.poinsToAnalysis
 				);
 			}
 		} catch (MissingParameterException e) {

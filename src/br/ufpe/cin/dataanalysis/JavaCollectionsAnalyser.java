@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.ibm.wala.analysis.typeInference.TypeAbstraction;
 import com.ibm.wala.analysis.typeInference.TypeInference;
 import com.ibm.wala.cast.java.ipa.callgraph.JavaSourceAnalysisScope;
@@ -111,11 +113,11 @@ public class JavaCollectionsAnalyser {
 	 */
 	private static int wipeCount = 0;
 	
-	public static void run(String target, String exclusions, String[] packages, String analysisOutputFile, String pointsToAnalysis) {
-		if ((analysisOutputFile == null) || analysisOutputFile.isEmpty()) {
+	public static void run(String target, String exclusions, String[] packages, String analysisOutputFile, String pointsToAnalysisFile, boolean pointsToAnalysis) {
+		if (StringUtils.isEmpty(analysisOutputFile)) {
 			analysisOutputFile = DEFAULT_ANALYSIS_OUTPUT_FILE;
 		}
-		if ((exclusions == null) || exclusions.isEmpty()) {
+		if (StringUtils.isEmpty(exclusions)) {
 			exclusions = "dat/bm-tomcatExclusions.txt";
 		}
 		
@@ -136,9 +138,9 @@ public class JavaCollectionsAnalyser {
 				}
 			}
 			
-			if ((pointsToAnalysis != null) && !pointsToAnalysis.isEmpty()) {
+			if (pointsToAnalysis) {
 				PointerAnalysisAnalyzer pAnalyzer = new PointerAnalysisAnalyzer();
-				pAnalyzer.extractPointsToAnalysisInformation(scope,cois,classHierarchy,pointsToAnalysis);
+				pAnalyzer.extractPointsToAnalysisInformation(scope,cois,classHierarchy,pointsToAnalysisFile);
 			}
 			
 			Debug.logger.info("Running analyzer, this may take a few minutes...");
