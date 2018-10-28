@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>CIN-UFPE</groupId>
-	<artifactId>CECOtool</artifactId>
+	<artifactId>CECOtool-analyzer</artifactId>
 	<version>0.1.0-alpha</version>
 	<!-- https://mvnrepository.com/artifact/com.ibm.wala/com.ibm.wala.core -->
 	<properties>

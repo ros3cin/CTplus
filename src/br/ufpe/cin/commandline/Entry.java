@@ -1,6 +1,7 @@
 package br.ufpe.cin.commandline;
 
 import br.ufpe.cin.dataanalysis.JavaCollectionsAnalyser;
+import br.ufpe.cin.datarecommendation.DataRecommender;
 import br.ufpe.cin.debug.Debug;
 import picocli.CommandLine.MissingParameterException;
 
@@ -16,16 +17,21 @@ final public class Entry {
 			cmd.validate();
 			
 			Debug.logger.info(String.format("Program started at %s",Debug.getCurrentTime()));
-			if (cmd.analyze) {
+			if (cmd.analyze || cmd.poinsToAnalysis) {
 				JavaCollectionsAnalyser.run(
 						cmd.target, 
 						cmd.exclusions, 
 						cmd.packages, 
 						cmd.analysisOutputFile, 
 						cmd.pointsToAnalysisFile,
-						cmd.poinsToAnalysis
+						cmd.poinsToAnalysis,
+						cmd.analyze
 				);
 			}
+			if (cmd.recommend) {
+				DataRecommender.run(cmd.energyProfileFile, cmd.analysisOutputFile);
+			}
+			Debug.logger.info(String.format("Program finished at %s\n",Debug.getCurrentTime()));
 		} catch (MissingParameterException e) {
 			Debug.logger.error(e);
 			picocli.CommandLine.usage(new CommandLine(), System.out);
@@ -36,7 +42,6 @@ final public class Entry {
 			return;
 		} catch (Exception e) { 
 			Debug.logger.error(e);
-		} finally {
 			Debug.logger.info(String.format("Program finished at %s\n",Debug.getCurrentTime()));
 		}
 	}

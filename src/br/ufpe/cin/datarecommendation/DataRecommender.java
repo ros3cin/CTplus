@@ -107,6 +107,11 @@ public class DataRecommender {
 		return recommendations;		
 	}
 	
+	public static void run(String energyProfileFile, String analysisOutputFile) throws IOException {
+		ArrayList<CollectionMethod> collectionMethodFromFile = ReadFile.getCollectionMethodFromFile(analysisOutputFile);
+		doRecommendation(energyProfileFile, collectionMethodFromFile);	
+	}
+	
 	public static void main(String[] args) {
 		try {			
 			

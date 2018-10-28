@@ -113,7 +113,7 @@ public class JavaCollectionsAnalyser {
 	 */
 	private static int wipeCount = 0;
 	
-	public static void run(String target, String exclusions, String[] packages, String analysisOutputFile, String pointsToAnalysisFile, boolean pointsToAnalysis) {
+	public static void run(String target, String exclusions, String[] packages, String analysisOutputFile, String pointsToAnalysisFile, boolean pointsToAnalysis, boolean analyze) {
 		if (StringUtils.isEmpty(analysisOutputFile)) {
 			analysisOutputFile = DEFAULT_ANALYSIS_OUTPUT_FILE;
 		}
@@ -143,9 +143,11 @@ public class JavaCollectionsAnalyser {
 				pAnalyzer.extractPointsToAnalysisInformation(scope,cois,classHierarchy,pointsToAnalysisFile);
 			}
 			
-			Debug.logger.info("Running analyzer, this may take a few minutes...");
-			traverseMethods(classHierarchy,cois);
-			Debug.logger.info("Done");
+			if (analyze) {
+				Debug.logger.info("Running analyzer, this may take a few minutes...");
+				traverseMethods(classHierarchy,cois);
+				Debug.logger.info("Done");
+			}
 			
 			Debug.logger.info(String.format("Generating analysis file at %s",analysisOutputFile));
 			generateAnalysisFile(analysisOutputFile);
