@@ -26,6 +26,7 @@ public class CollectionMethod {
 	
 	//Field name that calls the method;,
 	private String fieldName;
+	private boolean isFieldLocal;
 	private String callMethodName;
 
 	//TODO: method has loopblock 
@@ -242,6 +243,14 @@ public class CollectionMethod {
 
 	public void setInsideRecursiveMethod(boolean recursivo) {
 		this.recursivo = recursivo;
+	}
+
+	public boolean isFieldLocal() {
+		return isFieldLocal;
+	}
+
+	public void setFieldLocal(boolean isLocal) {
+		this.isFieldLocal = isLocal;
 	}
 
 }

@@ -60,13 +60,14 @@ public class ReadFile {
 		    if((elements.length > 10) && (elements[3]!=null) && (!"".equals(elements[3])) ){
 			    String type = elements[1];
 			    String classContainingField = elements[6];
-			    String name = elements[3]+"-"+elements[6];
+			    String name = elements[3];
 			    String operation = elements[4];
 			    Integer ocurrencies = Integer.parseInt(elements[7]);
 			    String loopInfo = elements[9];
 			    String callMethodName = elements[2];
+			    boolean isFieldLocal = Boolean.parseBoolean(elements[11]);
 	
-			    CollectionMethodDTO temp = new CollectionMethodDTO(type,name, operation,ocurrencies, loopInfo, classContainingField);
+			    CollectionMethodDTO temp = new CollectionMethodDTO(type,name, operation,ocurrencies, loopInfo, classContainingField, isFieldLocal);
 			    temp.setCallMethodName(callMethodName);
 			    datalist.add(temp);
 	

@@ -102,7 +102,27 @@ public class DataStructureEnergyManager {
 
 			@Override
 			public int compare(CollectionMethod o1, CollectionMethod o2) {
-				return (o1.getFieldName()).compareTo(o2.getFieldName());
+				int res = 0;
+				int classComparison = o1.getClasse().compareTo(o2.getClasse());
+				if (classComparison != 0) {
+					res = classComparison;
+				} else {
+					int nameComparison = (o1.getFieldName()).compareTo(o2.getFieldName());
+					int methodComparison = o1.getCallMethodName().compareTo(o2.getCallMethodName());
+					if (!o1.isFieldLocal() && !o2.isFieldLocal()) {
+						res = nameComparison;
+					} else if (o1.isFieldLocal() != o2.isFieldLocal()) {
+						res = o1.isFieldLocal() && !o2.isFieldLocal() ? 1 : -1;
+					} else {
+						if (methodComparison != 0) {
+							res = methodComparison;
+						} else {
+							res = nameComparison;
+						}		
+					}
+				}
+				
+				return res;
 			}
 			
 		});

@@ -29,7 +29,7 @@ final public class Entry {
 				);
 			}
 			if (cmd.recommend) {
-				DataRecommender.run(cmd.energyProfileFile, cmd.analysisOutputFile);
+				DataRecommender.run(cmd.energyProfileFile, cmd.analysisOutputFile, cmd.recommendationOutputFile);
 			}
 			Debug.logger.info(String.format("Program finished at %s\n",Debug.getCurrentTime()));
 		} catch (MissingParameterException e) {
@@ -41,7 +41,7 @@ final public class Entry {
 			picocli.CommandLine.usage(new CommandLine(), System.out);
 			return;
 		} catch (Exception e) { 
-			Debug.logger.error(e);
+			Debug.logger.error(e,e);
 			Debug.logger.info(String.format("Program finished at %s\n",Debug.getCurrentTime()));
 		}
 	}

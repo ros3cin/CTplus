@@ -38,6 +38,7 @@ import com.ibm.wala.ipa.callgraph.impl.Everywhere;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.shrikeBT.InvokeInstruction;
 import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.ssa.DefaultIRFactory;
 import com.ibm.wala.ssa.IR;
@@ -149,7 +150,7 @@ public class JavaCollectionsAnalyser {
 				Debug.logger.info("Done");
 			}
 			
-			Debug.logger.info(String.format("Generating analysis file at %s",analysisOutputFile));
+			Debug.logger.info(String.format("Generating the analysis file at %s",analysisOutputFile));
 			generateAnalysisFile(analysisOutputFile);
 			Debug.logger.info("Done");
 		} catch (Exception e) {
@@ -369,6 +370,8 @@ public class JavaCollectionsAnalyser {
 			// writer.append("N Conditional Block");
 			writer.append(',');
 			writer.append("Inside Recursive Method");
+			writer.append(',');
+			writer.append("Is field local?");
 			writer.append('\n');
 
 			for (CollectionMethod elemento : analyzedMethods) {
@@ -395,6 +398,8 @@ public class JavaCollectionsAnalyser {
 				// writer.append(Integer.toString(elemento.getConditionalBlockN()));
 				writer.append(',');
 				writer.append(Boolean.toString(elemento.isInsideRecursive()));
+				writer.append(',');
+				writer.append(Boolean.toString(elemento.isFieldLocal()));
 				writer.append('\n');
 			}
 
@@ -575,6 +580,7 @@ public class JavaCollectionsAnalyser {
 									String fieldName = "";
 									fieldName = getFieldName(ir, invokeIR, fieldName);
 									metodo.setFieldName(fieldName);
+									metodo.setFieldLocal(isLocal(ir, invokeIR));
 									metodo.setInsideRecursiveMethod(isRecursive);
 
 									if (!ONLY_LOOP) {
@@ -627,6 +633,10 @@ public class JavaCollectionsAnalyser {
 			e.printStackTrace();
 		}
 
+	}
+	
+	private static boolean isLocal(IR ir, SSAInvokeInstruction invokeIR) {
+		return ir.getLocalNames(invokeIR.iindex, invokeIR.getUse(0)) != null;
 	}
 
 	private static void addThreadRunnableClass(IR ir, SSAInvokeInstruction invokeIR, MethodReference invokedMethodRef, IClassHierarchy classHierarchy) {

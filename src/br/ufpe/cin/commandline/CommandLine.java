@@ -34,6 +34,9 @@ public final class CommandLine {
 	@Option(names = {"--energy-profile-file"}, description = "The energy profile file to be used on the recommender")
 	public String energyProfileFile;
 	
+	@Option(names = {"--recommendation-output-file"}, defaultValue = "recommendations.csv", description = "The name of the recommendation output file. Defaults to recommendations.csv")
+	public String recommendationOutputFile;
+	
 	@Option(names = {"-r", "--recommend"}, description = "Run the recommendation")
 	public boolean recommend;
 	

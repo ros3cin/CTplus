@@ -77,6 +77,12 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons.lang.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.6</version>
+		</dependency>
 
 	</dependencies>
 

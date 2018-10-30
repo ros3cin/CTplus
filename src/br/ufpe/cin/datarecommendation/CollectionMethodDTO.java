@@ -14,13 +14,14 @@ public class CollectionMethodDTO extends CollectionMethod{
 	private Integer ocurrencies;
 	private String loopInfo;
 	
-	public CollectionMethodDTO(String concreteType, String fieldName, String method, Integer ocurrencies, String loopInfo, String classContainingField) {
+	public CollectionMethodDTO(String concreteType, String fieldName, String method, Integer ocurrencies, String loopInfo, String classContainingField, boolean isFieldLocal) {
 		super();
 		this.concreteType = concreteType;
 		this.fieldName = fieldName;
 		this.method = method;
 		this.ocurrencies = ocurrencies;
 		this.loopInfo = loopInfo;
+		setFieldLocal(isFieldLocal);
 		setClasse(classContainingField);
 	}
 	
@@ -97,5 +98,4 @@ public class CollectionMethodDTO extends CollectionMethod{
 	public void setLoopInfo(String loopInfo) {
 		this.loopInfo = loopInfo;
 	}
-
 }
