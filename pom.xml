@@ -122,10 +122,12 @@
 						<goals>
 							<goal>add-source</goal>
 							<goal>compile</goal>
-							<goal>testCompile</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+		          <scalaVersion>${scala.lang.version}</scalaVersion>
+		        </configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
