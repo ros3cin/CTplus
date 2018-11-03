@@ -120,6 +120,8 @@ public class JavaCollectionsAnalyser {
 				for (String currPackage : packages) {
 					cois.add(new ComponentOfInterest(currPackage.replace('.', '/'), null, null));
 				}
+			} else {
+				cois.add(new ComponentOfInterest("", null, null));
 			}
 			
 			if (pointsToAnalysis) {
