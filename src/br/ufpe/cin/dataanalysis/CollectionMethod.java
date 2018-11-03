@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class CollectionMethod {
 
 	private String nome;
-	private String pacote;
+	private String superType;
 	private int ocorrencias;
 	private int numeroVariaveisCompartilhadas;
 	private String classe;
@@ -43,7 +43,8 @@ public class CollectionMethod {
 	}
 
 	public void setOuterLoops(ArrayList<LoopBlockInfo> outerLoops) {
-		this.outerLoops = (ArrayList<LoopBlockInfo>) outerLoops.clone();
+		this.outerLoops = new ArrayList<LoopBlockInfo>();
+		this.outerLoops.addAll(outerLoops);
 	}
 
 	public int getProfundidade() {
@@ -133,12 +134,12 @@ public class CollectionMethod {
 		this.nome = nome;
 	}
 
-	public String getPacote() {
-		return pacote;
+	public String getSuperType() {
+		return superType;
 	}
 
-	public void setPacote(String pacote) {
-		this.pacote = pacote;
+	public void setSuperType(String pacote) {
+		this.superType = pacote;
 	}
 
 	public int getOcorrencias() {
@@ -159,7 +160,7 @@ public class CollectionMethod {
 
 	@Override
 	public String toString() {
-		return "Metodo: " + this.getNome() + " Pacote: " + this.getPacote() + " Ocorrencias: " + this.getOcorrencias()
+		return "Metodo: " + this.getNome() + " Pacote: " + this.getSuperType() + " Ocorrencias: " + this.getOcorrencias()
 				+ " Numero Variaveis Compartilhadas: " + this.getNumeroVariaveisCompartilhadas();
 	}
 
@@ -169,7 +170,7 @@ public class CollectionMethod {
 				&& this.getInvokeLineNumber() == metodo.getInvokeLineNumber() 
 				&& this.isIntoLoop() == metodo.isIntoLoop() 
 				&& this.getClasse().equals(metodo.getClasse()) && this.getConcreteType().equals(metodo.getConcreteType())
-				&& this.getPacote().equals(metodo.getPacote()) 
+				&& this.getSuperType().equals(metodo.getSuperType()) 
 				&& this.getCallMethodName().equals(metodo.getCallMethodName()) 
 				&& this.getFieldName().equals(metodo.getFieldName())
 				&& this.loopsToString().equals(metodo.loopsToString())) { 
@@ -193,7 +194,7 @@ public class CollectionMethod {
 	}
 
 	public boolean equalsLight(CollectionMethod metodo) {
-		if (this.getNome().equals(metodo.getNome()) && this.getPacote().equals(metodo.getPacote())) { return true; }
+		if (this.getNome().equals(metodo.getNome()) && this.getSuperType().equals(metodo.getSuperType())) { return true; }
 		return false;
 	}
 

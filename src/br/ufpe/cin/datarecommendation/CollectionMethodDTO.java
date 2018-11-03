@@ -9,7 +9,6 @@ import br.ufpe.cin.dataanalysis.LoopBlockInfo;
 public class CollectionMethodDTO extends CollectionMethod{
 	
 	private String concreteType;	
-	private String fieldName;
 	private String method;
 	private Integer ocurrencies;
 	private String loopInfo;
@@ -17,10 +16,10 @@ public class CollectionMethodDTO extends CollectionMethod{
 	public CollectionMethodDTO(String concreteType, String fieldName, String method, Integer ocurrencies, String loopInfo, String classContainingField, boolean isFieldLocal) {
 		super();
 		this.concreteType = concreteType;
-		this.fieldName = fieldName;
 		this.method = method;
 		this.ocurrencies = ocurrencies;
 		this.loopInfo = loopInfo;
+		setFieldName(fieldName);
 		setFieldLocal(isFieldLocal);
 		setClasse(classContainingField);
 	}
@@ -38,11 +37,6 @@ public class CollectionMethodDTO extends CollectionMethod{
 	@Override
 	public String getNome() {
 		return method;
-	}
-	
-	@Override
-	public String getFieldName() {
-		return fieldName;
 	}
 	
 	@Override
@@ -75,12 +69,6 @@ public class CollectionMethodDTO extends CollectionMethod{
 	
 	public void setConcreteType(String concreteType) {
 		this.concreteType = concreteType;
-	}
-	public String getName() {
-		return fieldName;
-	}
-	public void setName(String name) {
-		this.fieldName = name;
 	}
 	public String getMethod() {
 		return method;

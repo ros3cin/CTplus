@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.ufpe.cin.dataanalysis.CollectionMethod;
-import br.ufpe.cin.dataanalysis.Complexity;
-import br.ufpe.cin.dataanalysis.LoopBlockInfo;
 
 public class EnergyConsumption {
 
@@ -29,48 +27,6 @@ public class EnergyConsumption {
 		return consumption;
 		
 	}
-
-	private static double getLoopFactor(ArrayList<LoopBlockInfo> loops) {
-		
-		double factor = 1;
-		for (int i = 0; loops!=null && i < loops.size(); i++) {
-			
-			Complexity complexity = loops.get(i).getComplexity();			
-			
-			
-			if(complexity!=null){
-				if(complexity.equals(Complexity.ON)){
-					factor+=1;
-				} else if(complexity.equals(Complexity.OLOGN)){
-					factor+=0.5;
-				}
-			}			
-		}		
-		return factor;
-	} 
-	
-	/*
-	 * Fato de loop - Exponencial
-	 * */
-	private static double getLoopFactor(ArrayList<LoopBlockInfo> loops, int ocorrencias) {
-		
-		double factor = 1;
-		//if(ocorrencias==1) ocorrencias++; //para evitar o 1x1
-		ocorrencias++;
-		for (int i = 0; loops!=null && i < loops.size(); i++) {
-			
-			Complexity complexity = loops.get(i).getComplexity();			
-			if(complexity!=null){
-				if(complexity.equals(Complexity.ON)){
-					factor*=ocorrencias;
-				} else if(complexity.equals(Complexity.OLOGN)){
-					factor*=ocorrencias/0.5;
-				}
-			}			
-		}		
-		return factor;
-	} 
-	
 	
 	private static double getLoopFactorByDepth(int depth, int occurrencies) {		
 				

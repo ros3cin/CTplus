@@ -1,8 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2002 - 2006 IBM Corporation. All rights reserved. This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html Contributors: IBM Corporation - initial API and implementation
- *******************************************************************************/
 package br.ufpe.cin.dataanalysis;
 
 import java.io.BufferedReader;
@@ -17,6 +12,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ibm.wala.analysis.typeInference.TypeAbstraction;
@@ -29,8 +26,6 @@ import com.ibm.wala.classLoader.IField;
 import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.ipa.callgraph.AnalysisCacheImpl;
 import com.ibm.wala.ipa.callgraph.AnalysisScope;
-import com.ibm.wala.ipa.callgraph.CGNode;
-import com.ibm.wala.ipa.callgraph.CallGraph;
 import com.ibm.wala.ipa.callgraph.Entrypoint;
 import com.ibm.wala.ipa.callgraph.IAnalysisCacheView;
 import com.ibm.wala.ipa.callgraph.impl.ArgumentTypeEntrypoint;
@@ -38,7 +33,6 @@ import com.ibm.wala.ipa.callgraph.impl.Everywhere;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
-import com.ibm.wala.shrikeBT.InvokeInstruction;
 import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.ssa.DefaultIRFactory;
 import com.ibm.wala.ssa.IR;
@@ -52,21 +46,16 @@ import com.ibm.wala.ssa.SSAOptions;
 import com.ibm.wala.ssa.SSAReturnInstruction;
 import com.ibm.wala.types.FieldReference;
 import com.ibm.wala.types.MethodReference;
-import com.ibm.wala.util.Predicate;
 import com.ibm.wala.util.collections.HashSetFactory;
 import com.ibm.wala.util.config.AnalysisScopeReader;
-import com.ibm.wala.util.graph.Graph;
-import com.ibm.wala.util.graph.GraphSlicer;
 import com.ibm.wala.util.ref.ReferenceCleanser;
 import com.ibm.wala.util.strings.Atom;
 
-import br.ufpe.cin.commandline.CommandLine;
 import br.ufpe.cin.dataanalysis.pointeranalysis.PointerAnalysisAnalyzer;
 import br.ufpe.cin.datarecommendation.CollectionsTypeResolver;
 import br.ufpe.cin.datarecommendation.ICollectionsTypeResolver;
 import br.ufpe.cin.debug.Debug;
 import edu.colorado.walautil.LoopUtil;
-import picocli.CommandLine.MissingParameterException;
 import scala.Option;
 import scala.collection.immutable.List;
 import scala.collection.immutable.Set;
@@ -90,18 +79,12 @@ public class JavaCollectionsAnalyser {
 	private static String JAVA_LANG_RUNNABLE = "java/lang/Runnable";
 	private static String JAVA_LANG_THREAD = "java/lang/Thread";
 
-	private static int LIMITE = 30;
+	private static int LIMIT = 30;
 
-	// valor incial da profundidade da an�lise inter procedural
-	private static int VALOR_INICIAL_PROFUNDIDADE = 1;
+	private static int INITIAL_NESTING_LEVEL = 1;
 
-	// come�a do zero, assumindo que inicialmente n�o existe loop.
 	private static final int PROFUNDIDADE_LOOP_INICIAL = 0;
 
-	private static ArrayList<CollectionMethod> analyzedMethods;
-	private static ArrayList<IClass> threadsRunnableClasses;
-
-	// count only if the method of collections is inside the loop
 	private static boolean ONLY_LOOP = false;
 
 	/**
@@ -122,8 +105,8 @@ public class JavaCollectionsAnalyser {
 			exclusions = "dat/bm-tomcatExclusions.txt";
 		}
 		
-		analyzedMethods = new ArrayList<CollectionMethod>();
-		threadsRunnableClasses = new ArrayList<IClass>();
+		java.util.List<CollectionMethod> analyzedMethods = new ArrayList<CollectionMethod>();
+		java.util.List<IClass> threadsRunnableClasses = new ArrayList<IClass>();
 		
 		try {
 			AnalysisScope scope = AnalysisScopeReader.makeJavaBinaryAnalysisScope(target, new File(exclusions));
@@ -146,75 +129,36 @@ public class JavaCollectionsAnalyser {
 			
 			if (analyze) {
 				Debug.logger.info("Running analyzer, this may take a few minutes...");
-				traverseMethods(classHierarchy,cois);
+				traverseMethods(classHierarchy,cois,analyzedMethods,threadsRunnableClasses);
 				Debug.logger.info("Done");
 			}
 			
 			Debug.logger.info(String.format("Generating the analysis file at %s",analysisOutputFile));
-			generateAnalysisFile(analysisOutputFile);
+			generateAnalysisFile(analysisOutputFile, analyzedMethods);
 			Debug.logger.info("Done");
 		} catch (Exception e) {
 			Debug.logger.error("Exception occurred on pointer analysis", e);
 		}
 	}
 
-	/**
-	 * Use the 'CountParameters' launcher to run this program with the
-	 * appropriate classpath
-	 * @throws InvalidClassFileException 
-	 */
 	public static void main(String[] args) throws IOException, ClassHierarchyException, InvalidClassFileException {
-		
-		final String ESCOPO = "dat/bm-tomcat";
-		final String EXCLUSOES = "dat/bm-tomcatExclusions.txt";
-
-		analyzedMethods = new ArrayList<CollectionMethod>();
-		threadsRunnableClasses = new ArrayList<IClass>();
-
-		AnalysisScope scope = AnalysisScopeReader.makeJavaBinaryAnalysisScope(
+		run(
 				"C:\\Users\\RENATO\\Documents\\Hasan Apps\\Built jars\\commons-math3-3.4-original.jar",
-				new File(EXCLUSOES)
+				null,
+				new String[] {"org.apache.commons.math3"},
+				null,
+				null,
+				false,
+				true
 		);
-
-		// build a class hierarchy
-		System.out.print("Building class hierarchy...");
-		IClassHierarchy cha = ClassHierarchyFactory.make(scope);
-		System.out.println("Done");
-		
-		java.util.List<ComponentOfInterest> tomcatComponentsOfInterest = new ArrayList<ComponentOfInterest>();
-		tomcatComponentsOfInterest.add(new ComponentOfInterest("org/apache/catalina", null, null));
-		
-		java.util.List<ComponentOfInterest> xalanComponentsOfInterest = new ArrayList<ComponentOfInterest>();
-		xalanComponentsOfInterest.add(new ComponentOfInterest("org/apache/xalan", null, null));
-		
-		java.util.List<ComponentOfInterest> nlgservice = new ArrayList<ComponentOfInterest>();
-		nlgservice.add(new ComponentOfInterest("NLGService/simplenlg/realiser", "", ""));
-		
-		java.util.List<ComponentOfInterest> automata = new ArrayList<ComponentOfInterest>();
-		automata.add(new ComponentOfInterest("pl/edu/amu", "", ""));
-		
-		java.util.List<ComponentOfInterest> tomcat85 = new ArrayList<ComponentOfInterest>();
-		tomcat85.add(new ComponentOfInterest("org/apache/catalina/util", "", ""));
-		
-		java.util.List<ComponentOfInterest> xstreamComponentsOfInterest = new ArrayList<ComponentOfInterest>();
-		xstreamComponentsOfInterest.add(new ComponentOfInterest("com/thoughtworks/xstream", null, null));
-		
-		java.util.List<ComponentOfInterest> gsonComponentsOfInterest = new ArrayList<ComponentOfInterest>();
-		gsonComponentsOfInterest.add(new ComponentOfInterest("com/google/gson", null, null));
-		
-		java.util.List<ComponentOfInterest> commonsMath3ComponentsOfInterest = new ArrayList<ComponentOfInterest>();
-		commonsMath3ComponentsOfInterest.add(new ComponentOfInterest("org/apache/commons/math3", null, null));
-		
-		PointerAnalysisAnalyzer pAnalyzer = new PointerAnalysisAnalyzer();
-		//pAnalyzer.extractPointsToAnalysisInformation(scope,tomcatComponentsOfInterest,cha);
-		
-		System.out.print("Running analyzer...");
-		traverseMethods(cha,commonsMath3ComponentsOfInterest);
-		System.out.println("Done");
-		System.out.printf("Program finished at %s\n", Debug.getCurrentTime());
 	}
 	
-	private static void traverseMethods(IClassHierarchy cha, java.util.List<ComponentOfInterest> componentsOfInterest) {
+	private static void traverseMethods(
+			IClassHierarchy cha,
+			java.util.List<ComponentOfInterest> componentsOfInterest,
+			java.util.List<CollectionMethod> analyzedMethods,
+			java.util.List<IClass> threadsRunnableClasses
+	) {
 		try {
 			for (IClass c : cha) {
 
@@ -228,7 +172,20 @@ public class JavaCollectionsAnalyser {
 						if(isMethodOfInterest(method,componentsOfInterest)) {
 							ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
 							java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
-							searchMethodsLoopInside(method, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest,allowedFields,cha);
+							searchMethodsLoopInside(
+									method,
+									INITIAL_NESTING_LEVEL,
+									false,
+									null,
+									loops,
+									PROFUNDIDADE_LOOP_INICIAL,
+									alreadyVisited,
+									componentsOfInterest,
+									allowedFields,
+									cha,
+									analyzedMethods,
+									threadsRunnableClasses
+							);
 						}
 
 					}
@@ -248,7 +205,20 @@ public class JavaCollectionsAnalyser {
 					if(methodRun!=null){
 						ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
 						java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
-						searchMethodsLoopInside(methodRun, VALOR_INICIAL_PROFUNDIDADE, false, null, loops, PROFUNDIDADE_LOOP_INICIAL,alreadyVisited,componentsOfInterest,allowedFields,cha);
+						searchMethodsLoopInside(
+								methodRun,
+								INITIAL_NESTING_LEVEL,
+								false,
+								null,
+								loops,
+								PROFUNDIDADE_LOOP_INICIAL,
+								alreadyVisited,
+								componentsOfInterest,
+								allowedFields,
+								cha,
+								analyzedMethods,
+								threadsRunnableClasses
+						);
 					}
 					threadsRunnableClasses.remove(0);
 				}
@@ -322,19 +292,6 @@ public class JavaCollectionsAnalyser {
 		}
 		return result;
 	}
-	
-	private static boolean isClassOfInterest(String className, java.util.List<ComponentOfInterest> componentsOfInterest) {
-		boolean result=false;
-		if(className!=null) {
-			for(ComponentOfInterest component : componentsOfInterest) {
-				if(component.checkIfClassNameMeetsComponent(className)) {
-					result=true;
-					break;
-				}
-			}
-		}
-		return result;
-	}
 
 	private static ArrayList<String> iniciarPacotes() {
 		ArrayList<String> pacotes = new ArrayList<String>();
@@ -342,78 +299,58 @@ public class JavaCollectionsAnalyser {
 		return pacotes;
 	}
 
-	// TODO: Create classe FileWriter
-	private static void generateAnalysisFile(String destino) {
-		try {
-			FileWriter writer = new FileWriter(destino);
+	private static void generateAnalysisFile(String target, java.util.List<CollectionMethod> analyzedMethods) throws IOException {
+		CSVPrinter printer = new CSVPrinter(new FileWriter(target), CSVFormat.DEFAULT);
+		
+		printer.printRecord(
+				AnalysisFileHeader.SUPER_TYPE.getDescription(),
+				AnalysisFileHeader.TYPE.getDescription(),
+				AnalysisFileHeader.CONTAINING_METHOD.getDescription(),
+				AnalysisFileHeader.IS_LOCAL_FIELD.getDescription(),
+				AnalysisFileHeader.FIELD_NAME.getDescription(),
+				AnalysisFileHeader.INVOKED_METHOD.getDescription(),
+				AnalysisFileHeader.SOURCE_CODE_LINE.getDescription(),
+				AnalysisFileHeader.CONTAINING_CLASS.getDescription(),
+				AnalysisFileHeader.OCCURENCIES.getDescription(),
+				AnalysisFileHeader.IS_INTO_LOOP.getDescription(),
+				AnalysisFileHeader.LOOP_NESTING_INFO.getDescription(),
+				AnalysisFileHeader.IS_IN_RECURSIVE_METHOD.getDescription()
+		);
 
-			writer.append("Pacote");
-			writer.append(',');
-			writer.append("Concrete Type");
-			writer.append(',');
-			writer.append("Call Method Name");
-			writer.append(',');
-			writer.append("Field Name");
-			writer.append(',');
-			writer.append("Metodo");
-			writer.append(',');
-			writer.append("Line Code");
-			writer.append(',');
-			writer.append("Class");
-			writer.append(',');
-			writer.append("Ocorrencias");
-			writer.append(',');
-			writer.append("Into Loop");
-			writer.append(',');
-			writer.append("Loops Info");
-			// writer.append(',');
-			// writer.append("N Conditional Block");
-			writer.append(',');
-			writer.append("Inside Recursive Method");
-			writer.append(',');
-			writer.append("Is field local?");
-			writer.append('\n');
-
-			for (CollectionMethod elemento : analyzedMethods) {
-				writer.append(elemento.getPacote());
-				writer.append(',');
-				writer.append(elemento.getConcreteType());
-				writer.append(',');
-				writer.append(elemento.getCallMethodName());
-				writer.append(',');
-				writer.append(elemento.getFieldName());
-				writer.append(',');
-				writer.append(elemento.getNome());
-				writer.append(',');
-				writer.append(Integer.toString(elemento.getInvokeLineNumber()));
-				writer.append(',');
-				writer.append(elemento.getClasse());
-				writer.append(',');
-				writer.append(Integer.toString(elemento.getOcorrencias()));
-				writer.append(',');
-				writer.append(Boolean.toString(elemento.isIntoLoop()));
-				writer.append(',');
-				writer.append(elemento.loopsToString());
-				// writer.append(',');
-				// writer.append(Integer.toString(elemento.getConditionalBlockN()));
-				writer.append(',');
-				writer.append(Boolean.toString(elemento.isInsideRecursive()));
-				writer.append(',');
-				writer.append(Boolean.toString(elemento.isFieldLocal()));
-				writer.append('\n');
-			}
-
-			// generate whatever data you want
-
-			writer.flush();
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		for (CollectionMethod elemento : analyzedMethods) {
+			printer.printRecord(
+					elemento.getSuperType(),
+					elemento.getConcreteType(),
+					elemento.getCallMethodName(),
+					Boolean.toString(elemento.isFieldLocal()),
+					elemento.getFieldName(),
+					elemento.getNome(),
+					Integer.toString(elemento.getInvokeLineNumber()),
+					elemento.getClasse(),
+					Integer.toString(elemento.getOcorrencias()),
+					Boolean.toString(elemento.isIntoLoop()),
+					elemento.loopsToString(),
+					Boolean.toString(elemento.isInsideRecursive())
+			);
 		}
+		printer.flush();
+		printer.close();
 	}
 	
-	private static void searchMethodsLoopInside(IMethod method, int profundidade, boolean isIntoLoop, LoopBlockInfo outerLoop, ArrayList<LoopBlockInfo> loops,
-			int loopProfundidade, java.util.List<IMethod> alreadyVisited,java.util.List<ComponentOfInterest> componentsOfInterest, Collection<Atom> allowedFields, IClassHierarchy classHierarchy) throws InvalidClassFileException {
+	private static void searchMethodsLoopInside(
+			IMethod method,
+			int profundidade,
+			boolean isIntoLoop,
+			LoopBlockInfo outerLoop,
+			ArrayList<LoopBlockInfo> loops,
+			int loopProfundidade,
+			java.util.List<IMethod> alreadyVisited,
+			java.util.List<ComponentOfInterest> componentsOfInterest,
+			Collection<Atom> allowedFields,
+			IClassHierarchy classHierarchy,
+			java.util.List<CollectionMethod> analyzedMethods,
+			java.util.List<IClass> threadsRunnableClasses
+	) throws InvalidClassFileException {
 
 		alreadyVisited.add(method);
 		IAnalysisCacheView cache = new AnalysisCacheImpl();
@@ -513,6 +450,7 @@ public class JavaCollectionsAnalyser {
 							concreteType = ti.getType(invokeIR.getUse(0)).toString();
 							if (concreteType.contains(",")) {
 								concreteType = concreteType.substring(concreteType.indexOf(',')+1, concreteType.length()-1);
+								concreteType = concreteType.substring(1).replace('/','.');
 							}
 						}
 			
@@ -537,8 +475,7 @@ public class JavaCollectionsAnalyser {
 									}
 								}
 
-							} else { // Se n�o ele verifica se esta dentro de um
-										// inner loop, e insere
+							} else { 
 
 								for (LoopBlockInfo loopBlockInfo : methodLoops) {
 									if (loopBlockInfo.getLoopBody().contains(basicBlockForInstruction)) {
@@ -583,30 +520,44 @@ public class JavaCollectionsAnalyser {
 									metodo.setFieldLocal(isLocal(ir, invokeIR));
 									metodo.setInsideRecursiveMethod(isRecursive);
 
-									if (!ONLY_LOOP) {
-										adicionarMetodo(metodo);
-									} else if (isIntoLoop) {
-										adicionarMetodo(metodo);
-									}									
-									
+									if(StringUtils.isNotBlank(fieldName)) {
+										if (!ONLY_LOOP) {
+											adicionarMetodo(metodo, analyzedMethods);
+										} else if (isIntoLoop) {
+											adicionarMetodo(metodo, analyzedMethods);
+										}									
+									}
 								}
 							} else {
 
 								if (callSite.getDeclaredTarget().getDeclaringClass().getClassLoader().toString().equals("Application classloader\n")
-										&& profundidade < LIMITE) {
+										&& profundidade < LIMIT) {
 									
 									//verify if method is a start() from thread									
 									if(invokedMethodRef.toString().contains("start()") || invokedMethodRef.toString().contains("ExecutorService, submit(")){
 										
 										//Add to the list if the method start is from a thread/runnable class
-										addThreadRunnableClass(ir, invokeIR, invokedMethodRef,classHierarchy);
+										addThreadRunnableClass(ir, invokeIR, invokedMethodRef,classHierarchy, threadsRunnableClasses);
 									}
 									
 									IMethod resolveMethod = classHierarchy.resolveMethod(invokedMethodRef);									
 									// TODO verificar com primordial !!!!
 									if (resolveMethod != null && resolveMethod.getDeclaringClass().getClassLoader().toString().equals("Application")/*&&!sameSignature*/) {
 										if(!alreadyVisited.contains(resolveMethod) && isMethodOfInterest(method, componentsOfInterest)){
-											searchMethodsLoopInside(resolveMethod, profundidade + 1, isIntoLoop, outerLoop, loops, loopProfundidade,alreadyVisited,componentsOfInterest,allowedFields,classHierarchy);
+											searchMethodsLoopInside(
+													resolveMethod,
+													profundidade + 1,
+													isIntoLoop,
+													outerLoop,
+													loops,
+													loopProfundidade,
+													alreadyVisited,
+													componentsOfInterest,
+													allowedFields,
+													classHierarchy,
+													analyzedMethods,
+													threadsRunnableClasses
+											);
 										}
 									}
 								}
@@ -639,7 +590,7 @@ public class JavaCollectionsAnalyser {
 		return ir.getLocalNames(invokeIR.iindex, invokeIR.getUse(0)) != null;
 	}
 
-	private static void addThreadRunnableClass(IR ir, SSAInvokeInstruction invokeIR, MethodReference invokedMethodRef, IClassHierarchy classHierarchy) {
+	private static void addThreadRunnableClass(IR ir, SSAInvokeInstruction invokeIR, MethodReference invokedMethodRef, IClassHierarchy classHierarchy, java.util.List<IClass> threadsRunnableClasses) {
 		System.out.println("start");
 		System.out.println(classHierarchy.lookupClass(invokedMethodRef.getDeclaringClass()));
 		
@@ -738,18 +689,6 @@ public class JavaCollectionsAnalyser {
 		
 		return false;
 	}
-	
-	//Verify if the methods have the same signature 
-	private static boolean sameSignature(IMethod method1,IMethod method2){
-		
-		boolean isRecursive = false;
-		if (method1.getSignature().equals(method2.getSignature())) {
-			isRecursive = true;
-		}
-		
-		return isRecursive;
-		
-	}
 
 	// Get the field name of variable that did a invoke instruction
 	private static String getFieldName(IR ir, SSAInvokeInstruction invokeIR, String fieldName) {
@@ -842,8 +781,7 @@ public class JavaCollectionsAnalyser {
 			LoopBlockInfo loop, int invokeLineNumber, IR ir, SSAInvokeInstruction invks) {
 
 		String nome = methodReference.getName().toString();
-		String pacote[] = methodReference.toString().split(",");
-		
+		String superType = methodReference.getDeclaringClass().getName().toString().substring(1).replace('/', '.');
 		nome = treatMethodSignature(methodReference, metodoPai, ir, invks, nome, concreteType,loop);
 
 		if (nome.equals("<init>") || isCollectionReturnedOrPassedAsParameter(metodoPai,invks,ir)) {
@@ -852,9 +790,9 @@ public class JavaCollectionsAnalyser {
 
 		CollectionMethod metodo = new CollectionMethod();
 		metodo.setNome(nome);
-		metodo.setClasse(metodoPai.getDeclaringClass().toString().split(",")[1]);
+		metodo.setClasse(metodoPai.getDeclaringClass().getName().toString().substring(1).replace('/', '.'));
 		metodo.setCallMethodName(metodoPai.getName().toString());
-		metodo.setPacote(pacote[1].substring(2));
+		metodo.setSuperType(superType);
 		metodo.setOcorrencias(1);
 		metodo.setIntoLoop(isIntoLoop);
 		metodo.setConcreteType(concreteType);
@@ -863,12 +801,6 @@ public class JavaCollectionsAnalyser {
 			metodo.setConditionalBlock(loop.getLoopConditionalBlock().toString());
 			metodo.setConditionalBlockN(loop.getconditionalBranchInterationNumber());
 		}
-		// if (isIntoLoop && loop != null) {
-		// if (loop.getConditionalInstruntion() != null) {
-		// System.out.println(loop.getConditionalInstruntion());
-		// }
-		// metodo.setInsideForeach(loop.isForeachLoop());
-		// }
 
 		return metodo;
 
@@ -975,7 +907,7 @@ public class JavaCollectionsAnalyser {
 		return nome;
 	}
 
-	private static void adicionarMetodo(CollectionMethod metodo) {
+	private static void adicionarMetodo(CollectionMethod metodo, java.util.List<CollectionMethod> analyzedMethods) {
 		boolean metodoExistente = false;
 
 		if (analyzedMethods.size() == 0) {
@@ -1071,10 +1003,10 @@ public class JavaCollectionsAnalyser {
 
 	}
 
-	public static boolean implementsInterface(String interfaceName, Collection loadedSuperInterfaces) {
+	public static boolean implementsInterface(String interfaceName, Collection<?> loadedSuperInterfaces) {
 
 		if (loadedSuperInterfaces != null) {
-			for (Iterator it3 = loadedSuperInterfaces.iterator(); it3.hasNext();) {
+			for (Iterator<?> it3 = loadedSuperInterfaces.iterator(); it3.hasNext();) {
 				final IClass iface = (IClass) it3.next();
 
 				if (iface.isInterface()) {
@@ -1099,9 +1031,9 @@ public class JavaCollectionsAnalyser {
 
 		if (superClass != null) {
 
-			Collection loadedSuperInterfaces = superClass.getAllImplementedInterfaces();
+			Collection<?> loadedSuperInterfaces = superClass.getAllImplementedInterfaces();
 
-			for (Iterator it3 = loadedSuperInterfaces.iterator(); it3.hasNext();) {
+			for (Iterator<?> it3 = loadedSuperInterfaces.iterator(); it3.hasNext();) {
 				final IClass iface = (IClass) it3.next();
 
 				if (iface.isInterface()) {
@@ -1124,10 +1056,10 @@ public class JavaCollectionsAnalyser {
 		return false;
 	}
 
-	public static IMethod callMethods(String methodName, Collection methods) {
+	public static IMethod callMethods(String methodName, Collection<?> methods) {
 
 		if (methods != null) {
-			for (Iterator it3 = methods.iterator(); it3.hasNext();) {
+			for (Iterator<?> it3 = methods.iterator(); it3.hasNext();) {
 				final IMethod imethod = (IMethod) it3.next();
 				if (imethod.getName().toString().equalsIgnoreCase(methodName)) {
 					return imethod;
@@ -1144,35 +1076,6 @@ public class JavaCollectionsAnalyser {
 		if (method != null) {
 			System.out.println(method.getDescriptor());
 		}
-	}
-
-	private static Graph<CGNode> pruneGraph(CallGraph callgraph) {
-		Graph<CGNode> finalGraph = GraphSlicer.prune(callgraph, new Predicate<CGNode>() {
-
-			@Override
-			public boolean test(CGNode t) {
-				// aqui dentro podemos incluir o criterio para remover os nos
-				// indesejados do grafo
-				// pode-se fazer um filtro para classes relevantes
-
-				// cada CGNode eh representado assim:
-				// Node: < Application, Lmain/A, addQuotes()V > Context:
-				// Everywhere
-				// Application eh o ClassLoader
-				// Lmain/A eh o pacote e nome da classe
-				// addQuotes()V eh o metodo chamado e o V significa void
-				//
-
-				// Subject Search nao pode remover o usuario
-				// policy deleteUser:
-				// Search auth- UserRepository {deleteUser()};
-				IMethod meth = t.getMethod();
-				t.iterateCallSites();
-				String classLoader = meth.getDeclaringClass().getClassLoader().toString();
-				return classLoader.equals("Application");
-			}
-		});
-		return finalGraph;
 	}
 
 	public static ArrayList<String> carregarEnderecoProjeto(String listaDiretorioProjetos) throws IOException {

@@ -8,7 +8,7 @@
 	<properties>
 		<wala.version>1.4.3</wala.version>
 		<wala.java.cast.version>1.4.3</wala.java.cast.version>
-		<scala.lang.version>2.12.2</scala.lang.version>
+		<scala.lang.version>2.12.3</scala.lang.version>
 		<scala.maven.plugin.version>3.4.2</scala.maven.plugin.version>
 		<picocli.version>3.7.0</picocli.version>
 		<log4j.version>2.11.1</log4j.version>
@@ -126,12 +126,20 @@
 					</execution>
 				</executions>
 				<configuration>
-		          <scalaVersion>${scala.lang.version}</scalaVersion>
-		        </configuration>
+					<scalaVersion>${scala.lang.version}</scalaVersion>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.3</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>

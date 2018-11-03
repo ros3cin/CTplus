@@ -1,22 +1,17 @@
 package br.ufpe.cin.dataanalysis;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import com.ibm.wala.shrikeBT.IBinaryOpInstruction.IOperator;
 import com.ibm.wala.shrikeBT.IBinaryOpInstruction.Operator;
-import com.ibm.wala.shrikeBT.InvokeInstruction;
 import com.ibm.wala.ssa.IR;
 import com.ibm.wala.ssa.ISSABasicBlock;
-import com.ibm.wala.ssa.SSAArrayLengthInstruction;
 import com.ibm.wala.ssa.SSABinaryOpInstruction;
 import com.ibm.wala.ssa.SSACFG.BasicBlock;
 import com.ibm.wala.ssa.SSAConditionalBranchInstruction;
 import com.ibm.wala.ssa.SSAInstruction;
 import com.ibm.wala.ssa.SSAInvokeInstruction;
-import com.ibm.wala.ssa.SSAPhiInstruction;
 import com.ibm.wala.ssa.SymbolTable;
 
 public class LoopBlockInfo {
@@ -115,18 +110,6 @@ public class LoopBlockInfo {
 					int val1 = instruction.getUse(0);
 					String val1StringTail = symbolTable.getValueString(val1);
 
-					int val2 = instruction.getUse(1);
-					String val2String = symbolTable.getValueString(val2);
-
-					// get the valeu of the operation
-					String[] val2StringSplit = val2String.split("#");
-					double valueOp = 0;
-					if (val2StringSplit.length > 1) {
-						if (!val2StringSplit[1].equals("null")) {
-							valueOp = Double.parseDouble(val2StringSplit[1]);
-						}
-					}
-
 					// in the example "i"
 					String[] variableTailName = ir.getLocalNames(instruction.iindex, instruction.getUse(0));
 
@@ -217,9 +200,6 @@ public class LoopBlockInfo {
 					// GET CONDITIONAL VARIABLE USE
 					SSAConditionalBranchInstruction conditionalBranchInstruction = (SSAConditionalBranchInstruction) conditionalLastInstrunction;
 					conditionalBranchInstruction.toString(symbolTable);
-					// System.out.println(conditionalBranchInstruction.toString(symbolTable));
-
-					int conditionalUseVal1 = conditionalBranchInstruction.getUse(0);
 
 					
 					//VERIFY USE OF NEXT METHOD ON VARIABLE OF LOOP CONDITIONAL
@@ -243,144 +223,6 @@ public class LoopBlockInfo {
 					}
 
 				}
-			}
-		}
-
-		// }
-
-		// else {
-		//
-		// SSAInstruction conditionalLastInstrunction =
-		// loopConditionalBlock.getLastInstruction();
-		// if (conditionalLastInstrunction instanceof
-		// SSAConditionalBranchInstruction) {
-		// SSAConditionalBranchInstruction conditionalBranchInstruction =
-		// (SSAConditionalBranchInstruction) conditionalLastInstrunction;
-		//
-		// conditionalBranchInstruction.toString(symbolTable);
-		// //
-		// System.out.println(conditionalBranchInstruction.toString(symbolTable));
-		//
-		// int conditionalUseVal1 = conditionalBranchInstruction.getUse(0);
-		// String conditionalUseVal1String =
-		// symbolTable.getValueString(conditionalUseVal1);
-		//
-		// int conditionalUseVal2 = conditionalBranchInstruction.getUse(1);
-		// String conditionalUseVal2String =
-		// symbolTable.getValueString(conditionalUseVal2);
-		//
-		// String[] variableConditionalName =
-		// ir.getLocalNames(conditionalBranchInstruction.iindex,
-		// conditionalBranchInstruction.getUse(0));
-		//
-		//
-		// for (ISSABasicBlock tail : loopTails) {
-		//
-		// for (SSAInstruction ssaInstruction : tail) {
-		//
-		// if (ssaInstruction instanceof SSABinaryOpInstruction) {
-		//
-		// SSABinaryOpInstruction instruction = (SSABinaryOpInstruction)
-		// ssaInstruction;
-		// IOperator operator = instruction.getOperator();
-		// }
-		//
-		//
-		// }
-		// }
-		// }
-		//
-		// }
-
-	}
-
-	// FILL OPERATOR
-	// IF IS A FOR OVER ARRAY
-	private void extractTailInfo() {
-
-		SymbolTable symbolTable = ir.getSymbolTable();
-
-		for (ISSABasicBlock tail : loopTails) {
-
-			// SSAInstruction lastInstruction = tail.getLastInstruction();
-
-			for (SSAInstruction ssaInstruction : tail) {
-
-				/*
-				 * Example: for (int i=0; i< n ; i++)
-				 * 
-				 * SSA 20 v13 = binaryop(add) v14 , v12:#1 (line 15) {14=[j]}
-				 */
-
-				if (ssaInstruction instanceof SSABinaryOpInstruction) {
-					SSABinaryOpInstruction instruction = (SSABinaryOpInstruction) ssaInstruction;
-					IOperator operator = instruction.getOperator();
-					this.loopOperator = operator;
-
-					int val1 = instruction.getUse(0);
-					String val1String = symbolTable.getValueString(val1);
-
-					int val2 = instruction.getUse(1);
-					String val2String = symbolTable.getValueString(val2);
-
-					System.out.println(val1String + " - " + val2String);
-
-					String[] val2StringSplit = val2String.split("#");
-					double valueOp = 0;
-					if (val2StringSplit.length > 1) {
-						if (!val2StringSplit[1].equals("null")) {
-							valueOp = Double.parseDouble(val2StringSplit[1]);
-						}
-					}
-
-					String[] localNames = null;
-					localNames = ir.getLocalNames(instruction.iindex, instruction.getUse(0));
-					System.out.println(localNames);
-				}
-			}
-		}
-	}
-
-	private void extractConditionalInfo() {
-
-		int nConditional = 0;
-
-		if (loopConditionalBlock != null) {
-
-			SymbolTable symbolTable = ir.getSymbolTable();
-
-			Iterator<? extends SSAInstruction> iteratePhis = loopConditionalBlock.iteratePhis();
-			while (iteratePhis.hasNext()) {
-				SSAInstruction next = iteratePhis.next();
-				if (next instanceof SSAPhiInstruction) {
-					SSAPhiInstruction phi = (SSAPhiInstruction) next;
-					System.out.println(phi);
-					int def = phi.getDef();
-				}
-				System.out.println(next);
-			}
-
-			SSAInstruction instruntion = loopConditionalBlock.getLastInstruction();
-
-			if (instruntion instanceof SSAConditionalBranchInstruction) {
-
-				SSAConditionalBranchInstruction conditionalBranchInstruction = (SSAConditionalBranchInstruction) instruntion;
-				conditionalBranchInstruction.toString(symbolTable);
-				System.out.println(conditionalBranchInstruction.toString(symbolTable));
-
-				String val2Use = symbolTable.getValueString(conditionalBranchInstruction.getUse(1));
-				String[] val2UseSplit = val2Use.split("#");
-				if (val2UseSplit.length > 1) {
-					if (!val2UseSplit[1].equals("null")) {
-						nConditional = Integer.parseInt(val2UseSplit[1]);
-					}
-				}
-
-				String[] localNames = null;
-				localNames = ir.getLocalNames(conditionalBranchInstruction.iindex, conditionalBranchInstruction.getUse(0));
-				System.out.println(localNames);
-				localNames = ir.getLocalNames(conditionalBranchInstruction.iindex, conditionalBranchInstruction.getUse(1));
-				System.out.println(localNames);
 			}
 		}
 

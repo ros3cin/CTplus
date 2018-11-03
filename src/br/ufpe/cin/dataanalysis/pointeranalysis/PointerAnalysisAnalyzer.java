@@ -18,7 +18,6 @@ import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IField;
 import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.classLoader.NewSiteReference;
-import com.ibm.wala.demandpa.alg.DemandRefinementPointsTo;
 import com.ibm.wala.ipa.callgraph.AnalysisCache;
 import com.ibm.wala.ipa.callgraph.AnalysisCacheImpl;
 import com.ibm.wala.ipa.callgraph.AnalysisOptions;
@@ -56,7 +55,6 @@ public class PointerAnalysisAnalyzer {
 	
 	public void extractPointsToAnalysisInformation(AnalysisScope scope, java.util.List<ComponentOfInterest> componentsOfInterest, IClassHierarchy cha, String output) throws InvalidClassFileException {
 		Debug.logger.info("Starting pointer analysis...");
-		Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(scope,cha);
 		try {
 
 			java.util.List<Entrypoint> myEntrypoints = new ArrayList<Entrypoint>();
@@ -75,7 +73,7 @@ public class PointerAnalysisAnalyzer {
 			
 			AnalysisOptions options = new AnalysisOptions(scope,myEntrypoints);
 			AnalysisCache analysisCache = new AnalysisCacheImpl();
-			CallGraphBuilder cgBuilder = Util.makeZeroOneCFABuilder(options, analysisCache, cha, scope);
+			CallGraphBuilder<?> cgBuilder = Util.makeZeroOneCFABuilder(options, analysisCache, cha, scope);
 		
 			Debug.logger.info("Creating call graph. This step can take up to 1 hour...");
 			CallGraph cg = cgBuilder.makeCallGraph(options,null);
@@ -154,11 +152,11 @@ public class PointerAnalysisAnalyzer {
 			Map<CGNode,Boolean> isNodeVisited,
 			Map<IClass,Boolean> isClassComputed,
 			HeapModel heapModel,
-			HeapGraph heapGraph,
+			HeapGraph<?> heapGraph,
 			java.util.List<ComponentOfInterest> componentsOfInterest,
 			Map<String, AnalyzedClass> pointerResult) throws IOException, InvalidClassFileException {
 		
-		Iterator childs = cg.getSuccNodes(node);
+		Iterator<?> childs = cg.getSuccNodes(node);
 		isNodeVisited.put(node, true);
 		
 		
@@ -291,14 +289,14 @@ public class PointerAnalysisAnalyzer {
 		}
 	}
 
-	private void getVariablesPointingToTheSamePlace(HeapGraph heapGraph, 
+	private void getVariablesPointingToTheSamePlace(HeapGraph<?> heapGraph, 
 			PointerKey pKey, 
 			IContainAlias aliasContainer,
 			List<ComponentOfInterest> componentsOfInterest) throws IOException {
-		Iterator instanceKeys = heapGraph.getSuccNodes(pKey);
+		Iterator<?> instanceKeys = heapGraph.getSuccNodes(pKey);
 		while(instanceKeys.hasNext()) {
 			InstanceKey instanceKey = (InstanceKey)instanceKeys.next();
-			Iterator aliasesIterator = heapGraph.getPredNodes(instanceKey);
+			Iterator<?> aliasesIterator = heapGraph.getPredNodes(instanceKey);
 			while(aliasesIterator.hasNext()) {
 				PointerKey alias = (PointerKey) aliasesIterator.next();
 				if(!pKey.equals(alias)) {
@@ -327,7 +325,6 @@ public class PointerAnalysisAnalyzer {
 							aliasContainer.addAlias(analyzedAlias);
 						}
 					} else if (alias instanceof LocalPointerKey) {
-						LocalPointerKey localKey = (LocalPointerKey)alias;
 						CGNode node = ((LocalPointerKey)alias).getNode();
 						if(node.getIR() != null) {
 							SSAInstruction[] instructions = node.getIR().getInstructions();

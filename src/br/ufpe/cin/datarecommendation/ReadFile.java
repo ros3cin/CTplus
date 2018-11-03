@@ -1,82 +1,65 @@
 package br.ufpe.cin.datarecommendation;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import br.ufpe.cin.dataanalysis.AnalysisFileHeader;
 import br.ufpe.cin.dataanalysis.CollectionMethod;
 
 public class ReadFile {
-
-	
-	/*
-	 * CSV Format - Data Structure Type , Operation, Energy Consumption	 * 
-	 * */
 	public static ArrayList<EnergyProfile> getEnergyProfilesFromFile(String filePath) throws IOException{
-		
+		final CSVParser reader = new CSVParser(new FileReader(filePath), CSVFormat.DEFAULT.withHeader());
 		ArrayList<EnergyProfile> datalist = new ArrayList<EnergyProfile>();
 		
-		FileReader fr = new FileReader(filePath);
-	    BufferedReader br = new BufferedReader(fr);
-	    String stringRead = br.readLine();
-		
-	    while( stringRead != null )
-		{
-		    String[] elements = stringRead.split(",");
-
-		    if(elements.length >= 3){
-			    String type = elements[0];
-			    String operation = elements[1];
-			    String energy = elements[2];
-	
-			    EnergyProfile temp = new EnergyProfile(type, operation, energy);
-			    datalist.add(temp);
-		    }
-		    // read the next line
-		    stringRead = br.readLine();
+		for (final CSVRecord line : reader) {
+			String type = line.get(0);
+			String operation = line.get(1);
+			String energy = line.get(2);
+			
+			EnergyProfile energyProfile = new EnergyProfile(type, operation, energy);
+		    datalist.add(energyProfile);
 		}
-	    
-	    br.close();
+		
+		reader.close();
+		
 	    return datalist;
 	}
 	
-	/*
-	 * CSV Format - Data Structure Type , Operation, Energy Consumption	 * 
-	 * */
 	public static ArrayList<CollectionMethod> getCollectionMethodFromFile(String filePath) throws IOException{
-		
+		final CSVParser reader = new CSVParser(new FileReader(filePath), CSVFormat.DEFAULT.withHeader());
 		ArrayList<CollectionMethod> datalist = new ArrayList<CollectionMethod>();
 		
-		FileReader fr = new FileReader(filePath);
-	    BufferedReader br = new BufferedReader(fr);
-	    br.readLine();//advancing header
-	    String stringRead = br.readLine();
-		
-	    while( stringRead != null )
-		{
-		    String[] elements = stringRead.split(",");
-
-		    if((elements.length > 10) && (elements[3]!=null) && (!"".equals(elements[3])) ){
-			    String type = elements[1];
-			    String classContainingField = elements[6];
-			    String name = elements[3];
-			    String operation = elements[4];
-			    Integer ocurrencies = Integer.parseInt(elements[7]);
-			    String loopInfo = elements[9];
-			    String callMethodName = elements[2];
-			    boolean isFieldLocal = Boolean.parseBoolean(elements[11]);
-	
-			    CollectionMethodDTO temp = new CollectionMethodDTO(type,name, operation,ocurrencies, loopInfo, classContainingField, isFieldLocal);
-			    temp.setCallMethodName(callMethodName);
-			    datalist.add(temp);
-	
-		    }
-		    // read the next line
-		    stringRead = br.readLine();
+		for (final CSVRecord line : reader) {
+			String type = line.get(AnalysisFileHeader.TYPE.getDescription());
+			String classContainingField = line.get(AnalysisFileHeader.CONTAINING_CLASS.getDescription());
+			String fieldName = line.get(AnalysisFileHeader.FIELD_NAME.getDescription());
+			String invokedMethod = line.get(AnalysisFileHeader.INVOKED_METHOD.getDescription());
+			Integer occurencies = Integer.parseInt(line.get(AnalysisFileHeader.OCCURENCIES.getDescription()));
+			String loopNestingInfo = line.get(AnalysisFileHeader.LOOP_NESTING_INFO.getDescription());
+			String containingMethod = line.get(AnalysisFileHeader.CONTAINING_METHOD.getDescription());
+			boolean isFieldLocal = Boolean.parseBoolean(line.get(AnalysisFileHeader.IS_LOCAL_FIELD.getDescription()));
+			
+			CollectionMethodDTO info = new CollectionMethodDTO(
+					type,
+					fieldName,
+					invokedMethod,
+					occurencies,
+					loopNestingInfo,
+					classContainingField,
+					isFieldLocal
+			);
+			info.setCallMethodName(containingMethod);
+			
+		    datalist.add(info);
 		}
-	    
-	    br.close();
+		
+		reader.close();
+		
 	    return datalist;
 	}
 	

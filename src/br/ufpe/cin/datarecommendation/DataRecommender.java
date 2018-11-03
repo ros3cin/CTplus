@@ -2,7 +2,6 @@ package br.ufpe.cin.datarecommendation;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -88,14 +87,11 @@ public class DataRecommender {
 		for(Result result : results) {
 			printer.printRecord(result.fieldName, result.isFieldLocal, result.classContainingField, result.methodUsingVariable, result.recommendation);
 		}
+		printer.flush();
 		printer.close();
 	}
 	
 	private static SortedSet<RecommendedStructure> getStructureRecommendation(HashMap<String,Double> typeConsumption){
-		
-		String typeR = "";
-		Double minor = new Double(0);
-		
 		SortedSet<RecommendedStructure> recommendations = new TreeSet<RecommendedStructure>();
 		
 		for (String type : typeConsumption.keySet()) {
@@ -112,21 +108,12 @@ public class DataRecommender {
 		Debug.logger.info("Done");
 	}
 	
-	public static void main(String[] args) {
-		try {			
-			energyFilePath = "C:\\Users\\RENATO\\Documents\\Mestrado\\Energy profiles\\complete-profile-inspirondell-7560-50k.csv";
-			dataAnalysisFilePath = "C:\\Users\\RENATO\\scala-ide-workspace\\CECOTool\\target\\analysis.csv";
-			
-			if(args.length>0){
-				energyFilePath = args[0];
-			}			
-			
-			ArrayList<CollectionMethod> collectionMethodFromFile = ReadFile.getCollectionMethodFromFile(dataAnalysisFilePath);
-			doRecommendation(energyFilePath, collectionMethodFromFile,"recommendations.csv");			
-		} catch (IOException e) {
-			System.out.println("File not found");
-			e.printStackTrace();
-		}
+	public static void main(String[] args) throws IOException {		
+		run(
+				"C:\\Users\\RENATO\\Documents\\Mestrado\\Energy profiles\\complete-profile-inspirondell-7560-50k.csv",
+				"analysis.csv",
+				"recommendations.csv"
+		);
 	}
 
 	
