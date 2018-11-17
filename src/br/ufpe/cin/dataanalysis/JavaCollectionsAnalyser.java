@@ -507,7 +507,7 @@ public class JavaCollectionsAnalyser {
 								}*/
 								
 								if(isAllowed) {
-									metodo = criarMetodo(callSite.getDeclaredTarget(), ir.getMethod(), concreteType, isIntoLoop, outerLoop,
+									metodo = createMethod(callSite.getDeclaredTarget(), ir.getMethod(), concreteType, isIntoLoop, outerLoop,
 										invokeLineNumber,ir,invokeIR);
 								}
 
@@ -779,7 +779,7 @@ public class JavaCollectionsAnalyser {
 		return returnValue;
 	}
 	
-	private static CollectionMethod criarMetodo(MethodReference methodReference, IMethod metodoPai, String concreteType, boolean isIntoLoop,
+	private static CollectionMethod createMethod(MethodReference methodReference, IMethod metodoPai, String concreteType, boolean isIntoLoop,
 			LoopBlockInfo loop, int invokeLineNumber, IR ir, SSAInvokeInstruction invks) {
 
 		String nome = methodReference.getName().toString();

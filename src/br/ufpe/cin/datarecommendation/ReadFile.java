@@ -43,6 +43,8 @@ public class ReadFile {
 			String loopNestingInfo = line.get(AnalysisFileHeader.LOOP_NESTING_INFO.getDescription());
 			String containingMethod = line.get(AnalysisFileHeader.CONTAINING_METHOD.getDescription());
 			boolean isFieldLocal = Boolean.parseBoolean(line.get(AnalysisFileHeader.IS_LOCAL_FIELD.getDescription()));
+			Integer sourceCodeLine = Integer.parseInt(line.get(AnalysisFileHeader.SOURCE_CODE_LINE.getDescription()));
+			
 			
 			CollectionMethodDTO info = new CollectionMethodDTO(
 					type,
@@ -53,6 +55,7 @@ public class ReadFile {
 					classContainingField,
 					isFieldLocal
 			);
+			info.setInvokeLineNumber(sourceCodeLine);
 			info.setCallMethodName(containingMethod);
 			
 		    datalist.add(info);

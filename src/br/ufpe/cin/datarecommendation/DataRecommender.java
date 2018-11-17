@@ -65,6 +65,7 @@ public class DataRecommender {
 			public String recommendation;
 			public String methodUsingVariable;
 			public boolean isFieldLocal;
+			public int sourceCodeLine;
 		}
 		List<Result> results = new ArrayList<Result>();
 		for (CollectionMethod methodInfo : typesReccommended.keySet()) {
@@ -74,6 +75,7 @@ public class DataRecommender {
 			result.recommendation = typesReccommended.get(methodInfo);
 			result.methodUsingVariable = methodInfo.getCallMethodName();
 			result.isFieldLocal = methodInfo.isFieldLocal();
+			result.sourceCodeLine = methodInfo.getInvokeLineNumber();
 			results.add(result);
 		}
 		Collections.sort(results, new Comparator<Result>() {
@@ -83,9 +85,9 @@ public class DataRecommender {
 			}
 		});
 		CSVPrinter printer = new CSVPrinter(new FileWriter(recommendationOutputFile), CSVFormat.DEFAULT);
-		printer.printRecord("Field name", "Is local?", "Containing class", "A method that uses it", "Ordered recommendations");
+		printer.printRecord("Field name", "Is local?", "Source code line", "Containing class", "A method that uses it", "Ordered recommendations");
 		for(Result result : results) {
-			printer.printRecord(result.fieldName, result.isFieldLocal, result.classContainingField, result.methodUsingVariable, result.recommendation);
+			printer.printRecord(result.fieldName, result.isFieldLocal, result.sourceCodeLine, result.classContainingField, result.methodUsingVariable, result.recommendation);
 		}
 		printer.flush();
 		printer.close();
