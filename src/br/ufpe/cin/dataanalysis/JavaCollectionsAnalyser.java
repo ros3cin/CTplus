@@ -125,6 +125,7 @@ public class JavaCollectionsAnalyser {
 			}
 			
 			if (pointsToAnalysis) {
+				pointsToAnalysisFile = StringUtils.isEmpty(pointsToAnalysisFile) ? "points-to-analysis.txt" : pointsToAnalysisFile;
 				PointerAnalysisAnalyzer pAnalyzer = new PointerAnalysisAnalyzer();
 				pAnalyzer.extractPointsToAnalysisInformation(scope,cois,classHierarchy,pointsToAnalysisFile);
 			}
@@ -133,10 +134,10 @@ public class JavaCollectionsAnalyser {
 				Debug.logger.info("Running analyzer, this may take a few minutes...");
 				traverseMethods(classHierarchy,cois,analyzedMethods,threadsRunnableClasses);
 				Debug.logger.info("Done");
+				Debug.logger.info(String.format("Generating the analysis file at %s",analysisOutputFile));
+				generateAnalysisFile(analysisOutputFile, analyzedMethods);
 			}
 			
-			Debug.logger.info(String.format("Generating the analysis file at %s",analysisOutputFile));
-			generateAnalysisFile(analysisOutputFile, analyzedMethods);
 			Debug.logger.info("Done");
 		} catch (Exception e) {
 			Debug.logger.error("Exception occurred on pointer analysis", e);
@@ -145,13 +146,13 @@ public class JavaCollectionsAnalyser {
 
 	public static void main(String[] args) throws IOException, ClassHierarchyException, InvalidClassFileException {
 		run(
-				"C:\\Users\\RENATO\\Documents\\Hasan Apps\\Built jars\\commons-math3-3.4-original.jar",
+				"C:\\Users\\RENATO\\Documents\\Mestrado\\Hasan Apps\\Built jars\\commons-math3-3.4-original.jar",
 				null,
-				new String[] {"org.apache.commons.math3"},
+				new String[] {"org.apache.commons.math3.stat.clustering"},
 				null,
 				null,
-				false,
-				true
+				true,
+				false
 		);
 	}
 	

@@ -43,7 +43,9 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 
 	@Override
 	public boolean isVector(String source) {
-		return source.equalsIgnoreCase("vector")||source.equalsIgnoreCase("java.util.Vector");
+		return source.equalsIgnoreCase("vector")
+				||source.equalsIgnoreCase("java.util.Vector")
+				||source.equalsIgnoreCase("Ljava/util/Vector");
 	}
 
 	@Override
@@ -53,17 +55,23 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 
 	@Override
 	public boolean isCopyOnWriteArrayList(String source) {
-		return source.equalsIgnoreCase("copyOnWriteArrayList")||source.equalsIgnoreCase("java.util.concurrent.CopyOnWriteArrayList");
+		return source.equalsIgnoreCase("copyOnWriteArrayList")
+				||source.equalsIgnoreCase("java.util.concurrent.CopyOnWriteArrayList")
+				||source.equalsIgnoreCase("Ljava/util/concurrent/CopyOnWriteArrayList");
 	}
 
 	@Override
 	public boolean isArrayList(String source) {
-		return source.equalsIgnoreCase("arrayList")||source.equalsIgnoreCase("java.util.ArrayList");
+		return source.equalsIgnoreCase("arrayList")
+				||source.equalsIgnoreCase("java.util.ArrayList")
+				||source.equalsIgnoreCase("Ljava/util/ArrayList");
 	}
 
 	@Override
 	public boolean isLinkedList(String source) {
-		return source.equalsIgnoreCase("linkedList")||source.equalsIgnoreCase("java.util.LinkedList");
+		return source.equalsIgnoreCase("linkedList")
+				||source.equalsIgnoreCase("java.util.LinkedList")
+				||source.equalsIgnoreCase("Ljava/util/LinkedList");
 	}
 
 	@Override
@@ -88,12 +96,15 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 
 	@Override
 	public boolean isListInterface(String source) {
-		return source.equalsIgnoreCase("java.util.List");
+		return source.equalsIgnoreCase("java.util.List")
+				||source.equalsIgnoreCase("Ljava/util/List");
 	}
 
 	@Override
 	public boolean isLinkedHashMap(String source) {
-		return source.equalsIgnoreCase("linkedHashMap")||source.equalsIgnoreCase("java.util.LinkedHashMap");
+		return source.equalsIgnoreCase("linkedHashMap")
+				||source.equalsIgnoreCase("java.util.LinkedHashMap")
+				||source.equalsIgnoreCase("Ljava/util/LinkedHashMap");
 	}
 	
 	@Override
@@ -103,7 +114,9 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 	
 	@Override
 	public boolean isConcurrentHashMap(String source) {
-		return source.equalsIgnoreCase("concurrentHashMap")||source.equalsIgnoreCase("java.util.concurrent.ConcurrentHashMap");
+		return source.equalsIgnoreCase("concurrentHashMap")
+				||source.equalsIgnoreCase("java.util.concurrent.ConcurrentHashMap")
+				||source.equalsIgnoreCase("Ljava/util/concurrent/ConcurrentHashMap");
 	}
 
 	@Override
@@ -118,7 +131,9 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 	
 	@Override
 	public boolean isConcurrentSkipListMap(String source) {
-		return source.equalsIgnoreCase("concurrentSkipListMap")||source.equalsIgnoreCase("java.util.concurrent.ConcurrentSkipListMap");
+		return source.equalsIgnoreCase("concurrentSkipListMap")
+				||source.equalsIgnoreCase("java.util.concurrent.ConcurrentSkipListMap")
+				||source.equalsIgnoreCase("Ljava/util/concurrent/ConcurrentSkipListMap");
 	}
 
 	@Override
@@ -143,7 +158,9 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 
 	@Override
 	public boolean isHashtable(String source) {
-		return source.equalsIgnoreCase("hashtable")||source.equalsIgnoreCase("java.util.Hashtable");
+		return source.equalsIgnoreCase("hashtable")
+				||source.equalsIgnoreCase("java.util.Hashtable")
+				||source.equalsIgnoreCase("Ljava/util/Hashtable");
 	}
 
 	@Override
@@ -163,17 +180,23 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 
 	@Override
 	public boolean isHashMap(String source) {
-		return source.equalsIgnoreCase("hashMap")||source.equalsIgnoreCase("java.util.HashMap");
+		return source.equalsIgnoreCase("hashMap")
+				||source.equalsIgnoreCase("java.util.HashMap")
+				||source.equalsIgnoreCase("Ljava/util/HashMap");
 	}
 
 	@Override
 	public boolean isTreeMap(String source) {
-		return source.equalsIgnoreCase("treeMap")||source.equalsIgnoreCase("java.util.TreeMap");
+		return source.equalsIgnoreCase("treeMap")
+				||source.equalsIgnoreCase("java.util.TreeMap")
+				||source.equalsIgnoreCase("Ljava/util/TreeMap");
 	}
 
 	@Override
 	public boolean isWeakHashMap(String source) {
-		return source.equalsIgnoreCase("weakHashMap")||source.equalsIgnoreCase("java.util.WeakHashMap");
+		return source.equalsIgnoreCase("weakHashMap")
+				||source.equalsIgnoreCase("java.util.WeakHashMap")
+				||source.equalsIgnoreCase("Ljava/util/WeakHashMap");
 	}
 
 	@Override
@@ -188,7 +211,9 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 
 	@Override
 	public boolean isConcurrentSkipListSet(String source) {
-		return source.equalsIgnoreCase("concurrentSkipListSet")||source.equalsIgnoreCase("java.util.concurrent.ConcurrentSkipListSet");
+		return source.equalsIgnoreCase("concurrentSkipListSet")
+				||source.equalsIgnoreCase("java.util.concurrent.ConcurrentSkipListSet")
+				||source.equalsIgnoreCase("Ljava/util/concurrent/ConcurrentSkipListSet");
 	}
 
 	@Override
@@ -233,22 +258,29 @@ public class CollectionsTypeResolver implements ICollectionsTypeResolver {
 
 	@Override
 	public boolean isHashSet(String source) {
-		return source.equalsIgnoreCase("hashSet")||source.equalsIgnoreCase("java.util.HashSet");
+		return source.equalsIgnoreCase("hashSet")
+				||source.equalsIgnoreCase("java.util.HashSet")
+				||source.equalsIgnoreCase("Ljava/util/HashSet");
 	}
 
 	@Override
 	public boolean isTreeSet(String source) {
-		return source.equalsIgnoreCase("treeSet")||source.equalsIgnoreCase("java.util.TreeSet");
+		return source.equalsIgnoreCase("treeSet")
+				||source.equalsIgnoreCase("java.util.TreeSet")
+				||source.equalsIgnoreCase("Ljava/util/TreeSet");
 	}
 
 	@Override
 	public boolean isLinkedHashSet(String source) {
-		return source.equalsIgnoreCase("linkedHashSet")||source.equalsIgnoreCase("java.util.LinkedHashSet");
+		return source.equalsIgnoreCase("linkedHashSet")
+				||source.equalsIgnoreCase("java.util.LinkedHashSet")
+				||source.equalsIgnoreCase("Ljava/util/LinkedHashSet");
 	}
 	
 	@Override
 	public boolean isSetInterface(String source) {
-		return source.equalsIgnoreCase("java.util.Set");
+		return source.equalsIgnoreCase("java.util.Set")
+				||source.equalsIgnoreCase("Ljava/util/Set");
 	}
 
 	@Override

@@ -167,7 +167,7 @@ public class PointerAnalysisAnalyzer {
 		ICollectionsTypeResolver nameResolver = new CollectionsTypeResolver();
 		
 		AnalyzedClass analyzedClass = null;
-		if((isClassComputed.get(declaringClass) != null) && !(isClassComputed.get(declaringClass))) {
+		if((isClassComputed.get(declaringClass) == null) || !(isClassComputed.get(declaringClass))) {
 			analyzedClass = new AnalyzedClass(declaringClassName);
 			pointerResult.put(declaringClassName, analyzedClass);
 			isClassComputed.put(declaringClass,true);
@@ -281,7 +281,7 @@ public class PointerAnalysisAnalyzer {
 			CGNode next = (CGNode)childs.next();
 			String nextChildDeclaringClassName = next.getMethod().getDeclaringClass().getName().toString();
 			if(
-					((isNodeVisited.get(next) != null) && !isNodeVisited.get(next)) 
+					((isNodeVisited.get(next) == null) || !isNodeVisited.get(next)) 
 					&& isClassOfInterest(nextChildDeclaringClassName, componentsOfInterest)
 					&& !nextChildDeclaringClassName.contains("exception")
 			)
