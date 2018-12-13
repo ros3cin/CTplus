@@ -42,10 +42,13 @@ import com.ibm.wala.ssa.SSACFG.BasicBlock;
 import com.ibm.wala.ssa.SSAGetInstruction;
 import com.ibm.wala.ssa.SSAInstruction;
 import com.ibm.wala.ssa.SSAInvokeInstruction;
+import com.ibm.wala.ssa.SSANewInstruction;
 import com.ibm.wala.ssa.SSAOptions;
+import com.ibm.wala.ssa.SSAPutInstruction;
 import com.ibm.wala.ssa.SSAReturnInstruction;
 import com.ibm.wala.types.FieldReference;
 import com.ibm.wala.types.MethodReference;
+import com.ibm.wala.types.TypeReference;
 import com.ibm.wala.util.collections.HashSetFactory;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.ref.ReferenceCleanser;
@@ -102,7 +105,7 @@ public class JavaCollectionsAnalyser {
 			analysisOutputFile = DEFAULT_ANALYSIS_OUTPUT_FILE;
 		}
 		if (StringUtils.isEmpty(exclusions)) {
-			exclusions = "dat/bm-tomcatExclusions.txt";
+			exclusions = "dat/default-exclusions.txt";
 		}
 		
 		java.util.List<CollectionMethod> analyzedMethods = new ArrayList<CollectionMethod>();
@@ -132,7 +135,7 @@ public class JavaCollectionsAnalyser {
 			
 			if (analyze) {
 				Debug.logger.info("Running analyzer, this may take a few minutes...");
-				traverseMethods(classHierarchy,cois,analyzedMethods,threadsRunnableClasses);
+				traverseMethods(classHierarchy,cois,analyzedMethods,threadsRunnableClasses,false);
 				Debug.logger.info("Done");
 				Debug.logger.info(String.format("Generating the analysis file at %s",analysisOutputFile));
 				generateAnalysisFile(analysisOutputFile, analyzedMethods);
@@ -148,11 +151,15 @@ public class JavaCollectionsAnalyser {
 		run(
 				"C:\\Users\\RENATO\\Documents\\Mestrado\\Hasan Apps\\Built jars\\commons-math3-3.4-original.jar",
 				null,
-				new String[] {"org.apache.commons.math3.stat.clustering"},
+				new String[] {"org.apache.commons.math3"},
+				//new String[] {"com.thoughtworks.xstream"},
+				//new String[] {"com.google.gson"},
+				//new String[] {"org.apache.catalina"},
+				//new String[] {"org.apache.xalan"},
 				null,
 				null,
-				true,
-				false
+				false,
+				true
 		);
 	}
 	
@@ -160,16 +167,28 @@ public class JavaCollectionsAnalyser {
 			IClassHierarchy cha,
 			java.util.List<ComponentOfInterest> componentsOfInterest,
 			java.util.List<CollectionMethod> analyzedMethods,
-			java.util.List<IClass> threadsRunnableClasses
+			java.util.List<IClass> threadsRunnableClasses,
+			boolean filterVariablesThatAreReceivedOrPassedAsArguments
 	) {
 		try {
+			
+			Map<String, String> explicitInstances = new HashMap<String, String>();
+			for (IClass c : cha) {
+				if (isApplicationClass(c)) {
+					computeExplicitInstances(c, explicitInstances);
+				}
+			}
+			
 			for (IClass c : cha) {
 
 				ReferenceCleanser.registerClassHierarchy(cha);
 
 				if (isApplicationClass(c)) {
 					Collection<Atom> allowedFields = new ArrayList<Atom>();
-					computeAllowedFields(c, allowedFields);
+					if	(filterVariablesThatAreReceivedOrPassedAsArguments) {
+						computeAllowedFields(c, allowedFields);
+					}
+					
 					
 					for (IMethod method : c.getDeclaredMethods()) {
 						if(isMethodOfInterest(method,componentsOfInterest)) {
@@ -187,7 +206,9 @@ public class JavaCollectionsAnalyser {
 									allowedFields,
 									cha,
 									analyzedMethods,
-									threadsRunnableClasses
+									threadsRunnableClasses,
+									filterVariablesThatAreReceivedOrPassedAsArguments,
+									explicitInstances
 							);
 						}
 
@@ -220,7 +241,9 @@ public class JavaCollectionsAnalyser {
 								allowedFields,
 								cha,
 								analyzedMethods,
-								threadsRunnableClasses
+								threadsRunnableClasses,
+								filterVariablesThatAreReceivedOrPassedAsArguments,
+								explicitInstances
 						);
 					}
 					threadsRunnableClasses.remove(0);
@@ -277,6 +300,61 @@ public class JavaCollectionsAnalyser {
 						if(classVariableRef.containsKey(invokeInstruction.getUse(i))){
 							allowedFields.remove(classVariableRef.get(invokeInstruction.getUse(i)));
 						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * This method precomputes the instances that are explicitly
+	 * assigned to a class variable. The reason being WALA TypeInference
+	 * most of the times gives the superclass as the variable type.
+	 * 
+	 * @param c
+	 * @param allowedFields
+	 */
+	private static void computeExplicitInstances(IClass c, Map<String, String> explicitInstances) {
+		java.util.Set<String> memberVariable = new HashSet<String>();
+		for(IField field : c.getDeclaredInstanceFields()) {
+			memberVariable.add(field.getName().toString());
+		}
+		for(IField field : c.getDeclaredStaticFields()) {
+			memberVariable.add(field.getName().toString());
+		}
+		DefaultIRFactory irFactory = new DefaultIRFactory();
+		for (IMethod method : c.getDeclaredMethods()) {
+			if(method.isAbstract())
+				continue;
+			IR methodIR = irFactory.makeIR(method, Everywhere.EVERYWHERE, SSAOptions.defaultOptions());
+			Map<Integer, String> localVariableInstances = new HashMap<Integer, String>();
+			for(SSAInstruction ssaInstruction : methodIR.getInstructions()) {
+				if(ssaInstruction instanceof SSANewInstruction) {
+					SSANewInstruction newInstruction = (SSANewInstruction)ssaInstruction;
+					int definedVariable = newInstruction.getDef();
+					String concType = removeBytecodeStyleName(newInstruction.getConcreteType().getName().toString());
+					String localVariableKey = String.format(
+							"%s-%d-%s-%d",
+							method.getDeclaringClass().getName().toString(),
+							method.getNumberOfParameters(),
+							method.getName().toString(),
+							definedVariable
+					);
+					
+					localVariableInstances.put(definedVariable, concType);
+					explicitInstances.put(localVariableKey, concType);
+				} else if (ssaInstruction instanceof SSAPutInstruction) {
+					SSAPutInstruction putInstruction = (SSAPutInstruction)ssaInstruction;
+					String variableName = putInstruction.getDeclaredField().getName().toString();
+					int sourceVariable = putInstruction.getVal();
+					String concType = localVariableInstances.get(sourceVariable);
+					
+					if (memberVariable.contains(variableName) && (concType != null) ) {
+						String memberVariableKey = String.format("%s-%s",
+								method.getDeclaringClass().getName().toString(),
+								variableName
+						);
+						explicitInstances.put(memberVariableKey, localVariableInstances.get(sourceVariable));
 					}
 				}
 			}
@@ -352,7 +430,9 @@ public class JavaCollectionsAnalyser {
 			Collection<Atom> allowedFields,
 			IClassHierarchy classHierarchy,
 			java.util.List<CollectionMethod> analyzedMethods,
-			java.util.List<IClass> threadsRunnableClasses
+			java.util.List<IClass> threadsRunnableClasses,
+			boolean filterVariablesThatAreReceivedOrPassedAsArguments,
+			Map<String, String> explicitInstances
 	) throws InvalidClassFileException {
 
 		alreadyVisited.add(method);
@@ -451,9 +531,26 @@ public class JavaCollectionsAnalyser {
 							ti.getType(invokeIR.getUse(0));
 
 							concreteType = ti.getType(invokeIR.getUse(0)).toString();
-							if (concreteType.contains(",")) {
-								concreteType = concreteType.substring(concreteType.indexOf(',')+1, concreteType.length()-1);
-								concreteType = concreteType.substring(1).replace('/','.');
+							concreteType = removeBytecodeStyleName(concreteType);
+							
+							if (classVariableRef.get(invokeIR.getUse(0)) != null) {
+								String key = String.format("%s-%s",
+										method.getDeclaringClass().getName().toString(),
+										classVariableRef.get(invokeIR.getUse(0)));
+								if (explicitInstances.get(key) != null) {
+									concreteType = explicitInstances.get(key);
+								}
+							} else {
+								String key = String.format(
+										"%s-%d-%s-%d",
+										method.getDeclaringClass().getName().getClassName().toString(),
+										method.getNumberOfParameters(),
+										method.getName().toString(),
+										invokeIR.getUse(0)
+								);
+								if (explicitInstances.get(key) != null) {
+									concreteType = explicitInstances.get(key);
+								}
 							}
 						}
 			
@@ -501,11 +598,15 @@ public class JavaCollectionsAnalyser {
 								// method.getLocalVariableName(bcIndex,0);
 								CollectionMethod metodo = null;
 								
-								boolean isAllowed = true;
+								boolean isAllowed = false;
 								
-								/*if(classVariableRef.containsKey(invokeIR.getUse(0))) {
-									isAllowed = allowedFields.contains(classVariableRef.get(invokeIR.getUse(0)));
-								}*/
+								if(filterVariablesThatAreReceivedOrPassedAsArguments) {
+									if(classVariableRef.containsKey(invokeIR.getUse(0))) {
+										isAllowed = allowedFields.contains(classVariableRef.get(invokeIR.getUse(0)));
+									}
+								} else {
+									isAllowed = true;
+								}
 								
 								if(isAllowed) {
 									metodo = createMethod(callSite.getDeclaredTarget(), ir.getMethod(), concreteType, isIntoLoop, outerLoop,
@@ -559,7 +660,9 @@ public class JavaCollectionsAnalyser {
 													allowedFields,
 													classHierarchy,
 													analyzedMethods,
-													threadsRunnableClasses
+													threadsRunnableClasses,
+													filterVariablesThatAreReceivedOrPassedAsArguments,
+													explicitInstances
 											);
 										}
 									}
@@ -588,14 +691,25 @@ public class JavaCollectionsAnalyser {
 		}
 
 	}
+
+	private static String removeBytecodeStyleName(String concreteType) {
+		if (concreteType.contains(",")) {
+			concreteType = concreteType.substring(concreteType.indexOf(',')+1, concreteType.length()-1);
+		}
+		if (concreteType.charAt(0) == 'L') {
+			concreteType = concreteType.substring(1);
+		}
+		concreteType = concreteType.replace('/','.');
+		return concreteType;
+	}
 	
 	private static boolean isLocal(IR ir, SSAInvokeInstruction invokeIR) {
 		return ir.getLocalNames(invokeIR.iindex, invokeIR.getUse(0)) != null;
 	}
 
 	private static void addThreadRunnableClass(IR ir, SSAInvokeInstruction invokeIR, MethodReference invokedMethodRef, IClassHierarchy classHierarchy, java.util.List<IClass> threadsRunnableClasses) {
-		System.out.println("start");
-		System.out.println(classHierarchy.lookupClass(invokedMethodRef.getDeclaringClass()));
+		//System.out.println("start");
+		//System.out.println(classHierarchy.lookupClass(invokedMethodRef.getDeclaringClass()));
 		
 		
 		//ALL THREAD OF CHA
@@ -603,7 +717,7 @@ public class JavaCollectionsAnalyser {
 		
 		TypeAbstraction type = getInvokeConcreteType(ir, invokeIR.getUse(0));	
 		IClass threadConcreteClass = classHierarchy.lookupClass(type.getTypeReference());
-		System.out.println(type);
+		//System.out.println(type);
 		
 		int use = invokeIR.getUse(0);
 		
@@ -658,22 +772,10 @@ public class JavaCollectionsAnalyser {
 	
 
 	//Get concrete type of the invoke instruction object
-	private static TypeAbstraction getInvokeConcreteType(IR ir,int use) {
-		
+	private static TypeAbstraction getInvokeConcreteType(IR ir,int use) {		
 		TypeInference ti = TypeInference.make(ir, false);
-//		String concreteType;
-//		ti.getType(invokeIR.getUse(0));
-//
-//		concreteType = ti.getType(invokeIR.getUse(0)).toString();
-//												
-//		if (concreteType.contains(":")) {
-//			concreteType = concreteType.split(":")[1];
-//		}
 		return ti.getType(use);
 	}
-	
-	
-	
 	
 	//Verify if the method is recursive
 	private static boolean isMethodRecursive(IMethod method,SSAInstruction[] instructions){
