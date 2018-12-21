@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ibm.wala.analysis.pointers.HeapGraph;
 import com.ibm.wala.analysis.typeInference.TypeAbstraction;
 import com.ibm.wala.analysis.typeInference.TypeInference;
@@ -97,45 +99,20 @@ public class PointerAnalysisAnalyzer {
 				}
 			}
 			
-			Debug.logger.info("Writing out the result...");
-			BufferedWriter out = new BufferedWriter(new FileWriter(output),100000);
-			
+			Map<String, AnalyzedClass> cleanResult = new HashMap<String, AnalyzedClass>();
 			for(AnalyzedClass analyzedClass : pointerResult.values()) {
 				if(analyzedClass.hasAnyAlias()) {
-					out.write(String.format("Class:%s\n",analyzedClass.getClassName()));
-					for(AnalyzedInstanceField instanceField : analyzedClass.getAnalyzedInstanceFields()) {
-						if(instanceField.getAliases().size() > 0) {
-							out.write(String.format("\t- Instance field:%s\n",instanceField.getFieldName()));
-							for(AnalyzedAlias alias : instanceField.getAliases()) {
-								out.write(String.format("\t\t\t- Alias(%s):%s\n",alias.getType().toString(),alias.toString()));
-							}
-						}
-					}
-					for(AnalyzedStaticField instanceField : analyzedClass.getAnalyzedStaticFields()) {
-						if(instanceField.getAliases().size() > 0) {
-							out.write(String.format("\t- Static field:%s\n",instanceField.getFieldName()));
-							for(AnalyzedAlias alias : instanceField.getAliases()) {
-								out.write(String.format("\t\t\t- Alias(%s):%s\n",alias.getType().toString(),alias.toString()));
-							}
-						}
-					}
-					for(AnalyzedMethod method : analyzedClass.getAnalyzedMethods()) {
-						if(method.hasAnyAlias()) {
-							out.write(String.format("\t- Method:%s(%d)\n",method.getMethodName(),method.getSourceCodeLineNumber()));
-							for(AnalyzedLocalVariable localVariable : method.getAnalyzedLocalVariables()) {
-								if(localVariable.getAliases().size() > 0) {
-									out.write(String.format("\t\t- Local variable:%s\n",localVariable.getVariableName()));
-									for(AnalyzedAlias alias : localVariable.getAliases()) {
-										out.write(String.format("\t\t\t- Alias(%s):%s\n",alias.getType().toString(),alias.toString()));
-									}
-								}
-							}
-						}
-					}
+					cleanResult.put(analyzedClass.getClassName(), analyzedClass);
 				}
 			}
 			
-			out.close();
+			Debug.logger.info("Writing out the result...");
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			FileWriter fw = new FileWriter(output);
+			gson.toJson(cleanResult, fw);
+			fw.close();
+			
+			
 			Debug.logger.info("End of pointer analysis.");
 	
 		} catch (IllegalArgumentException e) {
@@ -161,8 +138,7 @@ public class PointerAnalysisAnalyzer {
 		
 		
 		IClass declaringClass = node.getMethod().getDeclaringClass();
-		String declaringClassName = declaringClass.getName().toString();
-		
+		String declaringClassName = removeBytecodeStyleName(declaringClass.getName().toString());
 		
 		ICollectionsTypeResolver nameResolver = new CollectionsTypeResolver();
 		
@@ -184,7 +160,7 @@ public class PointerAnalysisAnalyzer {
 						if(nameResolver.isList(typeRef) || nameResolver.isMap(typeRef) || nameResolver.isSet(typeRef)) {
 							AnalyzedInstanceField analyzedInstanceField = new AnalyzedInstanceField(analyzedClass, instanceField.getName().toString());
 							PointerKey pInstanceField = heapModel.getPointerKeyForInstanceField(current, instanceField);
-							getVariablesPointingToTheSamePlace(heapGraph, pInstanceField, analyzedInstanceField, componentsOfInterest);
+							getVariablesPointingToTheSamePlace(heapGraph, pInstanceField, analyzedInstanceField, componentsOfInterest, nameResolver);
 							analyzedClass.addAnalyzedInstanceField(analyzedInstanceField);
 						}
 					}
@@ -196,7 +172,7 @@ public class PointerAnalysisAnalyzer {
 				if(nameResolver.isList(typeRef) || nameResolver.isMap(typeRef) || nameResolver.isSet(typeRef)) {
 					AnalyzedStaticField analyzedStaticField = new AnalyzedStaticField(analyzedClass, staticField.getName().toString());
 					PointerKey pStaticField = heapModel.getPointerKeyForStaticField(staticField);
-					getVariablesPointingToTheSamePlace(heapGraph, pStaticField, analyzedStaticField, componentsOfInterest);
+					getVariablesPointingToTheSamePlace(heapGraph, pStaticField, analyzedStaticField, componentsOfInterest, nameResolver);
 					analyzedClass.addAnalyzedStaticField(analyzedStaticField);
 				}
 			}
@@ -218,18 +194,21 @@ public class PointerAnalysisAnalyzer {
 				AnalyzedMethod analyzedMethod = new AnalyzedMethod(
 						analyzedClass, 
 						node.getMethod().getName().toString(),
-						node.getMethod().getLineNumber(((IBytecodeMethod)node.getMethod()).getBytecodeIndex(firstNonNullInstruction.iindex))
+						node.getMethod().getLineNumber(((IBytecodeMethod)node.getMethod()).getBytecodeIndex(firstNonNullInstruction.iindex)),
+						node.getMethod().getNumberOfParameters()
 				);
 				for(int i = 0; i < instructions.length; i++) {
 					SSAInstruction instruction = instructions[i];
 					PointerKey pLocalField = null;
 					int vn = -1;
+					boolean isInvokeInstruction = false;
 					if(instruction instanceof SSAGetInstruction) {
 						SSAGetInstruction getInstruction = (SSAGetInstruction)instruction;
 						vn = getInstruction.getDef(0);
 						if(vn>-1)
 							pLocalField = heapModel.getPointerKeyForLocal(node, getInstruction.getDef(0));
 					} else if (instruction instanceof SSAInvokeInstruction) {
+						isInvokeInstruction = true;
 						SSAInvokeInstruction invokeInstruction = (SSAInvokeInstruction)instruction;
 						vn = invokeInstruction.getReturnValue(0);
 						if(vn>-1) 
@@ -252,6 +231,15 @@ public class PointerAnalysisAnalyzer {
 					}
 					if((pLocalField != null) && (vn > -1)) {
 						String[] variablePossibleNames = node.getIR().getLocalNames(instruction.iindex, vn);
+						if (isInvokeInstruction) {
+							variablePossibleNames = checkTheVariableNameFurther(
+									node,
+									instructions,
+									instruction,
+									vn,
+									variablePossibleNames
+							);
+						}
 						if( (variablePossibleNames != null)  && (variablePossibleNames.length > 0) && (variablePossibleNames[0] != null)) {
 							TypeAbstraction typeAbstraction = ti.getType(vn);
 							if(typeAbstraction != null) {
@@ -261,7 +249,7 @@ public class PointerAnalysisAnalyzer {
 									if(nameResolver.isList(typeRef) || nameResolver.isMap(typeRef) || nameResolver.isSet(typeRef)) {
 										AnalyzedLocalVariable analyzedLocalVariable = new AnalyzedLocalVariable(analyzedMethod, variablePossibleNames[0]);
 										if(!analyzedMethod.contains(analyzedLocalVariable)) {
-											getVariablesPointingToTheSamePlace(heapGraph, pLocalField, analyzedLocalVariable, componentsOfInterest);
+											getVariablesPointingToTheSamePlace(heapGraph, pLocalField, analyzedLocalVariable, componentsOfInterest, nameResolver);
 											analyzedMethod.addLocalVariable(analyzedLocalVariable);
 										}
 									}
@@ -283,16 +271,32 @@ public class PointerAnalysisAnalyzer {
 			if(
 					((isNodeVisited.get(next) == null) || !isNodeVisited.get(next)) 
 					&& isClassOfInterest(nextChildDeclaringClassName, componentsOfInterest)
-					&& !nextChildDeclaringClassName.contains("exception")
+					&& !nextChildDeclaringClassName.toLowerCase().contains("exception")
 			)
 				walkNodes(next,cg,isNodeVisited,isClassComputed,heapModel,heapGraph,componentsOfInterest,pointerResult);
 		}
 	}
 
+	private String[] checkTheVariableNameFurther(CGNode node, SSAInstruction[] instructions, SSAInstruction instruction,
+			int vn, String[] variablePossibleNames) {
+		if (variablePossibleNames == null || variablePossibleNames.length == 0 || variablePossibleNames[0] == null) {
+			for(int j = instruction.iindex; j < instructions.length; j++) {
+				if (instructions[j] != null) {
+					variablePossibleNames = node.getIR().getLocalNames(j, vn);
+					if( (variablePossibleNames != null)  && (variablePossibleNames.length > 0) && (variablePossibleNames[0] != null)) {
+						break;
+					}
+				}
+			}
+		}
+		return variablePossibleNames;
+	}
+
 	private void getVariablesPointingToTheSamePlace(HeapGraph<?> heapGraph, 
 			PointerKey pKey, 
 			IContainAlias aliasContainer,
-			List<ComponentOfInterest> componentsOfInterest) throws IOException {
+			List<ComponentOfInterest> componentsOfInterest,
+			ICollectionsTypeResolver nameResolver) throws IOException {
 		Iterator<?> instanceKeys = heapGraph.getSuccNodes(pKey);
 		while(instanceKeys.hasNext()) {
 			InstanceKey instanceKey = (InstanceKey)instanceKeys.next();
@@ -305,9 +309,10 @@ public class PointerAnalysisAnalyzer {
 						String declaringClassName = fieldKey.getField().getDeclaringClass().getName().toString();
 						if(isClassOfInterest(declaringClassName, componentsOfInterest)) {
 							AnalyzedAlias analyzedAlias = new AnalyzedAlias(
-									fieldKey.getField().getDeclaringClass().getName().toString(), 
+									removeBytecodeStyleName(declaringClassName), 
 									null, 
-									fieldKey.getField().getName().toString(), 
+									fieldKey.getField().getName().toString(),
+									null,
 									PointerAnalysisVariableType.INSTANCE_FIELD
 							);
 							aliasContainer.addAlias(analyzedAlias);
@@ -317,9 +322,10 @@ public class PointerAnalysisAnalyzer {
 						String declaringClassName = fieldKey.getField().getDeclaringClass().getName().toString();
 						if(isClassOfInterest(declaringClassName, componentsOfInterest)) {
 							AnalyzedAlias analyzedAlias = new AnalyzedAlias(
-									fieldKey.getField().getDeclaringClass().getName().toString(), 
+									removeBytecodeStyleName(declaringClassName), 
 									null, 
-									fieldKey.getField().getName().toString(), 
+									fieldKey.getField().getName().toString(),
+									null,
 									PointerAnalysisVariableType.STATIC_FIELD
 							);
 							aliasContainer.addAlias(analyzedAlias);
@@ -327,44 +333,50 @@ public class PointerAnalysisAnalyzer {
 					} else if (alias instanceof LocalPointerKey) {
 						CGNode node = ((LocalPointerKey)alias).getNode();
 						if(node.getIR() != null) {
-							SSAInstruction[] instructions = node.getIR().getInstructions();
-							boolean indexFound = false;
-							for(SSAInstruction instruction : instructions) {
-								if(instruction != null) {
-									for(int i = 0; (i < instruction.getNumberOfUses()) && !indexFound; i++) {
-										if(instruction.getUse(i)==((LocalPointerKey)alias).getValueNumber()) {
-											String[] possibleVariableNames = node.getIR().getLocalNames(instruction.iindex, instruction.getUse(i));
-											if( (possibleVariableNames!=null) && (possibleVariableNames.length > 0) && (possibleVariableNames[0] != null) ) {
-												String declaringClassName = node.getMethod().getDeclaringClass().getName().toString();
-												if(isClassOfInterest(declaringClassName, componentsOfInterest)) {
-													AnalyzedAlias analyzedAlias = new AnalyzedAlias(
-															node.getMethod().getDeclaringClass().getName().toString(), 
-															node.getMethod().getName().toString(), 
-															possibleVariableNames[0], 
-															PointerAnalysisVariableType.LOCAL_VARIABLE);
-													aliasContainer.addAlias(analyzedAlias);
+							TypeInference ti = TypeInference.make(node.getIR(), true);
+							TypeAbstraction typeAbs = ti.getType(((LocalPointerKey) alias).getValueNumber());
+							if(typeAbs != null && nameResolver.isInterface(typeAbs.getTypeReference().getName().toString())) {
+								SSAInstruction[] instructions = node.getIR().getInstructions();
+								boolean indexFound = false;
+								for(SSAInstruction instruction : instructions) {
+									if(instruction != null) {
+										for(int i = 0; (i < instruction.getNumberOfUses()) && !indexFound; i++) {
+											if(instruction.getUse(i)==((LocalPointerKey)alias).getValueNumber()) {
+												String[] possibleVariableNames = node.getIR().getLocalNames(instruction.iindex, instruction.getUse(i));
+												if( (possibleVariableNames!=null) && (possibleVariableNames.length > 0) && (possibleVariableNames[0] != null) ) {
+													String declaringClassName = node.getMethod().getDeclaringClass().getName().toString();
+													if(isClassOfInterest(declaringClassName, componentsOfInterest)) {
+														AnalyzedAlias analyzedAlias = new AnalyzedAlias(
+																removeBytecodeStyleName(declaringClassName), 
+																node.getMethod().getName().toString(), 
+																possibleVariableNames[0], 
+																node.getMethod().getNumberOfParameters(),
+																PointerAnalysisVariableType.LOCAL_VARIABLE);
+														aliasContainer.addAlias(analyzedAlias);
+													}
 												}
+												indexFound = true;
+												break;
 											}
-											indexFound = true;
-											break;
 										}
 									}
 								}
 							}
 						}
-					} else if (alias instanceof ReturnValueKey) {
+					} /*else if (alias instanceof ReturnValueKey) {
 						ReturnValueKey valueKey = (ReturnValueKey)alias;
 						CGNode node = valueKey.getNode();
 						String declaringClassName = node.getMethod().getDeclaringClass().getName().toString();
 						if(isClassOfInterest(declaringClassName, componentsOfInterest)) {
 							AnalyzedAlias analyzedAlias = new AnalyzedAlias(
-									node.getMethod().getDeclaringClass().getName().toString(),
+									removeBytecodeStyleName(node.getMethod().getDeclaringClass().getName().toString()),
 									node.getMethod().getName().toString(),
 									"method-returned-value",
+									node.getMethod().getNumberOfParameters(),
 									PointerAnalysisVariableType.LOCAL_VARIABLE);
 							aliasContainer.addAlias(analyzedAlias);
 						}
-					}
+					}*/
 				}
 			}
 		}
@@ -397,5 +409,16 @@ public class PointerAnalysisAnalyzer {
 			}
 		}
 		return result;
+	}
+	//TODO extract method to a new class, it is also used on JavaCollectionsAnalzyer
+	private static String removeBytecodeStyleName(String concreteType) {
+		if (concreteType.contains(",")) {
+			concreteType = concreteType.substring(concreteType.indexOf(',')+1, concreteType.length()-1);
+		}
+		if (concreteType.charAt(0) == 'L') {
+			concreteType = concreteType.substring(1);
+		}
+		concreteType = concreteType.replace('/','.');
+		return concreteType;
 	}
 }

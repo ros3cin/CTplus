@@ -1,4 +1,7 @@
-# In order to run this project you will need:
+# Using the tool
+Please, refer to the releases section of GitHub and download the lastest version.
+
+# If you play to contribute to the project you will need:
 1. The Scala IDE 2.12.3 (http://scala-ide.org/download/current.html)
 2. Import the project as a Maven project
 

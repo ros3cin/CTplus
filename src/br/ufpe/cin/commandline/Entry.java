@@ -29,7 +29,7 @@ final public class Entry {
 				);
 			}
 			if (cmd.recommend) {
-				DataRecommender.run(cmd.energyProfileFile, cmd.analysisOutputFile, cmd.recommendationOutputFile);
+				DataRecommender.run(cmd.energyProfileFile, cmd.analysisOutputFile, cmd.recommendationOutputFile, cmd.pointsToAnalysisFile);
 			}
 			Debug.logger.info(String.format("Program finished at %s\n",Debug.getCurrentTime()));
 		} catch (MissingParameterException e) {

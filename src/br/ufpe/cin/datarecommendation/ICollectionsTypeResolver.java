@@ -1,6 +1,8 @@
 package br.ufpe.cin.datarecommendation;
 
 public interface ICollectionsTypeResolver {
+	public boolean isInterface(String name);
+	
 	public boolean isSet(String name);
 	public boolean isList(String name);
 	public boolean isMap(String name);

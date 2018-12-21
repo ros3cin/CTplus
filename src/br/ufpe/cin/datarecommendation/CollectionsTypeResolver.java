@@ -1,7 +1,10 @@
 package br.ufpe.cin.datarecommendation;
 
 public class CollectionsTypeResolver implements ICollectionsTypeResolver {
-
+	public boolean isInterface(String name) {
+		return isListInterface(name) || isMapInterface(name) || isSetInterface(name);
+	}
+	
 	public boolean isList(String className) {
 		if(className != null) {
 			return isSynchronizedLinkedList(className)||isVector(className)||isSynchronizedArrayList(className)||

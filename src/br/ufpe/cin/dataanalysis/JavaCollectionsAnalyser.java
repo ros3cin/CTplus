@@ -128,14 +128,14 @@ public class JavaCollectionsAnalyser {
 			}
 			
 			if (pointsToAnalysis) {
-				pointsToAnalysisFile = StringUtils.isEmpty(pointsToAnalysisFile) ? "points-to-analysis.txt" : pointsToAnalysisFile;
+				pointsToAnalysisFile = StringUtils.isEmpty(pointsToAnalysisFile) ? "points-to-analysis.json" : pointsToAnalysisFile;
 				PointerAnalysisAnalyzer pAnalyzer = new PointerAnalysisAnalyzer();
 				pAnalyzer.extractPointsToAnalysisInformation(scope,cois,classHierarchy,pointsToAnalysisFile);
 			}
 			
 			if (analyze) {
 				Debug.logger.info("Running analyzer, this may take a few minutes...");
-				traverseMethods(classHierarchy,cois,analyzedMethods,threadsRunnableClasses,false);
+				traverseMethods(classHierarchy,cois,analyzedMethods,threadsRunnableClasses);
 				Debug.logger.info("Done");
 				Debug.logger.info(String.format("Generating the analysis file at %s",analysisOutputFile));
 				generateAnalysisFile(analysisOutputFile, analyzedMethods);
@@ -150,12 +150,14 @@ public class JavaCollectionsAnalyser {
 	public static void main(String[] args) throws IOException, ClassHierarchyException, InvalidClassFileException {
 		run(
 				"C:\\Users\\RENATO\\Documents\\Mestrado\\Hasan Apps\\Built jars\\commons-math3-3.4-original.jar",
+				//"C:\\Users\\RENATO\\Documents\\Mestrado\\Hasan Apps\\Built jars\\xstream-original.jar",
+				//"C:\\Users\\RENATO\\Documents\\Mestrado\\Hasan Apps\\Built jars\\gson-2.8.3-original.jar",
+				//"C:\\Users\\RENATO\\Documents\\Mestrado\\Dacapo benchs\\Built jars\\catalina.jar",
 				null,
 				new String[] {"org.apache.commons.math3"},
 				//new String[] {"com.thoughtworks.xstream"},
 				//new String[] {"com.google.gson"},
 				//new String[] {"org.apache.catalina"},
-				//new String[] {"org.apache.xalan"},
 				null,
 				null,
 				false,
@@ -167,70 +169,26 @@ public class JavaCollectionsAnalyser {
 			IClassHierarchy cha,
 			java.util.List<ComponentOfInterest> componentsOfInterest,
 			java.util.List<CollectionMethod> analyzedMethods,
-			java.util.List<IClass> threadsRunnableClasses,
-			boolean filterVariablesThatAreReceivedOrPassedAsArguments
-	) {
-		try {
-			
-			Map<String, String> explicitInstances = new HashMap<String, String>();
-			for (IClass c : cha) {
-				if (isApplicationClass(c)) {
-					computeExplicitInstances(c, explicitInstances);
-				}
+			java.util.List<IClass> threadsRunnableClasses
+	) throws InvalidClassFileException {
+		Map<String, ExplicitInstance> explicitInstances = new HashMap<String, ExplicitInstance>();
+		for (IClass c : cha) {
+			if (isApplicationClass(c)) {
+				computeExplicitInstances(c, explicitInstances);
 			}
-			
-			for (IClass c : cha) {
+		}
+		
+		for (IClass c : cha) {
 
-				ReferenceCleanser.registerClassHierarchy(cha);
+			ReferenceCleanser.registerClassHierarchy(cha);
 
-				if (isApplicationClass(c)) {
-					Collection<Atom> allowedFields = new ArrayList<Atom>();
-					if	(filterVariablesThatAreReceivedOrPassedAsArguments) {
-						computeAllowedFields(c, allowedFields);
-					}
-					
-					
-					for (IMethod method : c.getDeclaredMethods()) {
-						if(isMethodOfInterest(method,componentsOfInterest)) {
-							ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
-							java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
-							searchMethodsLoopInside(
-									method,
-									INITIAL_NESTING_LEVEL,
-									false,
-									null,
-									loops,
-									PROFUNDIDADE_LOOP_INICIAL,
-									alreadyVisited,
-									componentsOfInterest,
-									allowedFields,
-									cha,
-									analyzedMethods,
-									threadsRunnableClasses,
-									filterVariablesThatAreReceivedOrPassedAsArguments,
-									explicitInstances
-							);
-						}
-
-					}
-				}
-			}
-			
-			//Search for the methods inside the run method of the thread class or runnable
-			while (!threadsRunnableClasses.isEmpty()){
-				ArrayList<IClass> classesTemp = new ArrayList<IClass>();
-				classesTemp.addAll(threadsRunnableClasses);
-				
-				for (int i = 0; i < classesTemp.size(); i++) {
-					IClass c = classesTemp.get(i);
-					Collection<Atom> allowedFields = new ArrayList<Atom>();
-					computeAllowedFields(c, allowedFields);
-					IMethod methodRun = callMethods("Run", c.getDeclaredMethods());
-					if(methodRun!=null){
+			if (isApplicationClass(c)) {		
+				for (IMethod method : c.getDeclaredMethods()) {
+					if(isMethodOfInterest(method,componentsOfInterest)) {
 						ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
 						java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
 						searchMethodsLoopInside(
-								methodRun,
+								method,
 								INITIAL_NESTING_LEVEL,
 								false,
 								null,
@@ -238,72 +196,49 @@ public class JavaCollectionsAnalyser {
 								PROFUNDIDADE_LOOP_INICIAL,
 								alreadyVisited,
 								componentsOfInterest,
-								allowedFields,
 								cha,
 								analyzedMethods,
 								threadsRunnableClasses,
-								filterVariablesThatAreReceivedOrPassedAsArguments,
 								explicitInstances
 						);
 					}
-					threadsRunnableClasses.remove(0);
-				}
-				
-			}
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}		
-	}
-
-	/**
-	 * Pre computing which class variables can receive a recommendation.
-	 * We are leaving out the public variables and the variables that are
-	 * returned or passed as parameter to some other method.
-	 * 
-	 * @param c
-	 * @param allowedFields
-	 */
-	private static void computeAllowedFields(IClass c, Collection<Atom> allowedFields) {
-		for(IField field : c.getDeclaredInstanceFields()) {
-			if(field.isPrivate()) {
-				allowedFields.add(field.getName());
-			}
-		}
-		for(IField field : c.getDeclaredStaticFields()) {
-			if(field.isPrivate()) {
-				allowedFields.add(field.getName());
-			}
-		}
-		DefaultIRFactory irFactory = new DefaultIRFactory();
-		for (IMethod method : c.getDeclaredMethods()) {
-			if(method.isAbstract())
-				continue;
-			IR methodIR = irFactory.makeIR(method, Everywhere.EVERYWHERE, SSAOptions.defaultOptions());
-			Map<Integer,Atom> classVariableRef = new HashMap<Integer,Atom>();
-			for(SSAInstruction ssaInstruction : methodIR.getInstructions()) {
-				if(ssaInstruction instanceof SSAGetInstruction) {
-					SSAGetInstruction getInstruction = (SSAGetInstruction)ssaInstruction;
-					Atom variableName = getInstruction.getDeclaredField().getName();
-					if(allowedFields.contains(variableName)) {
-						classVariableRef.put(getInstruction.getDef(0), getInstruction.getDeclaredField().getName());
-					}
-				} else if(ssaInstruction instanceof SSAReturnInstruction) {
-					SSAReturnInstruction returnInstruction = (SSAReturnInstruction)ssaInstruction;
-					if(classVariableRef.containsKey(returnInstruction.getUse(0))){
-						allowedFields.remove(classVariableRef.get(returnInstruction.getUse(0)));
-					}
-				} else if(ssaInstruction instanceof SSAInvokeInstruction) {
-					SSAInvokeInstruction invokeInstruction = (SSAInvokeInstruction)ssaInstruction;
-					int i = invokeInstruction.isStatic() ? 0 : 1;
-					for(;i<invokeInstruction.getNumberOfUses(); i++) {
-						if(classVariableRef.containsKey(invokeInstruction.getUse(i))){
-							allowedFields.remove(classVariableRef.get(invokeInstruction.getUse(i)));
-						}
-					}
 				}
 			}
 		}
+		
+		//Search for the methods inside the run method of the thread class or runnable
+		while (!threadsRunnableClasses.isEmpty()){
+			ArrayList<IClass> classesTemp = new ArrayList<IClass>();
+			classesTemp.addAll(threadsRunnableClasses);
+			
+			for (int i = 0; i < classesTemp.size(); i++) {
+				IClass c = classesTemp.get(i);
+				IMethod methodRun = callMethods("Run", c.getDeclaredMethods());
+				if(methodRun!=null){
+					ArrayList<LoopBlockInfo> loops = new ArrayList<LoopBlockInfo>();
+					java.util.List<IMethod> alreadyVisited = new ArrayList<IMethod>();
+					searchMethodsLoopInside(
+							methodRun,
+							INITIAL_NESTING_LEVEL,
+							false,
+							null,
+							loops,
+							PROFUNDIDADE_LOOP_INICIAL,
+							alreadyVisited,
+							componentsOfInterest,
+							cha,
+							analyzedMethods,
+							threadsRunnableClasses,
+							explicitInstances
+					);
+				}
+				threadsRunnableClasses.remove(0);
+			}
+			
+		}
+
+			
 	}
 	
 	/**
@@ -313,8 +248,9 @@ public class JavaCollectionsAnalyser {
 	 * 
 	 * @param c
 	 * @param allowedFields
+	 * @throws InvalidClassFileException 
 	 */
-	private static void computeExplicitInstances(IClass c, Map<String, String> explicitInstances) {
+	private static void computeExplicitInstances(IClass c, Map<String, ExplicitInstance> explicitInstances) throws InvalidClassFileException {
 		java.util.Set<String> memberVariable = new HashSet<String>();
 		for(IField field : c.getDeclaredInstanceFields()) {
 			memberVariable.add(field.getName().toString());
@@ -329,6 +265,12 @@ public class JavaCollectionsAnalyser {
 			IR methodIR = irFactory.makeIR(method, Everywhere.EVERYWHERE, SSAOptions.defaultOptions());
 			Map<Integer, String> localVariableInstances = new HashMap<Integer, String>();
 			for(SSAInstruction ssaInstruction : methodIR.getInstructions()) {
+				int sourceCodeLineNumber = -1;
+				if (ssaInstruction != null) {
+					int bcIndex = ((IBytecodeMethod) method).getBytecodeIndex(ssaInstruction.iindex);
+					sourceCodeLineNumber = method.getLineNumber(bcIndex);
+				}
+				
 				if(ssaInstruction instanceof SSANewInstruction) {
 					SSANewInstruction newInstruction = (SSANewInstruction)ssaInstruction;
 					int definedVariable = newInstruction.getDef();
@@ -340,9 +282,12 @@ public class JavaCollectionsAnalyser {
 							method.getName().toString(),
 							definedVariable
 					);
-					
 					localVariableInstances.put(definedVariable, concType);
-					explicitInstances.put(localVariableKey, concType);
+					if(explicitInstances.containsKey(localVariableKey)) {
+						explicitInstances.get(localVariableKey).addSourceCodeLineNumber(sourceCodeLineNumber);
+					} else {
+						explicitInstances.put(localVariableKey, new ExplicitInstance(concType, sourceCodeLineNumber));
+					}
 				} else if (ssaInstruction instanceof SSAPutInstruction) {
 					SSAPutInstruction putInstruction = (SSAPutInstruction)ssaInstruction;
 					String variableName = putInstruction.getDeclaredField().getName().toString();
@@ -354,7 +299,11 @@ public class JavaCollectionsAnalyser {
 								method.getDeclaringClass().getName().toString(),
 								variableName
 						);
-						explicitInstances.put(memberVariableKey, localVariableInstances.get(sourceVariable));
+						if (explicitInstances.containsKey(memberVariableKey)) {
+							explicitInstances.get(memberVariableKey).addSourceCodeLineNumber(sourceCodeLineNumber);
+						} else {
+							explicitInstances.put(memberVariableKey, new ExplicitInstance(localVariableInstances.get(sourceVariable), sourceCodeLineNumber));
+						}
 					}
 				}
 			}
@@ -387,6 +336,7 @@ public class JavaCollectionsAnalyser {
 				AnalysisFileHeader.SUPER_TYPE.getDescription(),
 				AnalysisFileHeader.TYPE.getDescription(),
 				AnalysisFileHeader.CONTAINING_METHOD.getDescription(),
+				AnalysisFileHeader.CONTAINING_METHOD_NUM_OF_PARAMS.getDescription(),
 				AnalysisFileHeader.IS_LOCAL_FIELD.getDescription(),
 				AnalysisFileHeader.FIELD_NAME.getDescription(),
 				AnalysisFileHeader.INVOKED_METHOD.getDescription(),
@@ -395,23 +345,29 @@ public class JavaCollectionsAnalyser {
 				AnalysisFileHeader.OCCURENCIES.getDescription(),
 				AnalysisFileHeader.IS_INTO_LOOP.getDescription(),
 				AnalysisFileHeader.LOOP_NESTING_INFO.getDescription(),
-				AnalysisFileHeader.IS_IN_RECURSIVE_METHOD.getDescription()
+				AnalysisFileHeader.IS_IN_RECURSIVE_METHOD.getDescription(),
+				AnalysisFileHeader.IS_COLLECTION_RETURNED_OR_PASSED_AS_PARAMETER.getDescription(),
+				AnalysisFileHeader.INSTANCE_ASSIGNMENT_SOURCE_CODE_LINE.getDescription()
 		);
 
-		for (CollectionMethod elemento : analyzedMethods) {
+		for (CollectionMethod method : analyzedMethods) {
+			if (method.getInstanceAssignmentSourceCodeLineNumbers() != null)
 			printer.printRecord(
-					elemento.getSuperType(),
-					elemento.getConcreteType(),
-					elemento.getCallMethodName(),
-					Boolean.toString(elemento.isFieldLocal()),
-					elemento.getFieldName(),
-					elemento.getNome(),
-					Integer.toString(elemento.getInvokeLineNumber()),
-					elemento.getClasse(),
-					Integer.toString(elemento.getOcorrencias()),
-					Boolean.toString(elemento.isIntoLoop()),
-					elemento.loopsToString(),
-					Boolean.toString(elemento.isInsideRecursive())
+					method.getSuperType(),
+					method.getConcreteType(),
+					method.getCallMethodName(),
+					method.getCallMethodNumOfParams(),
+					Boolean.toString(method.isFieldLocal()),
+					method.getFieldName(),
+					method.getNome(),
+					Integer.toString(method.getInvokeLineNumber()),
+					method.getClasse(),
+					Integer.toString(method.getOcorrencias()),
+					Boolean.toString(method.isIntoLoop()),
+					method.loopsToString(),
+					Boolean.toString(method.isInsideRecursive()),
+					Boolean.toString(method.isCollectionReturnedOrPassedAsParameter()),
+					method.getInstanceAssignmentsLineNumbersAsString()
 			);
 		}
 		printer.flush();
@@ -427,12 +383,10 @@ public class JavaCollectionsAnalyser {
 			int loopProfundidade,
 			java.util.List<IMethod> alreadyVisited,
 			java.util.List<ComponentOfInterest> componentsOfInterest,
-			Collection<Atom> allowedFields,
 			IClassHierarchy classHierarchy,
 			java.util.List<CollectionMethod> analyzedMethods,
 			java.util.List<IClass> threadsRunnableClasses,
-			boolean filterVariablesThatAreReceivedOrPassedAsArguments,
-			Map<String, String> explicitInstances
+			Map<String, ExplicitInstance> explicitInstances
 	) throws InvalidClassFileException {
 
 		alreadyVisited.add(method);
@@ -509,7 +463,8 @@ public class JavaCollectionsAnalyser {
 			
 			Map<Integer,Atom> classVariableRef = new HashMap<Integer,Atom>();
 			for (int i = 0; i < ir.getInstructions().length; i++) {
-
+				
+				java.util.Set<Integer> instanceAssignmentSourceCodeLineNumber = null;
 				SSAInstruction instruction = ir.getInstructions()[i];
 				if (instruction instanceof SSAGetInstruction) {
 					SSAGetInstruction getInstruction = (SSAGetInstruction)instruction;
@@ -519,7 +474,6 @@ public class JavaCollectionsAnalyser {
 																	// method of
 																	// collections
 					SSAInvokeInstruction invokeIR = (SSAInvokeInstruction) instruction;
-					//System.out.println(invokeIR);
 					MethodReference invokedMethodRef = invokeIR.getDeclaredTarget();
 
 
@@ -538,18 +492,20 @@ public class JavaCollectionsAnalyser {
 										method.getDeclaringClass().getName().toString(),
 										classVariableRef.get(invokeIR.getUse(0)));
 								if (explicitInstances.get(key) != null) {
-									concreteType = explicitInstances.get(key);
+									concreteType = explicitInstances.get(key).getConcreteType();
+									instanceAssignmentSourceCodeLineNumber = explicitInstances.get(key).getSourceCodeLineNumbers();
 								}
 							} else {
 								String key = String.format(
 										"%s-%d-%s-%d",
-										method.getDeclaringClass().getName().getClassName().toString(),
+										method.getDeclaringClass().getName().toString(),
 										method.getNumberOfParameters(),
 										method.getName().toString(),
 										invokeIR.getUse(0)
 								);
 								if (explicitInstances.get(key) != null) {
-									concreteType = explicitInstances.get(key);
+									concreteType = explicitInstances.get(key).getConcreteType();
+									instanceAssignmentSourceCodeLineNumber = explicitInstances.get(key).getSourceCodeLineNumbers();
 								}
 							}
 						}
@@ -592,26 +548,24 @@ public class JavaCollectionsAnalyser {
 
 							if (isJavaCollectionMethod(callSite.toString(), pacotesJava)) {
 
+								
 								int bcIndex = ((IBytecodeMethod) method).getBytecodeIndex(invokeIR.iindex);
 								int invokeLineNumber = method.getLineNumber(bcIndex);
-
-								// method.getLocalVariableName(bcIndex,0);
+								
 								CollectionMethod metodo = null;
 								
-								boolean isAllowed = false;
+								metodo = createMethod(
+										callSite.getDeclaredTarget(),
+										ir.getMethod(),
+										concreteType,
+										isIntoLoop,
+										outerLoop,
+										invokeLineNumber,
+										ir,
+										invokeIR,
+										instanceAssignmentSourceCodeLineNumber
+								);
 								
-								if(filterVariablesThatAreReceivedOrPassedAsArguments) {
-									if(classVariableRef.containsKey(invokeIR.getUse(0))) {
-										isAllowed = allowedFields.contains(classVariableRef.get(invokeIR.getUse(0)));
-									}
-								} else {
-									isAllowed = true;
-								}
-								
-								if(isAllowed) {
-									metodo = createMethod(callSite.getDeclaredTarget(), ir.getMethod(), concreteType, isIntoLoop, outerLoop,
-										invokeLineNumber,ir,invokeIR);
-								}
 
 								if (metodo != null) {
 
@@ -657,11 +611,9 @@ public class JavaCollectionsAnalyser {
 													loopProfundidade,
 													alreadyVisited,
 													componentsOfInterest,
-													allowedFields,
 													classHierarchy,
 													analyzedMethods,
 													threadsRunnableClasses,
-													filterVariablesThatAreReceivedOrPassedAsArguments,
 													explicitInstances
 											);
 										}
@@ -883,13 +835,13 @@ public class JavaCollectionsAnalyser {
 	}
 	
 	private static CollectionMethod createMethod(MethodReference methodReference, IMethod metodoPai, String concreteType, boolean isIntoLoop,
-			LoopBlockInfo loop, int invokeLineNumber, IR ir, SSAInvokeInstruction invks) {
+			LoopBlockInfo loop, int invokeLineNumber, IR ir, SSAInvokeInstruction invks, java.util.Set<Integer> instanceAssignmentSourceCodeLineNumber) {
 
 		String nome = methodReference.getName().toString();
 		String superType = methodReference.getDeclaringClass().getName().toString().substring(1).replace('/', '.');
 		nome = treatMethodSignature(methodReference, metodoPai, ir, invks, nome, concreteType,loop);
 
-		if (nome.equals("<init>") || isCollectionReturnedOrPassedAsParameter(metodoPai,invks,ir)) {
+		if (nome.equals("<init>")) {
 			return null;
 		}
 
@@ -897,15 +849,18 @@ public class JavaCollectionsAnalyser {
 		metodo.setNome(nome);
 		metodo.setClasse(metodoPai.getDeclaringClass().getName().toString().substring(1).replace('/', '.'));
 		metodo.setCallMethodName(metodoPai.getName().toString());
+		metodo.setCallMethodNumOfParams(metodoPai.getNumberOfParameters());
 		metodo.setSuperType(superType);
 		metodo.setOcorrencias(1);
 		metodo.setIntoLoop(isIntoLoop);
 		metodo.setConcreteType(concreteType);
 		metodo.setInvokeLineNumber(invokeLineNumber);
+		metodo.setInstanceAssignmentSourceCodeLineNumbers(instanceAssignmentSourceCodeLineNumber);
 		if (loop != null && loop.getLoopConditionalBlock() != null) {
 			metodo.setConditionalBlock(loop.getLoopConditionalBlock().toString());
 			metodo.setConditionalBlockN(loop.getconditionalBranchInterationNumber());
 		}
+		metodo.setCollectionReturnedOrPassedAsParameter(isCollectionReturnedOrPassedAsParameter(metodoPai,invks,ir));
 
 		return metodo;
 

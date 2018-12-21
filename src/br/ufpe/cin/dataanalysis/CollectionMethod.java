@@ -1,6 +1,11 @@
 package br.ufpe.cin.dataanalysis;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class CollectionMethod {
 
@@ -15,27 +20,20 @@ public class CollectionMethod {
 	private boolean isSyncBlock;
 	private boolean isLock;
 	private boolean isIntoLoop;
-	
 	private boolean recursivo;
-
-	//private boolean insideForeach;
+	private boolean isFieldLocal;
+	private boolean collectionReturnedOrPassedAsParameter;
 	
+	private String fieldName;
+	private String callMethodName;
+	private String conditionalBlock = "";
+	private String conditionalBlockN = "";
+	private int invokeLineNumber = 0;
+	private int callMethodNumOfParams;
 	
-
+	private Set<Integer> instanceAssignmentSourceCodeLineNumbers;
 	private ArrayList<Integer> interationLoopSize = new ArrayList<Integer>();
 	
-	//Field name that calls the method;,
-	private String fieldName;
-	private boolean isFieldLocal;
-	private String callMethodName;
-
-	//TODO: method has loopblock 
-	private String conditionalBlock = "";
-	
-	//TODO: delete
-	private String conditionalBlockN = "";
-	
-	private int invokeLineNumber = 0;
 	
 	private ArrayList<LoopBlockInfo> outerLoops;
 	public ArrayList<LoopBlockInfo> getOuterLoops() {
@@ -254,4 +252,56 @@ public class CollectionMethod {
 		this.isFieldLocal = isLocal;
 	}
 
+	public boolean isCollectionReturnedOrPassedAsParameter() {
+		return collectionReturnedOrPassedAsParameter;
+	}
+
+	public void setCollectionReturnedOrPassedAsParameter(boolean collectionReturnedOrPassedAsParameter) {
+		this.collectionReturnedOrPassedAsParameter = collectionReturnedOrPassedAsParameter;
+	}
+
+	public int getCallMethodNumOfParams() {
+		return callMethodNumOfParams;
+	}
+
+	public void setCallMethodNumOfParams(int callMethodNumOfParams) {
+		this.callMethodNumOfParams = callMethodNumOfParams;
+	}
+
+	public Set<Integer> getInstanceAssignmentSourceCodeLineNumbers() {
+		return instanceAssignmentSourceCodeLineNumbers;
+	}
+
+	public void setInstanceAssignmentSourceCodeLineNumbers(Set<Integer> instanceAssignmentSourceCodeLineNumbers) {
+		this.instanceAssignmentSourceCodeLineNumbers = instanceAssignmentSourceCodeLineNumbers;
+	}
+
+	/**
+	 * Returns comma separated list of line number where an instance assignment happens
+	 * @return
+	 */
+	public String getInstanceAssignmentsLineNumbersAsString() {
+		StringBuilder sb = new StringBuilder();
+		if (this.instanceAssignmentSourceCodeLineNumbers != null) {
+			int count = 0;
+			for(Integer number : this.instanceAssignmentSourceCodeLineNumbers) {
+				if(count > 0) {
+					sb.append(",");
+				}
+				sb.append(number);
+				count++;
+			}
+		}
+		return sb.toString();
+	}
+	
+	public void setInstanceAssignmentsLineNumbersFromString(String lineNumbers) {
+		if (!StringUtils.isEmpty(lineNumbers)) {
+			this.instanceAssignmentSourceCodeLineNumbers = new HashSet<Integer>();
+			StringTokenizer strTok = new StringTokenizer(lineNumbers,",");
+			while(strTok.hasMoreTokens()) {
+				this.instanceAssignmentSourceCodeLineNumbers.add(Integer.parseInt(strTok.nextToken()));
+			}
+		}
+	}
 }

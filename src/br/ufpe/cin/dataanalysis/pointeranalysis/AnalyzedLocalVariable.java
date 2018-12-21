@@ -1,21 +1,22 @@
 package br.ufpe.cin.dataanalysis.pointeranalysis;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AnalyzedLocalVariable implements IContainAlias, Comparable<AnalyzedLocalVariable> {
-	private AnalyzedMethod declaringMethod;
+public class AnalyzedLocalVariable implements IContainAlias {
+	private transient AnalyzedMethod declaringMethod;
 	private String variableName;
-	private Set<AnalyzedAlias> aliases;
+	private Map<String,AnalyzedAlias> aliases;
 	
 	public AnalyzedLocalVariable(AnalyzedMethod declaringMethod, String variableName) {
-		this.aliases = new TreeSet<AnalyzedAlias>(new AnalyzedAliasComparator());
+		this.aliases = new HashMap<String,AnalyzedAlias>();
 		this.declaringMethod = declaringMethod;
 		this.variableName = variableName;
 	}
 	public void addAlias(AnalyzedAlias alias) {
-		if(!this.aliases.contains(alias)) {
-			this.aliases.add(alias);
+		String key = alias.toString();
+		if(!this.aliases.containsKey(key)) {
+			this.aliases.put(key,alias);
 		}
 	}
 	
@@ -25,23 +26,18 @@ public class AnalyzedLocalVariable implements IContainAlias, Comparable<Analyzed
 	
 	@Override
 	public String toString() {
-		return this.declaringMethod.getDeclaringClass().getClassName()+"."+this.declaringMethod.getMethodName()+"."+this.variableName;
+		return this.variableName;
 	}
 	
 	public AnalyzedMethod getDeclaringMethod() {
 		return this.declaringMethod;
 	}
 	
-	public Set<AnalyzedAlias> getAliases() {
-		return this.aliases;
+	public void setDeclaringMethod(AnalyzedMethod declaringMethod) {
+		this.declaringMethod = declaringMethod;
 	}
-	@Override
-	public int compareTo(AnalyzedLocalVariable o) {
-		int result = 0;
-		result = this.declaringMethod.getMethodName().compareTo(o.getDeclaringMethod().getMethodName());
-		if(result == 0) {
-			result = this.variableName.compareTo(o.getVariableName());
-		}
-		return result;
+	
+	public Map<String,AnalyzedAlias> getAliases() {
+		return this.aliases;
 	}
 }

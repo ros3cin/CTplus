@@ -1,19 +1,21 @@
 package br.ufpe.cin.dataanalysis.pointeranalysis;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AnalyzedMethod implements Comparable<AnalyzedMethod> {
-	private AnalyzedClass declaringClass;
+public class AnalyzedMethod {
+	private transient AnalyzedClass declaringClass;
 	private String methodName;
 	private int sourceCodeLineNumber;
-	private Set<AnalyzedLocalVariable> analyzedLocalVariables;
+	private int numberOfParameters;
+	private Map<String,AnalyzedLocalVariable> analyzedLocalVariables;
 	
-	public AnalyzedMethod(AnalyzedClass declaringClass, String methodName, int sourceCodeLineNumber) {
+	public AnalyzedMethod(AnalyzedClass declaringClass, String methodName, int sourceCodeLineNumber, int numberOfParameters) {
 		this.declaringClass = declaringClass;
 		this.methodName = methodName;
-		this.analyzedLocalVariables = new TreeSet<AnalyzedLocalVariable>();
+		this.analyzedLocalVariables = new HashMap<String,AnalyzedLocalVariable>();
 		this.sourceCodeLineNumber = sourceCodeLineNumber;
+		this.numberOfParameters = numberOfParameters;
 	}
 	
 	public int getSourceCodeLineNumber() {
@@ -21,19 +23,21 @@ public class AnalyzedMethod implements Comparable<AnalyzedMethod> {
 	}
 	
 	public boolean contains(AnalyzedLocalVariable analyzedLocalVariable) {
-		return this.analyzedLocalVariables.contains(analyzedLocalVariable);
+		String key = analyzedLocalVariable.toString();
+		return this.analyzedLocalVariables.containsKey(key);
 	}
 	
 	public void addLocalVariable(AnalyzedLocalVariable analyzedLocalVariable) {
-		this.analyzedLocalVariables.add(analyzedLocalVariable);
+		String key = analyzedLocalVariable.toString();
+		this.analyzedLocalVariables.put(key,analyzedLocalVariable);
 	}
 	
-	public Set<AnalyzedLocalVariable> getAnalyzedLocalVariables() {
+	public Map<String,AnalyzedLocalVariable> getAnalyzedLocalVariables() {
 		return this.analyzedLocalVariables;
 	}
 	
 	public boolean hasAnyAlias() {
-		for(AnalyzedLocalVariable localVariable : this.analyzedLocalVariables) {
+		for(AnalyzedLocalVariable localVariable : this.analyzedLocalVariables.values()) {
 			if(localVariable.getAliases().size()>0)
 				return true;
 		}
@@ -42,7 +46,7 @@ public class AnalyzedMethod implements Comparable<AnalyzedMethod> {
 	
 	@Override
 	public String toString() {
-		return this.declaringClass.getClassName()+"."+this.methodName;
+		return String.format("%s-%d",this.methodName,this.numberOfParameters);
 	}
 	
 	public String getMethodName() {
@@ -52,17 +56,16 @@ public class AnalyzedMethod implements Comparable<AnalyzedMethod> {
 	public AnalyzedClass getDeclaringClass() {
 		return this.declaringClass;
 	}
+	
+	public void setDeclaringClass(AnalyzedClass declaringClass) {
+		this.declaringClass = declaringClass;
+	}
 
-	@Override
-	public int compareTo(AnalyzedMethod o) {
-		int result = 0;
-		result = this.declaringClass.getClassName().compareTo(o.getDeclaringClass().getClassName());
-		if(result==0) {
-			result = this.methodName.compareTo(o.getMethodName());
-		}
-		if(result == 0) {
-			result = Integer.compare(this.sourceCodeLineNumber, o.getSourceCodeLineNumber());
-		}
-		return result;
+	public int getNumberOfParameters() {
+		return numberOfParameters;
+	}
+
+	public void setNumberOfParameters(int numberOfParameters) {
+		this.numberOfParameters = numberOfParameters;
 	}
 }

@@ -42,9 +42,11 @@ public class ReadFile {
 			Integer occurencies = Integer.parseInt(line.get(AnalysisFileHeader.OCCURENCIES.getDescription()));
 			String loopNestingInfo = line.get(AnalysisFileHeader.LOOP_NESTING_INFO.getDescription());
 			String containingMethod = line.get(AnalysisFileHeader.CONTAINING_METHOD.getDescription());
+			int containingMethodNumOfParams = Integer.parseInt(line.get(AnalysisFileHeader.CONTAINING_METHOD_NUM_OF_PARAMS.getDescription()));
 			boolean isFieldLocal = Boolean.parseBoolean(line.get(AnalysisFileHeader.IS_LOCAL_FIELD.getDescription()));
 			Integer sourceCodeLine = Integer.parseInt(line.get(AnalysisFileHeader.SOURCE_CODE_LINE.getDescription()));
-			
+			boolean collectionReturnedOrPassedAsParameter = Boolean.parseBoolean(line.get(AnalysisFileHeader.IS_COLLECTION_RETURNED_OR_PASSED_AS_PARAMETER.getDescription()));
+			String instanceAssignmentLineNumbers = line.get(AnalysisFileHeader.INSTANCE_ASSIGNMENT_SOURCE_CODE_LINE.getDescription());
 			
 			CollectionMethodDTO info = new CollectionMethodDTO(
 					type,
@@ -57,6 +59,9 @@ public class ReadFile {
 			);
 			info.setInvokeLineNumber(sourceCodeLine);
 			info.setCallMethodName(containingMethod);
+			info.setCollectionReturnedOrPassedAsParameter(collectionReturnedOrPassedAsParameter);
+			info.setCallMethodNumOfParams(containingMethodNumOfParams);
+			info.setInstanceAssignmentsLineNumbersFromString(instanceAssignmentLineNumbers);
 			
 		    datalist.add(info);
 		}

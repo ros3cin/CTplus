@@ -28,7 +28,7 @@ public final class CommandLine {
 	@Option(names = {"-p", "--points-to-analysis"}, description = "If set, runs the points-to-analysis on the target")
 	public boolean poinsToAnalysis;
 	
-	@Option(names = {"--points-to-analysis-file"}, defaultValue = "points-to-analysis.txt", description = "The points-to-analysis output file")
+	@Option(names = {"--points-to-analysis-file"}, defaultValue = "points-to-analysis.json", description = "The points-to-analysis output file")
 	public String pointsToAnalysisFile;
 	
 	@Option(names = {"--energy-profile-file"}, description = "The energy profile file to be used on the recommender")
