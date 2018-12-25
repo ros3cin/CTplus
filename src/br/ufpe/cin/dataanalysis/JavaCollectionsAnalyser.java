@@ -33,6 +33,7 @@ import com.ibm.wala.ipa.callgraph.impl.Everywhere;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.shrikeBT.InvokeInstruction;
 import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.ssa.DefaultIRFactory;
 import com.ibm.wala.ssa.IR;
@@ -305,6 +306,27 @@ public class JavaCollectionsAnalyser {
 							explicitInstances.put(memberVariableKey, new ExplicitInstance(localVariableInstances.get(sourceVariable), sourceCodeLineNumber));
 						}
 					}
+				} else if (ssaInstruction instanceof SSAInvokeInstruction) {
+					SSAInvokeInstruction newInstruction = (SSAInvokeInstruction)ssaInstruction;
+					if (!newInstruction.isStatic()) {
+						int invokingVariable = newInstruction.getUse(0);
+						String localVariableKey = String.format(
+								"%s-%d-%s-%d",
+								method.getDeclaringClass().getName().toString(),
+								method.getNumberOfParameters(),
+								method.getName().toString(),
+								invokingVariable
+						);
+						if(explicitInstances.containsKey(localVariableKey)) {
+							MethodReference calledMethod = newInstruction.getCallSite().getDeclaredTarget();
+							//TODO: save argument types to the explicit instance data
+							//the ideia is to use this to avoid recommend for alternatives that do not
+							//support the original arguments
+							if (calledMethod.getName().toString().equals("<init>")) {
+								int n = calledMethod.getNumberOfParameters();														
+							}
+						}
+					}
 				}
 			}
 		}
@@ -351,7 +373,6 @@ public class JavaCollectionsAnalyser {
 		);
 
 		for (CollectionMethod method : analyzedMethods) {
-			if (method.getInstanceAssignmentSourceCodeLineNumbers() != null)
 			printer.printRecord(
 					method.getSuperType(),
 					method.getConcreteType(),
@@ -599,7 +620,6 @@ public class JavaCollectionsAnalyser {
 									}
 									
 									IMethod resolveMethod = classHierarchy.resolveMethod(invokedMethodRef);									
-									// TODO verificar com primordial !!!!
 									if (resolveMethod != null && resolveMethod.getDeclaringClass().getClassLoader().toString().equals("Application")/*&&!sameSignature*/) {
 										if(!alreadyVisited.contains(resolveMethod) && isMethodOfInterest(method, componentsOfInterest)){
 											searchMethodsLoopInside(

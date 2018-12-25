@@ -122,6 +122,9 @@ public class DataRecommender {
 								methodInfo.getFieldName()
 						);
 					}
+					//using the first recommendation only
+					List<String> recommendations = typesReccommended.get(methodInfo);
+					typesReccommended.put(methodInfo,recommendations.subList(0, 1));
 					shouldAdd = isRecommendationTheSame(
 							pointers,
 							recommendationsByKey,
@@ -170,9 +173,27 @@ public class DataRecommender {
 			}
 		});
 		CSVPrinter printer = new CSVPrinter(new FileWriter(recommendationOutputFile), CSVFormat.DEFAULT);
-		printer.printRecord("Field name", "Is local?", "Source code line", "Containing class", "A method that uses it", "Original collection", "Ordered recommendations");
+		printer.printRecord(
+				"Field name",
+				"Is local?",
+				"Source code line",
+				"Containing class",
+				"A method that uses it",
+				"Original collection",
+				"Ordered recommendations",
+				"Choosen recommendation (used by the CECOTool transfomer, change it accordingly)"
+		);
 		for(Result result : results) {
-			printer.printRecord(result.fieldName, result.isFieldLocal, result.sourceCodeLine, result.classContainingField, result.methodUsingVariable, result.originalCollection, result.recommendation);
+			printer.printRecord(
+					result.fieldName,
+					result.isFieldLocal,
+					result.sourceCodeLine,
+					result.classContainingField,
+					result.methodUsingVariable,
+					result.originalCollection,
+					result.recommendation,
+					"1"
+			);
 		}
 		printer.flush();
 		printer.close();
@@ -280,9 +301,9 @@ public class DataRecommender {
 	
 	public static void main(String[] args) throws IOException {		
 		run(
-				"C:\\Users\\RENATO\\Documents\\Mestrado\\Energy profiles\\motog2 profile.csv",
+				"C:\\Users\\RENATO\\Documents\\Mestrado\\Energy profiles\\complete profile nexus 7.csv",
 				"analysis.csv",
-				"motog2 recommendations.csv",
+				"nexus 7 commons math recommendations.csv",
 				"commons math3 points-to-analysis.json"
 		);
 	}
