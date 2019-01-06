@@ -20,7 +20,8 @@ public enum AnalysisFileHeader {
 	IS_IN_RECURSIVE_METHOD("Is inside recursive method?"),
 	IS_LOCAL_FIELD("Is local field?"),
 	IS_COLLECTION_RETURNED_OR_PASSED_AS_PARAMETER("Is returned or passed as parameter?"),
-	INSTANCE_ASSIGNMENT_SOURCE_CODE_LINE("Assignment line numbers");
+	INSTANCE_ASSIGNMENT_SOURCE_CODE_LINE("Assignment line numbers"),
+	CONSTRUCTORS("Constructors");
 	
 	private String description;
 	

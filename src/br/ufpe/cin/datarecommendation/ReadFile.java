@@ -47,6 +47,7 @@ public class ReadFile {
 			Integer sourceCodeLine = Integer.parseInt(line.get(AnalysisFileHeader.SOURCE_CODE_LINE.getDescription()));
 			boolean collectionReturnedOrPassedAsParameter = Boolean.parseBoolean(line.get(AnalysisFileHeader.IS_COLLECTION_RETURNED_OR_PASSED_AS_PARAMETER.getDescription()));
 			String instanceAssignmentLineNumbers = line.get(AnalysisFileHeader.INSTANCE_ASSIGNMENT_SOURCE_CODE_LINE.getDescription());
+			String constructors = line.get(AnalysisFileHeader.CONSTRUCTORS.getDescription());
 			
 			CollectionMethodDTO info = new CollectionMethodDTO(
 					type,
@@ -62,6 +63,7 @@ public class ReadFile {
 			info.setCollectionReturnedOrPassedAsParameter(collectionReturnedOrPassedAsParameter);
 			info.setCallMethodNumOfParams(containingMethodNumOfParams);
 			info.setInstanceAssignmentsLineNumbersFromString(instanceAssignmentLineNumbers);
+			info.setCalledConstructorsFromString(constructors);
 			
 		    datalist.add(info);
 		}

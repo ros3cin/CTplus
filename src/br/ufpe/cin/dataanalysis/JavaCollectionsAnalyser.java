@@ -294,6 +294,14 @@ public class JavaCollectionsAnalyser {
 					String variableName = putInstruction.getDeclaredField().getName().toString();
 					int sourceVariable = putInstruction.getVal();
 					String concType = localVariableInstances.get(sourceVariable);
+					String localVariableKey = String.format(
+							"%s-%d-%s-%d",
+							method.getDeclaringClass().getName().toString(),
+							method.getNumberOfParameters(),
+							method.getName().toString(),
+							sourceVariable
+					);
+					ExplicitInstance localVariableInstance = explicitInstances.get(localVariableKey);
 					
 					if (memberVariable.contains(variableName) && (concType != null) ) {
 						String memberVariableKey = String.format("%s-%s",
@@ -304,6 +312,11 @@ public class JavaCollectionsAnalyser {
 							explicitInstances.get(memberVariableKey).addSourceCodeLineNumber(sourceCodeLineNumber);
 						} else {
 							explicitInstances.put(memberVariableKey, new ExplicitInstance(localVariableInstances.get(sourceVariable), sourceCodeLineNumber));
+						}
+						if(localVariableInstance != null) {
+							for(String constructor : localVariableInstance.getCalledConstructors()) {
+								explicitInstances.get(memberVariableKey).addCalledConstructor(constructor);
+							}
 						}
 					}
 				} else if (ssaInstruction instanceof SSAInvokeInstruction) {
@@ -319,11 +332,11 @@ public class JavaCollectionsAnalyser {
 						);
 						if(explicitInstances.containsKey(localVariableKey)) {
 							MethodReference calledMethod = newInstruction.getCallSite().getDeclaredTarget();
-							//TODO: save argument types to the explicit instance data
-							//the ideia is to use this to avoid recommend for alternatives that do not
-							//support the original arguments
 							if (calledMethod.getName().toString().equals("<init>")) {
-								int n = calledMethod.getNumberOfParameters();														
+								ExplicitInstance instance = explicitInstances.get(localVariableKey);
+								String rawSignature = calledMethod.getSignature();
+								String signature = rawSignature.substring(rawSignature.indexOf('('),rawSignature.indexOf(')')+1);
+								instance.addCalledConstructor(signature);
 							}
 						}
 					}
@@ -369,7 +382,8 @@ public class JavaCollectionsAnalyser {
 				AnalysisFileHeader.LOOP_NESTING_INFO.getDescription(),
 				AnalysisFileHeader.IS_IN_RECURSIVE_METHOD.getDescription(),
 				AnalysisFileHeader.IS_COLLECTION_RETURNED_OR_PASSED_AS_PARAMETER.getDescription(),
-				AnalysisFileHeader.INSTANCE_ASSIGNMENT_SOURCE_CODE_LINE.getDescription()
+				AnalysisFileHeader.INSTANCE_ASSIGNMENT_SOURCE_CODE_LINE.getDescription(),
+				AnalysisFileHeader.CONSTRUCTORS.getDescription()
 		);
 
 		for (CollectionMethod method : analyzedMethods) {
@@ -388,7 +402,8 @@ public class JavaCollectionsAnalyser {
 					method.loopsToString(),
 					Boolean.toString(method.isInsideRecursive()),
 					Boolean.toString(method.isCollectionReturnedOrPassedAsParameter()),
-					method.getInstanceAssignmentsLineNumbersAsString()
+					method.getInstanceAssignmentsLineNumbersAsString(),
+					method.getCalledConstructorsAsString()
 			);
 		}
 		printer.flush();
@@ -486,6 +501,7 @@ public class JavaCollectionsAnalyser {
 			for (int i = 0; i < ir.getInstructions().length; i++) {
 				
 				java.util.Set<Integer> instanceAssignmentSourceCodeLineNumber = null;
+				java.util.Set<String> constructors = null;
 				SSAInstruction instruction = ir.getInstructions()[i];
 				if (instruction instanceof SSAGetInstruction) {
 					SSAGetInstruction getInstruction = (SSAGetInstruction)instruction;
@@ -515,6 +531,7 @@ public class JavaCollectionsAnalyser {
 								if (explicitInstances.get(key) != null) {
 									concreteType = explicitInstances.get(key).getConcreteType();
 									instanceAssignmentSourceCodeLineNumber = explicitInstances.get(key).getSourceCodeLineNumbers();
+									constructors = explicitInstances.get(key).getCalledConstructors();
 								}
 							} else {
 								String key = String.format(
@@ -527,6 +544,7 @@ public class JavaCollectionsAnalyser {
 								if (explicitInstances.get(key) != null) {
 									concreteType = explicitInstances.get(key).getConcreteType();
 									instanceAssignmentSourceCodeLineNumber = explicitInstances.get(key).getSourceCodeLineNumbers();
+									constructors = explicitInstances.get(key).getCalledConstructors();
 								}
 							}
 						}
@@ -584,7 +602,8 @@ public class JavaCollectionsAnalyser {
 										invokeLineNumber,
 										ir,
 										invokeIR,
-										instanceAssignmentSourceCodeLineNumber
+										instanceAssignmentSourceCodeLineNumber,
+										constructors
 								);
 								
 
@@ -855,7 +874,8 @@ public class JavaCollectionsAnalyser {
 	}
 	
 	private static CollectionMethod createMethod(MethodReference methodReference, IMethod metodoPai, String concreteType, boolean isIntoLoop,
-			LoopBlockInfo loop, int invokeLineNumber, IR ir, SSAInvokeInstruction invks, java.util.Set<Integer> instanceAssignmentSourceCodeLineNumber) {
+			LoopBlockInfo loop, int invokeLineNumber, IR ir, SSAInvokeInstruction invks, java.util.Set<Integer> instanceAssignmentSourceCodeLineNumber,
+			java.util.Set<String> constructors) {
 
 		String nome = methodReference.getName().toString();
 		String superType = methodReference.getDeclaringClass().getName().toString().substring(1).replace('/', '.');
@@ -881,6 +901,7 @@ public class JavaCollectionsAnalyser {
 			metodo.setConditionalBlockN(loop.getconditionalBranchInterationNumber());
 		}
 		metodo.setCollectionReturnedOrPassedAsParameter(isCollectionReturnedOrPassedAsParameter(metodoPai,invks,ir));
+		metodo.setCalledConstructors(constructors);
 
 		return metodo;
 

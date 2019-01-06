@@ -22,6 +22,7 @@ import java.util.TreeSet;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -58,6 +59,7 @@ public class DataRecommender {
 		Map<CollectionMethod, List<String>> typesReccommended = new HashMap<CollectionMethod, List<String>>();
 		Map<String,List<String>> recommendationsByKey = new HashMap<String,List<String>>();
 		ICollectionsTypeResolver typeResolver = new CollectionsTypeResolver();
+		ICollectionTypeCompatibility typeCompatibility = new CollectionTypeCompatibility();
 		
 		for (CollectionMethod methodInfo : recommendationOrder.keySet()) {
 			HashMap<String,Double> typeConsumption = recommendationOrder.get(methodInfo);
@@ -68,31 +70,46 @@ public class DataRecommender {
 			
 			if(!typeResolver.isSameCollection(methodInfo.getConcreteType(), recommendations.first().getStructure())) {
 				List<String> orderedRecommendations = new ArrayList<String>();
-				orderedRecommendations.add(recommendations.first().getStructure());
-				recommendations.remove(recommendations.first());
 				for(RecommendedStructure recStructure : recommendations) {
 					if(typeResolver.isSameCollection(methodInfo.getConcreteType(), recStructure.getStructure()))
 						break;
+					Set<String> calledConstructors = methodInfo.getCalledConstructors();
+					if (calledConstructors != null) {
+						boolean isCompatible = true;
+						for(String constructor : calledConstructors) {
+							if (!typeCompatibility.hasConstructor(constructor, recStructure.getStructure())) {
+								isCompatible = false;
+								break;
+							}
+						}
+						if(!isCompatible) {
+							continue;
+						}
+					}
+					if(!typeCompatibility.canReplace(methodInfo.getConcreteType(), recStructure.getStructure()))
+						continue;
 					orderedRecommendations.add(recStructure.getStructure());
 				}
-				typesReccommended.put(methodInfo,orderedRecommendations);
-				String key = "";
-				if(methodInfo.isFieldLocal()) {
-					key = String.format(
-							"%s-%s-%d-%s",
-							methodInfo.getClasse(),
-							methodInfo.getCallMethodName(),
-							methodInfo.getCallMethodNumOfParams(),
-							methodInfo.getFieldName()
-					);
-				} else {
-					key = String.format(
-							"%s-%s",
-							methodInfo.getClasse(),
-							methodInfo.getFieldName()
-					);
+				if(!orderedRecommendations.isEmpty()) {
+					typesReccommended.put(methodInfo,orderedRecommendations);
+					String key = "";
+					if(methodInfo.isFieldLocal()) {
+						key = String.format(
+								"%s-%s-%d-%s",
+								methodInfo.getClasse(),
+								methodInfo.getCallMethodName(),
+								methodInfo.getCallMethodNumOfParams(),
+								methodInfo.getFieldName()
+								);
+					} else {
+						key = String.format(
+								"%s-%s",
+								methodInfo.getClasse(),
+								methodInfo.getFieldName()
+								);
+					}
+					recommendationsByKey.put(key, orderedRecommendations);
 				}
-				recommendationsByKey.put(key, orderedRecommendations);
 			}
 		}
 		
@@ -158,13 +175,15 @@ public class DataRecommender {
 				recommendations.append(recommendation);
 				recommendations.append("<");
 			}
-			recommendations.deleteCharAt(recommendations.length()-1);
+			if(!StringUtils.isEmpty(recommendations))
+				recommendations.deleteCharAt(recommendations.length()-1);
 			result.originalCollection = methodInfo.getConcreteType();
 			result.recommendation = recommendations.toString();
 			result.methodUsingVariable = methodInfo.getCallMethodName();
 			result.isFieldLocal = methodInfo.isFieldLocal();
 			result.sourceCodeLine = methodInfo.getInstanceAssignmentsLineNumbersAsString();
-			results.add(result);
+			if (!StringUtils.isEmpty(result.sourceCodeLine) && !StringUtils.isEmpty(recommendations))
+				results.add(result);
 		}
 		Collections.sort(results, new Comparator<Result>() {
 			@Override

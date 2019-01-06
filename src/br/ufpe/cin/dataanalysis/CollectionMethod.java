@@ -32,6 +32,7 @@ public class CollectionMethod {
 	private int callMethodNumOfParams;
 	
 	private Set<Integer> instanceAssignmentSourceCodeLineNumbers;
+	private Set<String> calledConstructors;
 	private ArrayList<Integer> interationLoopSize = new ArrayList<Integer>();
 	
 	
@@ -295,6 +296,20 @@ public class CollectionMethod {
 		return sb.toString();
 	}
 	
+	public String getCalledConstructorsAsString() {
+		StringBuilder sb = new StringBuilder();
+		if (this.calledConstructors != null) {
+			int count = 0;
+			for(String constructor : this.calledConstructors) {
+				if(count>0) 
+					sb.append(" ");
+				sb.append(constructor);
+				count++;
+			}
+		}
+		return sb.toString();
+	}
+	
 	public void setInstanceAssignmentsLineNumbersFromString(String lineNumbers) {
 		if (!StringUtils.isEmpty(lineNumbers)) {
 			this.instanceAssignmentSourceCodeLineNumbers = new HashSet<Integer>();
@@ -303,5 +318,23 @@ public class CollectionMethod {
 				this.instanceAssignmentSourceCodeLineNumbers.add(Integer.parseInt(strTok.nextToken()));
 			}
 		}
+	}
+	
+	public void setCalledConstructorsFromString(String constructors) {
+		if (!StringUtils.isEmpty(constructors)) {
+			this.calledConstructors = new HashSet<String>();
+			StringTokenizer strTok = new StringTokenizer(constructors," ");
+			while(strTok.hasMoreTokens()) {
+				this.calledConstructors.add(strTok.nextToken());
+			}
+		}
+	}
+
+	public Set<String> getCalledConstructors() {
+		return calledConstructors;
+	}
+
+	public void setCalledConstructors(Set<String> calledConstructors) {
+		this.calledConstructors = calledConstructors;
 	}
 }
