@@ -144,21 +144,23 @@ public class JavaCollectionsAnalyser {
 			
 			Debug.logger.info("Done");
 		} catch (Exception e) {
-			Debug.logger.error("Exception occurred on pointer analysis", e);
+			Debug.logger.error("Exception occurred", e);
 		}
 	}
 
 	public static void main(String[] args) throws IOException, ClassHierarchyException, InvalidClassFileException {
 		run(
-				"C:\\Users\\RENATO\\Documents\\Mestrado\\Hasan Apps\\Built jars\\commons-math3-3.4-original.jar",
+				//"C:\\Users\\RENATO\\Documents\\Mestrado\\Hasan Apps\\Built jars\\commons-math3-3.4-original.jar",
 				//"C:\\Users\\RENATO\\Documents\\Mestrado\\Hasan Apps\\Built jars\\xstream-original.jar",
 				//"C:\\Users\\RENATO\\Documents\\Mestrado\\Hasan Apps\\Built jars\\gson-2.8.3-original.jar",
 				//"C:\\Users\\RENATO\\Documents\\Mestrado\\Dacapo benchs\\Built jars\\catalina.jar",
+				"C:\\Users\\RENATO\\Documents\\Mestrado\\Apps jStanley\\templateit-original.jar",
 				null,
-				new String[] {"org.apache.commons.math3"},
+				//new String[] {"org.apache.commons.math3"},
 				//new String[] {"com.thoughtworks.xstream"},
 				//new String[] {"com.google.gson"},
 				//new String[] {"org.apache.catalina"},
+				new String[] {"org.templateit"},
 				null,
 				null,
 				false,
@@ -261,7 +263,7 @@ public class JavaCollectionsAnalyser {
 		}
 		DefaultIRFactory irFactory = new DefaultIRFactory();
 		for (IMethod method : c.getDeclaredMethods()) {
-			if(method.isAbstract())
+			if(method.isAbstract() || method.isNative())
 				continue;
 			IR methodIR = irFactory.makeIR(method, Everywhere.EVERYWHERE, SSAOptions.defaultOptions());
 			Map<Integer, String> localVariableInstances = new HashMap<Integer, String>();
@@ -437,7 +439,7 @@ public class JavaCollectionsAnalyser {
 		}
 		
 
-		if (method.isAbstract()) {
+		if (method.isAbstract() || method.isNative()) {
 			return;
 		}
 
