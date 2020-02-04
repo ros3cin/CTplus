@@ -48,7 +48,7 @@ public class DataRecommender {
 		ArrayList<EnergyProfile> energyProfilesFromFile = ReadFile.getEnergyProfilesFromFile(energyFilePath);		
 		
 		for (EnergyProfile energyProfile : energyProfilesFromFile) {
-			Debug.println(energyProfile.toString());
+			Debug.debug(energyProfile.toString());
 		}
 		
 		EnergyProfileManager profileManager = new EnergyProfileManager(energyProfilesFromFile);
@@ -64,7 +64,7 @@ public class DataRecommender {
 		for (CollectionMethod methodInfo : recommendationOrder.keySet()) {
 			HashMap<String,Double> typeConsumption = recommendationOrder.get(methodInfo);
 			for (String type : typeConsumption.keySet()) {				
-				Debug.println(methodInfo.getFieldName() +";"+type+";"+typeConsumption.get(type));
+				Debug.debug(methodInfo.getFieldName() +";"+type+";"+typeConsumption.get(type));
 			}	
 			SortedSet<RecommendedStructure> recommendations = getStructureRecommendation(typeConsumption);
 			
@@ -292,11 +292,11 @@ public class DataRecommender {
 	}
 	
 	public static void run(String energyProfileFile, String analysisOutputFile, String recommendationOutputFile, String pointsToAnalysisFilePath) throws IOException {
-		Debug.logger.info(String.format("Generating the recommendations at %s...",recommendationOutputFile));
+		Debug.info(String.format("Generating the recommendations at %s...",recommendationOutputFile));
 		ArrayList<CollectionMethod> collectionMethodFromFile = ReadFile.getCollectionMethodFromFile(analysisOutputFile);
 		Map<String, AnalyzedClass> pointers = extractPointsToAnalysisResult(pointsToAnalysisFilePath);
 		doRecommendation(energyProfileFile, collectionMethodFromFile,recommendationOutputFile,pointers);	
-		Debug.logger.info("Done");
+		Debug.info("Done");
 	}
 
 	private static Map<String, AnalyzedClass> extractPointsToAnalysisResult(String filePath) throws FileNotFoundException {

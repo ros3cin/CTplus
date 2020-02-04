@@ -3,6 +3,9 @@
 	<appenders>
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+			<filters>
+				<LevelRangeFilter minLevel="info" maxLevel="info" onMatch="ACCEPT" onMismatch="DENY"/>
+			</filters>
 		</Console>
 
 		<File name="MyFile" fileName="logs/app.log">

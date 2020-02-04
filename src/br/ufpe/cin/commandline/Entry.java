@@ -16,7 +16,7 @@ final public class Entry {
 			}
 			cmd.validate();
 			
-			Debug.logger.info(String.format("Program started at %s",Debug.getCurrentTime()));
+			Debug.info(String.format("Program started at %s",Debug.getCurrentTime()));
 			if (cmd.analyze || cmd.poinsToAnalysis) {
 				JavaCollectionsAnalyser.run(
 						cmd.target, 
@@ -31,18 +31,18 @@ final public class Entry {
 			if (cmd.recommend) {
 				DataRecommender.run(cmd.energyProfileFile, cmd.analysisOutputFile, cmd.recommendationOutputFile, cmd.pointsToAnalysisFile);
 			}
-			Debug.logger.info(String.format("Program finished at %s\n",Debug.getCurrentTime()));
+			Debug.info(String.format("Program finished at %s\n",Debug.getCurrentTime()));
 		} catch (MissingParameterException e) {
-			Debug.logger.error(e);
+			Debug.error(e);
 			picocli.CommandLine.usage(new CommandLine(), System.out);
 			return;
 		} catch (CommandLineValidationException e) {
-			Debug.logger.error(e);
+			Debug.error(e);
 			picocli.CommandLine.usage(new CommandLine(), System.out);
 			return;
 		} catch (Exception e) { 
-			Debug.logger.error(e,e);
-			Debug.logger.info(String.format("Program finished at %s\n",Debug.getCurrentTime()));
+			Debug.error(e);
+			Debug.info(String.format("Program finished at %s\n",Debug.getCurrentTime()));
 		}
 	}
 }

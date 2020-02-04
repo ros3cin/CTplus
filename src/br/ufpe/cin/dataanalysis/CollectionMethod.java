@@ -179,6 +179,18 @@ public class CollectionMethod {
 		return false;
 	}
 	
+	/**
+	 * Returns a string that can be used as hash key
+	 * @return
+	 */
+	public String hashKey() {
+		return this.getNome()+this.getInvokeLineNumber()
+		+this.isIntoLoop()+this.getClasse()
+		+this.getConcreteType()+this.getSuperType()
+		+this.getCallMethodName()+this.getFieldName()
+		+this.loopsToString();
+	}
+	
 	public String loopsToString(){
 		
 		String s = "";

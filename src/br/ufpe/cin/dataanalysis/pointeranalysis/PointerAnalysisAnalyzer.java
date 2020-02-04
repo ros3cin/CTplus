@@ -56,7 +56,7 @@ import br.ufpe.cin.debug.Debug;
 public class PointerAnalysisAnalyzer {
 	
 	public void extractPointsToAnalysisInformation(AnalysisScope scope, java.util.List<ComponentOfInterest> componentsOfInterest, IClassHierarchy cha, String output) throws InvalidClassFileException {
-		Debug.logger.info("Starting pointer analysis...");
+		Debug.info("Starting pointer analysis...");
 		try {
 
 			java.util.List<Entrypoint> myEntrypoints = new ArrayList<Entrypoint>();
@@ -77,16 +77,16 @@ public class PointerAnalysisAnalyzer {
 			AnalysisCache analysisCache = new AnalysisCacheImpl();
 			CallGraphBuilder<?> cgBuilder = Util.makeZeroOneCFABuilder(options, analysisCache, cha, scope);
 		
-			Debug.logger.info("Creating call graph. This step can take up to 1 hour...");
+			Debug.info("Creating call graph. This step can take up to 1 hour...");
 			CallGraph cg = cgBuilder.makeCallGraph(options,null);
-			Debug.logger.info("Call graph creationg ended...");
+			Debug.info("Call graph creationg ended...");
 			Map<CGNode,Boolean> isNodeVisited = new HashMap<CGNode,Boolean>();
 			Map<IClass,Boolean> isClassComputed = new HashMap<IClass,Boolean>();
 			Iterator<CGNode> allNodes = cg.iterator();
 			
 			Map<String, AnalyzedClass> pointerResult = new HashMap<String, AnalyzedClass>();
 
-			Debug.logger.info("Gathering pointers and aliases...");
+			Debug.info("Gathering pointers and aliases...");
 			while(allNodes.hasNext()) {
 				CGNode node = allNodes.next();
 				String declaringClassName = node.getMethod().getDeclaringClass().getName().toString();
@@ -106,14 +106,14 @@ public class PointerAnalysisAnalyzer {
 				}
 			}
 			
-			Debug.logger.info("Writing out the result...");
+			Debug.info("Writing out the result...");
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			FileWriter fw = new FileWriter(output);
 			gson.toJson(cleanResult, fw);
 			fw.close();
 			
 			
-			Debug.logger.info("End of pointer analysis.");
+			Debug.info("End of pointer analysis.");
 	
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
