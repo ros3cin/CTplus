@@ -950,7 +950,7 @@ public class JavaCollectionsAnalyser {
 						nome="add(middle-index;value)";
 				}
 			}
-			else if (nome.equals("remove")){
+			else if (nome.equals("remove") && invks.getNumberOfUses() > 1){
 				if(ti.getType(invks.getUse(1)).toString().equals("int")){
 					boolean isStartingIndex=ir.getSymbolTable().isConstant(invks.getUse(1))&& ir.getSymbolTable().getValue(invks.getUse(1)).toString().equals("#0");
 					if(isStartingIndex) {
