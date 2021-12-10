@@ -11,7 +11,7 @@
 		<scala.lang.version>2.12.3</scala.lang.version>
 		<scala.maven.plugin.version>3.4.2</scala.maven.plugin.version>
 		<picocli.version>3.7.0</picocli.version>
-		<log4j.version>2.11.1</log4j.version>
+		<log4j.version>2.15.0</log4j.version>
 		<commons.lang.version>3.8.1</commons.lang.version>
 	</properties>
 
